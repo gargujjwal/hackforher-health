@@ -4,7 +4,7 @@ import InformationForm from "@/components/information-form.tsx";
 import {useNavigate} from "react-router-dom";
 
 type ServerResponse = {
-  haveCancer: boolean;
+  have_cancer: boolean;
   accuracy: number;
 }
 
@@ -13,14 +13,14 @@ export default function YourInformationPage() {
 
   async function informationFormSubmitHandler(data: Record<string, string>) {
     try {
-      const res = await fetch("/api/cancer-status", {
+      const res = await fetch("http://localhost:5000/api/cancer-status", {
         method: "POST",
         body: JSON.stringify(data),
         headers: {"Content-Type": "application/json"}
       });
       if (res.status === 200) {
         const serverRes = await res.json() as ServerResponse;
-        navigate(`/cancer-status?haveCancer=${serverRes.haveCancer}&accuracy=${serverRes.accuracy}`);
+        navigate(`/cancer-status?haveCancer=${serverRes.have_cancer}&accuracy=${serverRes.accuracy}`);
       } else {
         navigate("/error");
       }
@@ -29,9 +29,7 @@ export default function YourInformationPage() {
       console.log(err);
 
     }
-    navigate("/cancer-status");
   }
-
 
   return (
       <DefaultLayout>
