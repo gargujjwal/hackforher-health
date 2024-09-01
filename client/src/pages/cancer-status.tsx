@@ -5,7 +5,7 @@ import {title} from "@/components/primitives.ts";
 
 export default function CancerStatusPage() {
   const [searchParams] = useSearchParams();
-  const hasCancer = searchParams.get('hasCancer') === 'true';
+  const hasCancer = searchParams.get('hasCancer') === "true";
   const accuracy = searchParams.get('accuracy');
 
   return (
