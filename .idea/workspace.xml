@@ -4,25 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b0e88a3b-d564-4489-b061-280246b40130" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/prettier.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/information-form.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/hooks/use-localstorage-json.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/pages/error.tsx" afterDir="false" />
+    <list default="true" id="b0e88a3b-d564-4489-b061-280246b40130" name="Changes" comment="feature(backend): add endpoint `/api/cancer-status`">
+      <change afterPath="$PROJECT_DIR$/scripts/run-dev.cmd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run-dev.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/client/pnpm-lock.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/icons.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/icons.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/navbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/navbar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/config/site.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/config/site.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/layouts/default.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/layouts/default.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/pages/about.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/pages/blog.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/pages/docs.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/pages/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/pages/pricing.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/cancer-status.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,6 +19,7 @@
       <list>
         <option value="Flask Main" />
         <option value="TypeScript JSX File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -70,8 +56,10 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Flask server.project-1.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "SONARLINT_PRECOMMIT_ANALYSIS": "true",
     "git-widget-placeholder": "main",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -117,11 +105,62 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1725190242299</updated>
-      <workItem from="1725190250646" duration="11241000" />
+      <workItem from="1725190250646" duration="13421000" />
     </task>
+    <task id="LOCAL-00001" summary="setup(frontend): remove unnecessary files">
+      <option name="closed" value="true" />
+      <created>1725203361742</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1725203361742</updated>
+    </task>
+    <task id="LOCAL-00002" summary="feature(frontend): add form page, error page, and cancer status page">
+      <option name="closed" value="true" />
+      <created>1725203489307</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1725203489307</updated>
+    </task>
+    <task id="LOCAL-00003" summary="refactor(frontend): change link of backend endpoint">
+      <option name="closed" value="true" />
+      <created>1725205376721</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1725205376721</updated>
+    </task>
+    <task id="LOCAL-00004" summary="feature(backend): add endpoint `/api/cancer-status`">
+      <option name="closed" value="true" />
+      <created>1725205426282</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1725205426282</updated>
+    </task>
+    <task id="LOCAL-00005" summary="feature(backend): add endpoint `/api/cancer-status`">
+      <option name="closed" value="true" />
+      <created>1725205433465</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1725205433465</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="setup(frontend): remove unnecessary files" />
+    <MESSAGE value="feature(frontend): add form page, error page, and cancer status page" />
+    <MESSAGE value="refactor(frontend): change link of backend endpoint" />
+    <MESSAGE value="feature(backend): add endpoint `/api/cancer-status`" />
+    <option name="LAST_COMMIT_MESSAGE" value="feature(backend): add endpoint `/api/cancer-status`" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/project_1$project_1.coverage" NAME="project-1 Coverage Results" MODIFIED="1725204776129" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
