@@ -1,9 +1,12 @@
 from flask import Flask, request as req, jsonify, Response
+from flask_cors import CORS
 
 from entity.cancer_status import CancerStatus
 from entity.user_information import UserInformation
 
 app = Flask(__name__)
+# setup cors so that anyone can call the API
+CORS(app)
 
 
 @app.route('/api/cancer-status', methods=['POST'])

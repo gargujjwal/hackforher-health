@@ -4,3 +4,4 @@ channels:
 dependencies:
   - python==3.12.4
   - flask
+  - flask-cors=3.0.10

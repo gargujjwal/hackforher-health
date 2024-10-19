@@ -4,12 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b0e88a3b-d564-4489-b061-280246b40130" name="Changes" comment="chore(setup): add enviornment.yml file&#10;&#10;Signed-off-by: Ujjwal Garg &lt;ujjwalgarg100204@gmail.com&gt;">
-      <changelist_data name="Ujjwal Garg" email="ujjwalgarg100204@gmail.com" />
+    <list default="true" id="b0e88a3b-d564-4489-b061-280246b40130" name="Changes" comment="chore(setup): add microservice arch&#10;- move client code to java server&#10;- move model to flask server">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/project-1.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/project-1.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/pages/cancer-status.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/cancer-status.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/pages/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/environment.yml" beforeDir="false" afterPath="$PROJECT_DIR$/environment.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,13 +68,13 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "SONARLINT_PRECOMMIT_ANALYSIS": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "dev",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "actions.on.save",
+    "settings.editor.selected.configurable": "editor.preferences.fonts.default",
     "ts.external.directory.path": "/home/ujjwalgarg/Development/web/python/project-1/client/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   }
@@ -101,8 +101,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-7c0b70fcd90d-JavaScript-PY-242.21829.153" />
-        <option value="bundled-python-sdk-464836ebc622-b74155a9e76b-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-242.21829.153" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-PY-242.23339.19" />
+        <option value="bundled-python-sdk-0029f7779945-399fe30bd8c1-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-242.23339.19" />
       </set>
     </attachedChunks>
   </component>
@@ -115,6 +115,7 @@
       <option name="presentableId" value="Default" />
       <updated>1725190242299</updated>
       <workItem from="1725190250646" duration="19973000" />
+      <workItem from="1729347778842" duration="830000" />
     </task>
     <task id="LOCAL-00001" summary="setup(frontend): remove unnecessary files">
       <option name="closed" value="true" />
@@ -180,7 +181,15 @@
       <option name="project" value="LOCAL" />
       <updated>1725210123930</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="chore(setup): add microservice arch&#10;- move client code to java server&#10;- move model to flask server">
+      <option name="closed" value="true" />
+      <created>1729348304138</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1729348304138</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -195,7 +204,8 @@
     <MESSAGE value="chore(setup): add enviornment.yml file" />
     <MESSAGE value="chore(setup): add environment.yml file" />
     <MESSAGE value="chore(setup): add enviornment.yml file&#10;&#10;Signed-off-by: Ujjwal Garg &lt;ujjwalgarg100204@gmail.com&gt;" />
-    <option name="LAST_COMMIT_MESSAGE" value="chore(setup): add enviornment.yml file&#10;&#10;Signed-off-by: Ujjwal Garg &lt;ujjwalgarg100204@gmail.com&gt;" />
+    <MESSAGE value="chore(setup): add microservice arch&#10;- move client code to java server&#10;- move model to flask server" />
+    <option name="LAST_COMMIT_MESSAGE" value="chore(setup): add microservice arch&#10;- move client code to java server&#10;- move model to flask server" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
