@@ -16,33 +16,42 @@
   <build>
     <plugins>
       <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <annotationProcessorPaths>
-            <path>
-              <artifactId>mapstruct-processor</artifactId>
-              <groupId>org.mapstruct</groupId>
-              <version>${org.mapstruct.version}</version>
-            </path>
-            <!-- other annotation processors -->
-          </annotationProcessorPaths> <!-- depending on your project -->
-          <source>1.8</source> <!-- depending on your project -->
-          <target>1.8</target>
-        </configuration>
-        <groupId>org.apache.maven.plugins</groupId>
-        <version>3.8.1</version>
-      </plugin>
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
         <configuration>
           <excludes>
             <exclude>
-              <groupId>org.projectlombok</groupId>
               <artifactId>lombok</artifactId>
+              <groupId>org.projectlombok</groupId>
             </exclude>
           </excludes>
         </configuration>
+        <groupId>org.springframework.boot</groupId>
+      </plugin>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <annotationProcessorPaths combine.children="append">
+            <path>
+              <groupId>org.mapstruct</groupId>
+              <artifactId>mapstruct-processor</artifactId>
+              <version>${org.mapstruct.version}</version>
+            </path>
+            <path>
+              <artifactId>lombok</artifactId>
+              <groupId>org.projectlombok</groupId>
+              <version>${lombok.version}</version>
+            </path>
+            <path>
+              <artifactId>lombok-mapstruct-binding</artifactId>
+              <groupId>org.projectlombok</groupId>
+              <version>${lombok-mapstruck-bindings.version}</version>
+            </path>
+          </annotationProcessorPaths>
+          <source>21</source> <!-- depending on your project -->
+          <target>21</target>
+        </configuration>
+        <groupId>org.apache.maven.plugins</groupId>
+        <version>3.8.1</version>
       </plugin>
     </plugins>
   </build>
@@ -126,6 +135,23 @@
       <groupId>org.mapstruct</groupId>
       <version>${org.mapstruct.version}</version>
     </dependency>
+    <dependency>
+      <artifactId>jjwt-api</artifactId>
+      <groupId>io.jsonwebtoken</groupId>
+      <version>0.12.6</version>
+    </dependency>
+    <dependency>
+      <artifactId>jjwt-impl</artifactId>
+      <groupId>io.jsonwebtoken</groupId>
+      <scope>runtime</scope>
+      <version>0.12.6</version>
+    </dependency>
+    <dependency>
+      <artifactId>jjwt-jackson</artifactId>
+      <groupId>io.jsonwebtoken</groupId>
+      <scope>runtime</scope>
+      <version>0.12.6</version>
+    </dependency>
   </dependencies>
   <description>
     A web application hub for cervical cancer, providing comprehensive knowledge and
@@ -158,5 +184,6 @@
   <properties>
     <java.version>21</java.version>
     <org.mapstruct.version>1.6.2</org.mapstruct.version>
+    <lombok-mapstruck-bindings.version>0.2.0</lombok-mapstruck-bindings.version>
   </properties>
 </project>
