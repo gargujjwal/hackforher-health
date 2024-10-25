@@ -6,10 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="b0e88a3b-d564-4489-b061-280246b40130" name="Changes" comment="chore(setup): add enviornment.yml file&#10;&#10;Signed-off-by: Ujjwal Garg &lt;ujjwalgarg100204@gmail.com&gt;">
       <changelist_data name="Ujjwal Garg" email="ujjwalgarg100204@gmail.com" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/pages/cancer-status.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/cancer-status.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/pages/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/index.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,6 +44,18 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="SIGN_OFF_COMMIT" value="true" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "ujjwalgarg100204"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/ujjwalgarg100204/vit-project-1.git",
+    "accountId": "0bbcdcce-f5a3-4fcd-b8e4-61b943f882b3"
+  }
+}]]></component>
   <component name="OptimizeOnSaveOptions">
     <option name="myRunOnSave" value="true" />
   </component>
@@ -68,7 +76,9 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "SONARLINT_PRECOMMIT_ANALYSIS": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "micro-arch",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/ujjwalgarg/Development/web/python/project-1/src/main-server",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -101,8 +111,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-7c0b70fcd90d-JavaScript-PY-242.21829.153" />
-        <option value="bundled-python-sdk-464836ebc622-b74155a9e76b-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-242.21829.153" />
+        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23339.11" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23339.11" />
       </set>
     </attachedChunks>
   </component>
@@ -115,6 +125,7 @@
       <option name="presentableId" value="Default" />
       <updated>1725190242299</updated>
       <workItem from="1725190250646" duration="19973000" />
+      <workItem from="1729839783328" duration="98000" />
     </task>
     <task id="LOCAL-00001" summary="setup(frontend): remove unnecessary files">
       <option name="closed" value="true" />
