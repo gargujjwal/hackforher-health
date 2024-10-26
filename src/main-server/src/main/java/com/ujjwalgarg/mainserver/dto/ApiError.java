@@ -22,19 +22,19 @@ public class ApiError {
   private String description;
 
   /**
+   * The error message
+   */
+  private String message;
+
+  /**
    * The validation errors, if any.
    */
   private Map<String, String> validationErrors;
 
-  /**
-   * Constructs a new ApiError with the specified code and description.
-   *
-   * @param code        the error code
-   * @param description the error description
-   */
-  public ApiError(String code, String description) {
+  public ApiError(String code, String description, String message) {
     this.code = code;
     this.description = description;
+    this.message = message;
   }
 
   /**
@@ -47,6 +47,7 @@ public class ApiError {
   public ApiError(String code, String description, Map<String, String> validationErrors) {
     this.code = code;
     this.description = description;
+    this.message = "Please clear validation errors before proceeding";
     this.validationErrors = validationErrors;
   }
 }

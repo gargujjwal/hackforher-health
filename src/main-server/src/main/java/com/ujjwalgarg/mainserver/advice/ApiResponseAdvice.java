@@ -41,12 +41,15 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 @RestControllerAdvice
 public class ApiResponseAdvice extends ResponseEntityExceptionHandler {
 
+  private static final String GENERIC_ERROR_MESSAGE = "An internal error occurred. Please contact support.";
+
   @Override
   protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(
       HttpRequestMethodNotSupportedException ex, HttpHeaders headers, HttpStatusCode status,
       WebRequest request) {
     log.error("Request method not supported: {}", ex.getMessage());
-    ApiError error = new ApiError("ERROR_001", "Request method not supported");
+    ApiError error = new ApiError("ERROR_001", "Request method not supported",
+        GENERIC_ERROR_MESSAGE);
     ApiResponse<Object> response = new ApiResponse<>(false, null, error);
     return new ResponseEntity<>(response, HttpStatus.METHOD_NOT_ALLOWED);
   }
@@ -56,7 +59,7 @@ public class ApiResponseAdvice extends ResponseEntityExceptionHandler {
       HttpMediaTypeNotSupportedException ex, HttpHeaders headers, HttpStatusCode status,
       WebRequest request) {
     log.error("Media type not supported: {}", ex.getMessage());
-    ApiError error = new ApiError("ERROR_002", "Media type not supported");
+    ApiError error = new ApiError("ERROR_002", "Media type not supported", GENERIC_ERROR_MESSAGE);
     ApiResponse<Object> response = new ApiResponse<>(false, null, error);
     return new ResponseEntity<>(response, HttpStatus.UNSUPPORTED_MEDIA_TYPE);
   }
@@ -66,7 +69,7 @@ public class ApiResponseAdvice extends ResponseEntityExceptionHandler {
       HttpMediaTypeNotAcceptableException ex, HttpHeaders headers, HttpStatusCode status,
       WebRequest request) {
     log.error("Media type not acceptable: {}", ex.getMessage());
-    ApiError error = new ApiError("ERROR_003", "Media type not acceptable");
+    ApiError error = new ApiError("ERROR_003", "Media type not acceptable", GENERIC_ERROR_MESSAGE);
     ApiResponse<Object> response = new ApiResponse<>(false, null, error);
     return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
   }
@@ -75,7 +78,7 @@ public class ApiResponseAdvice extends ResponseEntityExceptionHandler {
   protected ResponseEntity<Object> handleMissingPathVariable(MissingPathVariableException ex,
       HttpHeaders headers, HttpStatusCode status, WebRequest request) {
     log.error("Missing path variable: {}", ex.getMessage());
-    ApiError error = new ApiError("ERROR_004", "Missing path variable");
+    ApiError error = new ApiError("ERROR_004", "Missing path variable", GENERIC_ERROR_MESSAGE);
     ApiResponse<Object> response = new ApiResponse<>(false, null, error);
     return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
   }
@@ -85,7 +88,7 @@ public class ApiResponseAdvice extends ResponseEntityExceptionHandler {
       MissingServletRequestParameterException ex, HttpHeaders headers, HttpStatusCode status,
       WebRequest request) {
     log.error("Missing request parameter: {}", ex.getMessage());
-    ApiError error = new ApiError("ERROR_005", "Missing request parameter");
+    ApiError error = new ApiError("ERROR_005", "Missing request parameter", GENERIC_ERROR_MESSAGE);
     ApiResponse<Object> response = new ApiResponse<>(false, null, error);
     return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
   }
@@ -95,7 +98,7 @@ public class ApiResponseAdvice extends ResponseEntityExceptionHandler {
       MissingServletRequestPartException ex, HttpHeaders headers, HttpStatusCode status,
       WebRequest request) {
     log.error("Missing request part: {}", ex.getMessage());
-    ApiError error = new ApiError("ERROR_006", "Missing request part");
+    ApiError error = new ApiError("ERROR_006", "Missing request part", GENERIC_ERROR_MESSAGE);
     ApiResponse<Object> response = new ApiResponse<>(false, null, error);
     return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
   }
@@ -105,7 +108,7 @@ public class ApiResponseAdvice extends ResponseEntityExceptionHandler {
       ServletRequestBindingException ex, HttpHeaders headers, HttpStatusCode status,
       WebRequest request) {
     log.error("Request binding error: {}", ex.getMessage());
-    ApiError error = new ApiError("ERROR_007", "Request binding error");
+    ApiError error = new ApiError("ERROR_007", "Request binding error", GENERIC_ERROR_MESSAGE);
     ApiResponse<Object> response = new ApiResponse<>(false, null, error);
     return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
   }
@@ -125,13 +128,22 @@ public class ApiResponseAdvice extends ResponseEntityExceptionHandler {
     return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
   }
 
-
   @Override
   protected ResponseEntity<Object> handleHandlerMethodValidationException(
       HandlerMethodValidationException ex, HttpHeaders headers, HttpStatusCode status,
       WebRequest request) {
     log.error("Handler method validation error: {}", ex.getMessage());
 
+    Map<String, String> validationErrors = getValidationErrorsFromException(ex);
+
+    ApiError error = new ApiError("ERROR_008", "Validation Error", validationErrors);
+    error.setMessage("Please clear validation errors before proceeding");
+    ApiResponse<Object> response = new ApiResponse<>(false, null, error);
+    return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+  }
+
+  private Map<String, String> getValidationErrorsFromException(
+      HandlerMethodValidationException ex) {
     Map<String, String> validationErrors = new HashMap<>();
     for (ParameterValidationResult error : ex.getAllValidationResults()) {
       String fieldName = error.getMethodParameter().getParameterName();
@@ -145,17 +157,15 @@ public class ApiResponseAdvice extends ResponseEntityExceptionHandler {
 
       validationErrors.put(fieldName, errorMessage);
     }
-
-    ApiError error = new ApiError("ERROR_009", "Validation Error", validationErrors);
-    ApiResponse<Object> response = new ApiResponse<>(false, null, error);
-    return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    return validationErrors;
   }
 
   @Override
   protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex,
       HttpHeaders headers, HttpStatusCode status, WebRequest request) {
     log.error("No handler found for request: {}", ex.getMessage());
-    ApiError error = new ApiError("ERROR_010", "No handler found for request");
+    ApiError error = new ApiError("ERROR_009", "No handler found for request",
+        GENERIC_ERROR_MESSAGE);
     ApiResponse<Object> response = new ApiResponse<>(false, null, error);
     return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
   }
@@ -164,7 +174,8 @@ public class ApiResponseAdvice extends ResponseEntityExceptionHandler {
   protected ResponseEntity<Object> handleNoResourceFoundException(NoResourceFoundException ex,
       HttpHeaders headers, HttpStatusCode status, WebRequest request) {
     log.error("No resource found for request: {}", ex.getMessage());
-    ApiError error = new ApiError("ERROR_011", "No resource found for request");
+    ApiError error = new ApiError("ERROR_010", "No resource found for request",
+        GENERIC_ERROR_MESSAGE);
     ApiResponse<Object> response = new ApiResponse<>(false, null, error);
     return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
   }
@@ -174,7 +185,7 @@ public class ApiResponseAdvice extends ResponseEntityExceptionHandler {
       AsyncRequestTimeoutException ex, HttpHeaders headers, HttpStatusCode status,
       WebRequest request) {
     log.error("Async request timeout: {}", ex.getMessage());
-    ApiError error = new ApiError("ERROR_012", "Async request timeout");
+    ApiError error = new ApiError("ERROR_011", "Async request timeout", GENERIC_ERROR_MESSAGE);
     ApiResponse<Object> response = new ApiResponse<>(false, null, error);
     return new ResponseEntity<>(response, HttpStatus.SERVICE_UNAVAILABLE);
   }
@@ -183,7 +194,7 @@ public class ApiResponseAdvice extends ResponseEntityExceptionHandler {
   protected ResponseEntity<Object> handleErrorResponseException(ErrorResponseException ex,
       HttpHeaders headers, HttpStatusCode status, WebRequest request) {
     log.error("Error response exception: {}", ex.getMessage());
-    ApiError error = new ApiError("ERROR_013", "Error response exception");
+    ApiError error = new ApiError("ERROR_012", "Error response exception", GENERIC_ERROR_MESSAGE);
     ApiResponse<Object> response = new ApiResponse<>(false, null, error);
     return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
   }
@@ -193,7 +204,7 @@ public class ApiResponseAdvice extends ResponseEntityExceptionHandler {
       MaxUploadSizeExceededException ex, HttpHeaders headers, HttpStatusCode status,
       WebRequest request) {
     log.error("Max upload size exceeded: {}", ex.getMessage());
-    ApiError error = new ApiError("ERROR_014", "Max upload size exceeded");
+    ApiError error = new ApiError("ERROR_013", "Max upload size exceeded", GENERIC_ERROR_MESSAGE);
     ApiResponse<Object> response = new ApiResponse<>(false, null, error);
     return new ResponseEntity<>(response, HttpStatus.PAYLOAD_TOO_LARGE);
   }
@@ -202,7 +213,7 @@ public class ApiResponseAdvice extends ResponseEntityExceptionHandler {
   protected ResponseEntity<Object> handleConversionNotSupported(ConversionNotSupportedException ex,
       HttpHeaders headers, HttpStatusCode status, WebRequest request) {
     log.error("Conversion not supported: {}", ex.getMessage());
-    ApiError error = new ApiError("ERROR_015", "Conversion not supported");
+    ApiError error = new ApiError("ERROR_014", "Conversion not supported", GENERIC_ERROR_MESSAGE);
     ApiResponse<Object> response = new ApiResponse<>(false, null, error);
     return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
   }
@@ -211,7 +222,7 @@ public class ApiResponseAdvice extends ResponseEntityExceptionHandler {
   protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers,
       HttpStatusCode status, WebRequest request) {
     log.error("Type mismatch: {}", ex.getMessage());
-    ApiError error = new ApiError("ERROR_016", "Type mismatch");
+    ApiError error = new ApiError("ERROR_015", "Type mismatch", GENERIC_ERROR_MESSAGE);
     ApiResponse<Object> response = new ApiResponse<>(false, null, error);
     return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
   }
@@ -220,7 +231,7 @@ public class ApiResponseAdvice extends ResponseEntityExceptionHandler {
   protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
       HttpHeaders headers, HttpStatusCode status, WebRequest request) {
     log.error("HTTP message not readable: {}", ex.getMessage());
-    ApiError error = new ApiError("ERROR_017", "HTTP message not readable");
+    ApiError error = new ApiError("ERROR_016", "HTTP message not readable", GENERIC_ERROR_MESSAGE);
     ApiResponse<Object> response = new ApiResponse<>(false, null, error);
     return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
   }
@@ -229,7 +240,7 @@ public class ApiResponseAdvice extends ResponseEntityExceptionHandler {
   protected ResponseEntity<Object> handleHttpMessageNotWritable(HttpMessageNotWritableException ex,
       HttpHeaders headers, HttpStatusCode status, WebRequest request) {
     log.error("HTTP message not writable: {}", ex.getMessage());
-    ApiError error = new ApiError("ERROR_018", "HTTP message not writable");
+    ApiError error = new ApiError("ERROR_017", "HTTP message not writable", GENERIC_ERROR_MESSAGE);
     ApiResponse<Object> response = new ApiResponse<>(false, null, error);
     return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
   }
@@ -238,7 +249,7 @@ public class ApiResponseAdvice extends ResponseEntityExceptionHandler {
   protected ResponseEntity<Object> handleMethodValidationException(MethodValidationException ex,
       HttpHeaders headers, HttpStatus status, WebRequest request) {
     log.error("Method validation error: {}", ex.getMessage());
-    ApiError error = new ApiError("ERROR_019", "Method validation error");
+    ApiError error = new ApiError("ERROR_018", "Method validation error", GENERIC_ERROR_MESSAGE);
     ApiResponse<Object> response = new ApiResponse<>(false, null, error);
     return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
   }
@@ -247,7 +258,7 @@ public class ApiResponseAdvice extends ResponseEntityExceptionHandler {
   protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body,
       HttpHeaders headers, HttpStatusCode statusCode, WebRequest request) {
     log.error("Internal server error: {}", ex.getMessage());
-    ApiError error = new ApiError("ERROR_020", "Internal server error");
+    ApiError error = new ApiError("ERROR_019", "Internal server error", GENERIC_ERROR_MESSAGE);
     ApiResponse<Object> response = new ApiResponse<>(false, null, error);
     return new ResponseEntity<>(response, statusCode);
   }
@@ -256,7 +267,7 @@ public class ApiResponseAdvice extends ResponseEntityExceptionHandler {
   protected ResponseEntity<Object> handleResourceNotFoundException(ResourceNotFoundException ex,
       WebRequest request) {
     log.error("Resource not found: {}", ex.getMessage());
-    ApiError error = new ApiError("ERROR_021", ex.getMessage());
+    ApiError error = new ApiError("ERROR_020", ex.getMessage(), "Resource not found");
     ApiResponse<Object> response = new ApiResponse<>(false, null, error);
     return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
   }
@@ -265,9 +276,8 @@ public class ApiResponseAdvice extends ResponseEntityExceptionHandler {
   protected ResponseEntity<Object> handleInvalidRoleException(InvalidRoleException ex,
       WebRequest request) {
     log.error("Invalid role: {}", ex.getMessage());
-    ApiError error = new ApiError("ERROR_022", ex.getMessage());
+    ApiError error = new ApiError("ERROR_021", ex.getMessage(), "Invalid role");
     ApiResponse<Object> response = new ApiResponse<>(false, null, error);
     return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
   }
-
 }

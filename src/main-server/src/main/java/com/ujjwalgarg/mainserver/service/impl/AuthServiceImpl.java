@@ -8,7 +8,7 @@ import com.ujjwalgarg.mainserver.entity.user.Doctor;
 import com.ujjwalgarg.mainserver.entity.user.Patient;
 import com.ujjwalgarg.mainserver.entity.user.Role;
 import com.ujjwalgarg.mainserver.entity.user.User;
-import com.ujjwalgarg.mainserver.exception.UserAlreadyExistsException;
+import com.ujjwalgarg.mainserver.exception.ResourceConflictException;
 import com.ujjwalgarg.mainserver.mapper.UserMapper;
 import com.ujjwalgarg.mainserver.service.AuthService;
 import com.ujjwalgarg.mainserver.service.JwtService;
@@ -57,7 +57,7 @@ public class AuthServiceImpl implements AuthService {
   public void signUpUser(@Valid SignupRequest signupRequest, Role role) {
     // check if user already exists in db
     if (userService.existsByEmail(signupRequest.email())) {
-      throw new UserAlreadyExistsException(
+      throw new ResourceConflictException(
           "User with email " + signupRequest.email() + " already exists");
     }
     switch (role) {

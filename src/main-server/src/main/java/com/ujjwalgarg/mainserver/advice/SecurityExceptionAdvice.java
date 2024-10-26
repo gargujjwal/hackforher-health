@@ -2,9 +2,9 @@ package com.ujjwalgarg.mainserver.advice;
 
 import com.ujjwalgarg.mainserver.dto.ApiError;
 import com.ujjwalgarg.mainserver.dto.ApiResponse;
+import com.ujjwalgarg.mainserver.exception.ResourceConflictException;
 import com.ujjwalgarg.mainserver.exception.TokenGenerationException;
 import com.ujjwalgarg.mainserver.exception.TokenValidationException;
-import com.ujjwalgarg.mainserver.exception.UserAlreadyExistsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +23,7 @@ public class SecurityExceptionAdvice {
   public ResponseEntity<ApiResponse<ApiError>> handleAccessDeniedException(AccessDeniedException ex,
       WebRequest request) {
     log.error("Access denied: {}", ex.getMessage());
-    ApiError error = new ApiError("SECURITY_ERROR_001", "Access denied");
+    ApiError error = new ApiError("SECURITY_ERROR_001", "Access denied", ex.getMessage());
     ApiResponse<ApiError> response = new ApiResponse<>(false, null, error);
     return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
   }
@@ -33,7 +33,7 @@ public class SecurityExceptionAdvice {
       BadCredentialsException ex,
       WebRequest request) {
     log.error("Bad credentials: {}", ex.getMessage());
-    ApiError error = new ApiError("SECURITY_ERROR_002", "Bad credentials");
+    ApiError error = new ApiError("SECURITY_ERROR_002", "Bad credentials", ex.getMessage());
     ApiResponse<ApiError> response = new ApiResponse<>(false, null, error);
     return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
   }
@@ -43,7 +43,7 @@ public class SecurityExceptionAdvice {
       UsernameNotFoundException ex,
       WebRequest request) {
     log.error("Username not found: {}", ex.getMessage());
-    ApiError error = new ApiError("SECURITY_ERROR_003", "Username not found");
+    ApiError error = new ApiError("SECURITY_ERROR_003", "Username not found", ex.getMessage());
     ApiResponse<ApiError> response = new ApiResponse<>(false, null, error);
     return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
   }
@@ -53,7 +53,7 @@ public class SecurityExceptionAdvice {
       TokenGenerationException ex,
       WebRequest request) {
     log.error("Token generation failed: {}", ex.getMessage());
-    ApiError error = new ApiError("SECURITY_ERROR_004", "Token generation failed");
+    ApiError error = new ApiError("SECURITY_ERROR_004", "Token generation failed", ex.getMessage());
     ApiResponse<ApiError> response = new ApiResponse<>(false, null, error);
     return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
   }
@@ -62,17 +62,17 @@ public class SecurityExceptionAdvice {
   public ResponseEntity<ApiResponse<ApiError>> handleTokenValidationException(
       TokenValidationException ex, WebRequest request) {
     log.error("Token validation failed: {}", ex.getMessage());
-    ApiError error = new ApiError("SECURITY_ERROR_005", "Token validation failed");
+    ApiError error = new ApiError("SECURITY_ERROR_005", "Token validation failed", ex.getMessage());
     ApiResponse<ApiError> response = new ApiResponse<>(false, null, error);
     return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
   }
 
-  @ExceptionHandler(UserAlreadyExistsException.class)
-  public ResponseEntity<ApiResponse<ApiError>> handleUserAlreadyExistsException(
-      UserAlreadyExistsException ex,
+  @ExceptionHandler
+  public ResponseEntity<ApiResponse<ApiError>> handleResourceConflictException(
+      ResourceConflictException ex,
       WebRequest request) {
-    log.error("User already exists: {}", ex.getMessage());
-    ApiError error = new ApiError("SECURITY_ERROR_006", "User already exists");
+    log.error("Resource conflict: {}", ex.getMessage());
+    ApiError error = new ApiError("SECURITY_ERROR_006", "Resource conflict", ex.getMessage());
     ApiResponse<ApiError> response = new ApiResponse<>(false, null, error);
     return new ResponseEntity<>(response, HttpStatus.CONFLICT);
   }
