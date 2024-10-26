@@ -46,4 +46,15 @@ public class ApiResponse<T> {
     this.error = error;
     this.timestamp = Instant.now().toString();
   }
+
+  /**
+   * Creates a new successful ApiResponse with the specified data.
+   *
+   * @param data the data returned by the API call
+   * @param <T>  the type of the data contained in the response
+   * @return a new ApiResponse indicating success
+   */
+  public static <T> ApiResponse<T> success(T data) {
+    return new ApiResponse<>(true, data, null);
+  }
 }
