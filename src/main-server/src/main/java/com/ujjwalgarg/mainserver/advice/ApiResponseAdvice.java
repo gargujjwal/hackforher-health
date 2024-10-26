@@ -2,6 +2,10 @@ package com.ujjwalgarg.mainserver.advice;
 
 import com.ujjwalgarg.mainserver.dto.ApiError;
 import com.ujjwalgarg.mainserver.dto.ApiResponse;
+import com.ujjwalgarg.mainserver.exception.InvalidRoleException;
+import com.ujjwalgarg.mainserver.exception.ResourceNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
@@ -11,7 +15,9 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.method.MethodValidationException;
+import org.springframework.validation.method.ParameterValidationResult;
 import org.springframework.web.ErrorResponseException;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
@@ -20,6 +26,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.ServletRequestBindingException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.context.request.async.AsyncRequestTimeoutException;
@@ -106,18 +113,40 @@ public class ApiResponseAdvice extends ResponseEntityExceptionHandler {
   @Override
   protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
       HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-    log.error("Method argument not valid: {}", ex.getMessage());
-    ApiError error = new ApiError("ERROR_008", "Method argument not valid");
+    log.error("Validation error: {}", ex.getMessage());
+
+    Map<String, String> validationErrors = new HashMap<>();
+    for (FieldError error : ex.getBindingResult().getFieldErrors()) {
+      validationErrors.put(error.getField(), error.getDefaultMessage());
+    }
+
+    ApiError error = new ApiError("ERROR_008", "Validation error", validationErrors);
     ApiResponse<Object> response = new ApiResponse<>(false, null, error);
     return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
   }
+
 
   @Override
   protected ResponseEntity<Object> handleHandlerMethodValidationException(
       HandlerMethodValidationException ex, HttpHeaders headers, HttpStatusCode status,
       WebRequest request) {
     log.error("Handler method validation error: {}", ex.getMessage());
-    ApiError error = new ApiError("ERROR_009", "Handler method validation error");
+
+    Map<String, String> validationErrors = new HashMap<>();
+    for (ParameterValidationResult error : ex.getAllValidationResults()) {
+      String fieldName = error.getMethodParameter().getParameterName();
+      StringBuilder sb = new StringBuilder();
+      for (var msg : error.getResolvableErrors()) {
+        sb.append(msg.getDefaultMessage());
+        sb.append(",");
+      }
+      sb.deleteCharAt(sb.length() - 1);
+      String errorMessage = sb.toString();
+
+      validationErrors.put(fieldName, errorMessage);
+    }
+
+    ApiError error = new ApiError("ERROR_009", "Validation Error", validationErrors);
     ApiResponse<Object> response = new ApiResponse<>(false, null, error);
     return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
   }
@@ -222,4 +251,23 @@ public class ApiResponseAdvice extends ResponseEntityExceptionHandler {
     ApiResponse<Object> response = new ApiResponse<>(false, null, error);
     return new ResponseEntity<>(response, statusCode);
   }
+
+  @ExceptionHandler(ResourceNotFoundException.class)
+  protected ResponseEntity<Object> handleResourceNotFoundException(ResourceNotFoundException ex,
+      WebRequest request) {
+    log.error("Resource not found: {}", ex.getMessage());
+    ApiError error = new ApiError("ERROR_021", ex.getMessage());
+    ApiResponse<Object> response = new ApiResponse<>(false, null, error);
+    return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+  }
+
+  @ExceptionHandler(InvalidRoleException.class)
+  protected ResponseEntity<Object> handleInvalidRoleException(InvalidRoleException ex,
+      WebRequest request) {
+    log.error("Invalid role: {}", ex.getMessage());
+    ApiError error = new ApiError("ERROR_022", ex.getMessage());
+    ApiResponse<Object> response = new ApiResponse<>(false, null, error);
+    return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+  }
+
 }
