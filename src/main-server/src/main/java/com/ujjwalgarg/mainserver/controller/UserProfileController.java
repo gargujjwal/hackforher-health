@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Controller for handling user profile related requests.
  */
 @RestController
-@RequestMapping(path = "/api/profile", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/profile", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class UserProfileController {
 
