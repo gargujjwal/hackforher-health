@@ -10,12 +10,12 @@ import com.ujjwalgarg.mainserver.exception.TokenValidationException;
 public interface JwtService {
 
   /**
-   * The validity period of the access token in seconds.
+   * The validity period of the access token in seconds. (5 minutes)
    */
-  int ACCESS_TOKEN_VALIDITY_IN_SECS = 30;
+  int ACCESS_TOKEN_VALIDITY_IN_SECS = 60 * 5;
 
   /**
-   * The validity period of the refresh token in seconds.
+   * The validity period of the refresh token in seconds. (6 months)
    */
   int REFRESH_TOKEN_VALIDITY_IN_SECS = 60 * 60 * 24 * 30 * 6;
 
