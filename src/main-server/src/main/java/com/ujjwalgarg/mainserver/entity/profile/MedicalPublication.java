@@ -9,25 +9,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@Table(name = "medical_publication")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Embeddable
 public class MedicalPublication implements Serializable {
 
   @Serial
   private static final long serialVersionUID = 1L;
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
-
-  @ManyToOne
-  @JoinColumn(name = "doctor_profile_id")
-  private DoctorProfile doctorProfile;
 
   @Column(name = "publication_name")
   private String publicationName;

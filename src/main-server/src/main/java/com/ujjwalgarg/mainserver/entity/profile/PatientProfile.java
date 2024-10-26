@@ -4,15 +4,14 @@ import com.ujjwalgarg.mainserver.entity.user.Patient;
 import jakarta.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "patient_profile")
@@ -21,6 +20,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public class PatientProfile implements Serializable {
 
   @Serial
@@ -59,21 +59,33 @@ public class PatientProfile implements Serializable {
   private String address;
 
   @ElementCollection
-  @Column(name = "phone_numbers")
+  @CollectionTable(name = "patient_phone_numbers", joinColumns = @JoinColumn(name = "patient_id"))
+  @Column(name = "phone_number")
   private Set<String> phoneNumber = new HashSet<>();
 
   @Column(name = "secondary_email")
   private String secondaryEmail;
 
-  @OneToMany(mappedBy = "patientProfile", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<Insurance> insuranceDetails = new ArrayList<>();
+  @Column(name = "emergency_contact_name")
+  private String emergencyContactName;
 
-  @OneToMany(mappedBy = "patientProfile", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<CurrentMedication> currentMedications = new ArrayList<>();
+  @Column(name = "emergency_contact_number")
+  private String emergencyContactNumber;
 
-  @OneToMany(mappedBy = "patientProfile", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<Allergy> allergies = new ArrayList<>();
+  @Column(name = "emergency_contact_email")
+  private String emergencyContactEmail;
 
-  @OneToOne(mappedBy = "patientProfile", cascade = CascadeType.ALL, orphanRemoval = true)
-  private EmergencyContact emergencyContact;
+  @ElementCollection
+  @CollectionTable(name = "patient_insurance_details", joinColumns = @JoinColumn(name = "patient_id"))
+  private Set<Insurance> insuranceDetails = new HashSet<>();
+
+  @ElementCollection
+  @CollectionTable(name = "patient_current_medications", joinColumns = @JoinColumn(name = "patient_id"))
+  @Column(name = "medication")
+  private Set<String> currentMedications = new HashSet<>();
+
+  @ElementCollection
+  @CollectionTable(name = "patient_allergies", joinColumns = @JoinColumn(name = "patient_id"))
+  @Column(name = "allergy")
+  private Set<String> allergies = new HashSet<>();
 }

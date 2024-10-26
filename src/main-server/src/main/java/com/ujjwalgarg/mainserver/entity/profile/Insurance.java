@@ -1,6 +1,7 @@
 package com.ujjwalgarg.mainserver.entity.profile;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import java.io.Serial;
 import java.io.Serializable;
 import lombok.AllArgsConstructor;
@@ -9,32 +10,26 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@Table(name = "insurance_detail")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Embeddable
 public class Insurance implements Serializable {
 
   @Serial
   private static final long serialVersionUID = 1L;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
-
-  @ManyToOne
-  @JoinColumn(name = "patient_profile_id")
-  private PatientProfile patientProfile;
-
+  @NotBlank
   @Column(name = "policy_number", nullable = false, unique = true)
   private String policyNumber;
 
+  @NotBlank
   @Column(name = "insurance_provider", nullable = false)
   private String insuranceProvider;
 
+  @NotBlank
   @Column(name = "coverage_detail")
   private String coverageDetail;
 }

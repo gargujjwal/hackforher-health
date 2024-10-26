@@ -7,7 +7,9 @@ import com.ujjwalgarg.mainserver.entity.profile.DoctorReview;
 import jakarta.persistence.*;
 import java.io.Serial;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,8 +41,11 @@ public class Doctor extends User {
   @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
   private List<DoctorReview> reviews = new ArrayList<>();
 
-  @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
-  private List<ConsultationTiming> consultationTimings = new ArrayList<>();
+
+  @ElementCollection
+  @CollectionTable(name = "doctor_consultation_timings", joinColumns = @JoinColumn(name = "doctor_id"))
+  @Column(name = "consultation_timing")
+  private Set<ConsultationTiming> consultationTimings = new HashSet<>();
 
   @OneToMany(mappedBy = "doctor", cascade = {CascadeType.DETACH, CascadeType.MERGE,
       CascadeType.PERSIST, CascadeType.REFRESH})

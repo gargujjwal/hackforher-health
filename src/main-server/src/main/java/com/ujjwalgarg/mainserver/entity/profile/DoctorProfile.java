@@ -4,8 +4,8 @@ import com.ujjwalgarg.mainserver.entity.user.Doctor;
 import jakarta.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -49,10 +49,11 @@ public class DoctorProfile implements Serializable {
   @Column(name = "secondary_email")
   private String secondaryEmail;
 
-  @OneToMany(mappedBy = "doctorProfile", cascade = CascadeType.ALL)
-  private List<MedicalQualification> qualifications = new ArrayList<>();
+  @ElementCollection(fetch = FetchType.LAZY)
+  @CollectionTable(name = "doctor_qualifications", joinColumns = @JoinColumn(name = "doctor_profile_id"))
+  private Set<MedicalQualification> qualifications = new HashSet<>();
 
-  @OneToMany(mappedBy = "doctorProfile", cascade = CascadeType.ALL)
-  private List<MedicalPublication> publications = new ArrayList<>();
-
+  @ElementCollection(fetch = FetchType.LAZY)
+  @CollectionTable(name = "doctor_publications", joinColumns = @JoinColumn(name = "doctor_profile_id"))
+  private Set<MedicalPublication> publications = new HashSet<>();
 }
