@@ -38,4 +38,8 @@ public interface UserService extends UserDetailsService {
    * @param admin the admin entity to save
    */
   void saveAdmin(Admin admin);
+
+  Doctor findDoctorById(Long doctorId);
+
+  Patient findPatientById(Long patientId);
 }

@@ -4,6 +4,7 @@ import com.ujjwalgarg.mainserver.dto.LoginRequest;
 import com.ujjwalgarg.mainserver.dto.LoginResponse;
 import com.ujjwalgarg.mainserver.dto.SignupRequest;
 import com.ujjwalgarg.mainserver.entity.user.Role;
+import com.ujjwalgarg.mainserver.entity.user.User;
 
 /**
  * Service interface for handling authentication-related operations.
@@ -33,4 +34,6 @@ public interface AuthService {
    * @return the login response containing new authentication details
    */
   LoginResponse refreshSession(String refreshToken);
+
+  User getAuthenticatedUser();
 }

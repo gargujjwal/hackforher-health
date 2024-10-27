@@ -2,6 +2,7 @@ package com.ujjwalgarg.mainserver.advice;
 
 import com.ujjwalgarg.mainserver.dto.ApiError;
 import com.ujjwalgarg.mainserver.dto.ApiResponse;
+import com.ujjwalgarg.mainserver.exception.DoctorForbiddenToAccessPatientRecordException;
 import com.ujjwalgarg.mainserver.exception.ResourceConflictException;
 import com.ujjwalgarg.mainserver.exception.TokenGenerationException;
 import com.ujjwalgarg.mainserver.exception.TokenValidationException;
@@ -73,6 +74,18 @@ public class SecurityExceptionAdvice {
       WebRequest request) {
     log.error("Resource conflict: {}", ex.getMessage());
     ApiError error = new ApiError("SECURITY_ERROR_006", "Resource conflict", ex.getMessage());
+    ApiResponse<ApiError> response = new ApiResponse<>(false, null, error);
+    return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+  }
+
+
+  @ExceptionHandler
+  public ResponseEntity<ApiResponse<ApiError>> handleDoctorForbiddenToAccessPatientRecordException(
+      DoctorForbiddenToAccessPatientRecordException ex,
+      WebRequest request) {
+    log.error("Doctor Forbidden to access Patient Record: {}", ex.getMessage());
+    ApiError error = new ApiError("SECURITY_ERROR_007", "Doctor Forbidden to access Patient Record",
+        ex.getMessage());
     ApiResponse<ApiError> response = new ApiResponse<>(false, null, error);
     return new ResponseEntity<>(response, HttpStatus.CONFLICT);
   }

@@ -5,6 +5,7 @@ import com.ujjwalgarg.mainserver.entity.profile.PatientProfile;
 import com.ujjwalgarg.mainserver.entity.user.Admin;
 import com.ujjwalgarg.mainserver.entity.user.Doctor;
 import com.ujjwalgarg.mainserver.entity.user.Patient;
+import com.ujjwalgarg.mainserver.exception.ResourceNotFoundException;
 import com.ujjwalgarg.mainserver.repository.AdminRepository;
 import com.ujjwalgarg.mainserver.repository.DoctorRepository;
 import com.ujjwalgarg.mainserver.repository.PatientRepository;
@@ -56,5 +57,17 @@ public class UserServiceImpl implements UserService {
   @Override
   public void saveAdmin(Admin admin) {
     adminRepository.save(admin);
+  }
+
+  @Override
+  public Doctor findDoctorById(Long doctorId) {
+    return doctorRepository.findById(doctorId)
+        .orElseThrow(() -> new ResourceNotFoundException("Doctor not found"));
+  }
+
+  @Override
+  public Patient findPatientById(Long patientId) {
+    return patientRepository.findById(patientId)
+        .orElseThrow(() -> new ResourceNotFoundException("Patient not found"));
   }
 }

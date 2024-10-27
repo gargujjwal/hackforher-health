@@ -98,6 +98,11 @@ public class AuthServiceImpl implements AuthService {
     return loginResponse;
   }
 
+  @Override
+  public User getAuthenticatedUser() {
+    return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+  }
+
   /**
    * Updates the user entity with the details from the signup request.
    *
