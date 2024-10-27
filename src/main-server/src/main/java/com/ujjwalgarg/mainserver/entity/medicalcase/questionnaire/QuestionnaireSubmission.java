@@ -1,45 +1,46 @@
 package com.ujjwalgarg.mainserver.entity.medicalcase.questionnaire;
 
-import com.ujjwalgarg.mainserver.entity.medicalcase.MedicalCase;
-import jakarta.persistence.*;
-import java.io.Serial;
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Entity
-@Table(name = "questionnaire_submissions")
+import com.ujjwalgarg.mainserver.entity.medicalcase.DoctorAssignment;
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class QuestionnaireSubmission implements Serializable {
-
-  @Serial
-  private static final long serialVersionUID = 1L;
+@Entity
+@Table(name = "questionnaire_submission")
+public class QuestionnaireSubmission {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
   private Long id;
 
-  @Column(name = "submitted_at")
+  @CreationTimestamp
+  @Column(name = "submitted_at", nullable = false, updatable = false)
   private LocalDateTime submittedAt;
 
-  @ManyToOne
-  @JoinColumn(name = "medical_case_id")
-  private MedicalCase medicalCase;
+  @ElementCollection
+  @CollectionTable(name = "questionnaire_submission_answers")
+  @MapKeyColumn(name = "question_id")
+  @Column(name = "answer_text")
+  private Map<Long, String> questionResponses = new HashMap<>(); // Question ID -> Response
+
+  @Embedded
+  private ModelPrediction modelPrediction;
+
+  @Enumerated(EnumType.STRING)
+  private ReviewStatus reviewStatus;
+
+  @Column(name = "doctor_notes")
+  private String doctorNotes;
 
   @ManyToOne
-  @JoinColumn(name = "questionnaire_id")
-  private Questionnaire questionnaire;
-
-  @OneToMany(mappedBy = "questionnaireSubmission", cascade = CascadeType.ALL)
-  private List<Answer> answers = new ArrayList<>();
+  @JoinColumn(name = "doctor_assignment_id", nullable = false)
+  private DoctorAssignment doctorAssignment;
 }

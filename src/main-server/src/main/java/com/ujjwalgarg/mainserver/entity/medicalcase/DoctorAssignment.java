@@ -1,6 +1,7 @@
 package com.ujjwalgarg.mainserver.entity.medicalcase;
 
 import com.ujjwalgarg.mainserver.entity.medicalcase.appointment.Appointment;
+import com.ujjwalgarg.mainserver.entity.medicalcase.questionnaire.QuestionnaireSubmission;
 import com.ujjwalgarg.mainserver.entity.user.Doctor;
 import jakarta.persistence.*;
 import java.io.Serial;
@@ -8,13 +9,19 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "doctor_assignment")
 public class DoctorAssignment implements Serializable {
 
@@ -30,7 +37,7 @@ public class DoctorAssignment implements Serializable {
   @Column(name = "assigned_at", nullable = false, updatable = false)
   private LocalDateTime assignedAt;
 
-  @Column(name = "unassigned_at", nullable = false)
+  @Column(name = "unassigned_at")
   private LocalDateTime unassignedAt;
 
   @ManyToOne
@@ -46,4 +53,7 @@ public class DoctorAssignment implements Serializable {
 
   @OneToMany(mappedBy = "doctorAssignment", cascade = CascadeType.ALL)
   private List<ChatMessage> chatMessages = new ArrayList<>();
+
+  @OneToMany(mappedBy = "doctorAssignment", cascade = CascadeType.ALL)
+  private List<QuestionnaireSubmission> questionnaireSubmissions = new ArrayList<>();
 }

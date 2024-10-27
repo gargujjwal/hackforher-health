@@ -1,7 +1,7 @@
 package com.ujjwalgarg.mainserver.entity.medicalcase.questionnaire;
 
-public enum QuestionType {
-  MCQ,
-  BOOLEAN,
-  OPEN_ENDED
+public enum ReviewStatus {
+  CORRECT,
+  WRONG,
+  NEEDS_DISCUSSION
 }

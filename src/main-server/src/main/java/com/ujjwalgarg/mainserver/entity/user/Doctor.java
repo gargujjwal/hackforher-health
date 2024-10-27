@@ -33,7 +33,7 @@ public class Doctor extends User {
   private Double avgRating;
 
   @Column(name = "no_appointments_failed")
-  private Integer noAppointmentsFailed;
+  private Integer noAppointmentsFailed = 0;
 
   @OneToOne(mappedBy = "doctor", cascade = CascadeType.ALL, optional = false)
   private DoctorProfile profile;
@@ -41,10 +41,8 @@ public class Doctor extends User {
   @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
   private List<DoctorReview> reviews = new ArrayList<>();
 
-
   @ElementCollection
   @CollectionTable(name = "doctor_consultation_timings", joinColumns = @JoinColumn(name = "doctor_id"))
-  @Column(name = "consultation_timing")
   private Set<ConsultationTiming> consultationTimings = new HashSet<>();
 
   @OneToMany(mappedBy = "doctor", cascade = {CascadeType.DETACH, CascadeType.MERGE,
