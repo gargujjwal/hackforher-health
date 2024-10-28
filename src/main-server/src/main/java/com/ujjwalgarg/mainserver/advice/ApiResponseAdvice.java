@@ -3,6 +3,8 @@ package com.ujjwalgarg.mainserver.advice;
 import com.ujjwalgarg.mainserver.dto.ApiError;
 import com.ujjwalgarg.mainserver.dto.ApiResponse;
 import com.ujjwalgarg.mainserver.exception.InvalidRoleException;
+import com.ujjwalgarg.mainserver.exception.QuestionNotAnsweredException;
+import com.ujjwalgarg.mainserver.exception.QuestionnairePredictionModelException;
 import com.ujjwalgarg.mainserver.exception.ResourceNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
@@ -279,5 +281,23 @@ public class ApiResponseAdvice extends ResponseEntityExceptionHandler {
     ApiError error = new ApiError("ERROR_021", ex.getMessage(), "Invalid role");
     ApiResponse<Object> response = new ApiResponse<>(false, null, error);
     return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+  }
+
+  @ExceptionHandler(QuestionnairePredictionModelException.class)
+  protected ResponseEntity<ApiResponse<Object>> handleQuestionnairePredictionModelException(
+      QuestionnairePredictionModelException ex, WebRequest request) {
+    log.error("Questionnaire prediction model error: {}", ex.getMessage());
+    ApiError error = new ApiError("ERROR_022", ex.getMessage(), "Prediction model error");
+    ApiResponse<Object> response = new ApiResponse<>(false, null, error);
+    return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+
+  @ExceptionHandler(QuestionNotAnsweredException.class)
+  protected ResponseEntity<ApiResponse<Object>> handleQuestionNotAnsweredException(
+      QuestionNotAnsweredException ex, WebRequest request) {
+    log.error("Question not answered: {}", ex.getMessage());
+    ApiError error = new ApiError("ERROR_023", ex.getMessage(), "Question not answered");
+    ApiResponse<Object> response = new ApiResponse<>(false, null, error);
+    return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
   }
 }

@@ -1,8 +1,8 @@
 package com.ujjwalgarg.mainserver.entity.medicalcase.questionnaire;
 
 import jakarta.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,5 +19,5 @@ public class Section {
   private String title;
 
   @OneToMany(mappedBy = "section", cascade = CascadeType.ALL)
-  private List<Question> questions = new ArrayList<>();
+  private Set<Question> questions = new HashSet<>();
 }

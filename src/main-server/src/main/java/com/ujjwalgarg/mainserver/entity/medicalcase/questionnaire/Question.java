@@ -16,7 +16,7 @@ public class Question {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(name = "text", nullable = false)
+  @Column(name = "text", nullable = false, unique = true)
   private String text;
 
   @Enumerated(EnumType.STRING)

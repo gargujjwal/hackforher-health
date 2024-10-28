@@ -3,5 +3,5 @@ from dataclasses import dataclass
 
 @dataclass
 class CancerStatus:
-  has_cancer: bool
+  hasCervicalCancer: bool
   accuracy: float
