@@ -1,5 +1,6 @@
 package com.ujjwalgarg.mainserver.controller;
 
+import com.ujjwalgarg.mainserver.dto.ApiResponse;
 import com.ujjwalgarg.mainserver.dto.LoginRequest;
 import com.ujjwalgarg.mainserver.dto.LoginResponse;
 import com.ujjwalgarg.mainserver.dto.SignupRequest;
@@ -10,7 +11,6 @@ import com.ujjwalgarg.mainserver.service.JwtService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -45,14 +45,14 @@ public class AuthController {
   }
 
   @PostMapping("/signup/{role}")
-  public ResponseEntity<Void> signup(@PathVariable("role") Role role,
+  public ResponseEntity<ApiResponse<Void>> signup(@PathVariable("role") Role role,
       @Valid @RequestBody SignupRequest signupRequest) {
     authService.signUpUser(signupRequest, role);
-    return ResponseEntity.created(URI.create("/")).build();
+    return ResponseEntity.status(201).body(ApiResponse.success(null));
   }
 
   @GetMapping(value = "/refresh", consumes = MediaType.ALL_VALUE)
-  public ResponseEntity<Void> refreshToken(
+  public ResponseEntity<ApiResponse<Void>> refreshToken(
       @CookieValue(value = "refresh-token", defaultValue = "invalid") String refreshToken,
       HttpServletResponse response) {
     if (refreshToken.equals("invalid")) {
@@ -61,7 +61,7 @@ public class AuthController {
     LoginResponse loginResponse = authService.refreshSession(refreshToken);
     // put both tokens generated in cookies
     setTokenCookies(response, loginResponse);
-    return ResponseEntity.ok().build();
+    return ResponseEntity.ok(ApiResponse.success(null));
   }
 
   /**
