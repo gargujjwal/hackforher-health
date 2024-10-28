@@ -4,10 +4,12 @@ import com.ujjwalgarg.mainserver.dto.DoctorProfileDto;
 import com.ujjwalgarg.mainserver.dto.PatientProfileDto;
 import com.ujjwalgarg.mainserver.entity.profile.DoctorProfile;
 import com.ujjwalgarg.mainserver.entity.profile.PatientProfile;
+import com.ujjwalgarg.mainserver.entity.user.Doctor;
 import com.ujjwalgarg.mainserver.exception.ResourceNotFoundException;
 import com.ujjwalgarg.mainserver.mapper.DoctorProfileMapper;
 import com.ujjwalgarg.mainserver.mapper.PatientProfileMapper;
 import com.ujjwalgarg.mainserver.repository.DoctorProfileRepository;
+import com.ujjwalgarg.mainserver.repository.DoctorRepository;
 import com.ujjwalgarg.mainserver.repository.PatientProfileRepository;
 import com.ujjwalgarg.mainserver.service.UserProfileService;
 import jakarta.validation.Valid;
@@ -25,6 +27,7 @@ public class UserProfileServiceImpl implements UserProfileService {
   private final DoctorProfileRepository doctorProfileRepository;
   private final PatientProfileMapper patientProfileMapper;
   private final DoctorProfileMapper doctorProfileMapper;
+  private final DoctorRepository doctorRepository;
 
   @Override
   @PreAuthorize("hasRole('ROLE_DOCTOR') or (hasRole('ROLE_PATIENT') and #patientId == authentication.principal.id) or hasRole('ROLE_ADMIN')")
@@ -38,11 +41,15 @@ public class UserProfileServiceImpl implements UserProfileService {
 
   @Override
   public DoctorProfileDto getDoctorProfile(Long doctorId) {
+    Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(() -> {
+      log.error("Doctor not found for id: {}", doctorId);
+      return new ResourceNotFoundException("Doctor not found");
+    });
     DoctorProfile profile = doctorProfileRepository.findById(doctorId).orElseThrow(() -> {
       log.error("Doctor profile not found for id: {}", doctorId);
       return new ResourceNotFoundException("Doctor profile not found");
     });
-    return doctorProfileMapper.toDto(profile);
+    return doctorProfileMapper.toDto(profile, doctor);
   }
 
   @Override
@@ -67,6 +74,7 @@ public class UserProfileServiceImpl implements UserProfileService {
     doctorProfile = doctorProfileMapper.partialUpdate(doctorProfileRequestDto, doctorProfile);
 
     DoctorProfile updatedProfile = doctorProfileRepository.save(doctorProfile);
-    return doctorProfileMapper.toDto(updatedProfile);
+    Doctor doctor = doctorRepository.findById(doctorId).orElseThrow();
+    return doctorProfileMapper.toDto(updatedProfile, doctor);
   }
 }

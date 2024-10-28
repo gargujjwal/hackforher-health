@@ -44,8 +44,11 @@ public class MedicalCaseServiceImpl implements MedicalCaseService {
   @Override
   @PreAuthorize("hasRole('ROLE_PATIENT')")
   public void createNewMedicalCase(@Valid MedicalCaseCreationDto medicalCaseCreationDto) {
+    User user = authService.getAuthenticatedUser();
+    Patient patient = userService.findPatientById(user.getId());
+
     // ensure that the patient can only have 1 unresolved medical case at a time
-    medicalCaseRepository.findByIsResolvedIsFalse()
+    medicalCaseRepository.findByPatient_IdAndIsResolvedFalse(patient.getId())
         .ifPresent(medicalCase -> {
           throw new ResourceConflictException("Patient already has an unresolved medical case");
         });
@@ -55,7 +58,6 @@ public class MedicalCaseServiceImpl implements MedicalCaseService {
     medicalCase.setIsResolved(false);
 
     // current authenticated user is patient
-    Patient patient = userService.findPatientById(authService.getAuthenticatedUser().getId());
     medicalCase.setPatient(patient);
 
     // create doctor assignment obj

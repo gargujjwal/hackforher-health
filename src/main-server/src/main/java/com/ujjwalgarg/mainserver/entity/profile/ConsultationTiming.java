@@ -3,6 +3,8 @@ package com.ujjwalgarg.mainserver.entity.profile;
 import jakarta.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.DayOfWeek;
+import java.time.LocalTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,12 +22,13 @@ public class ConsultationTiming implements Serializable {
   @Serial
   private static final long serialVersionUID = 1L;
 
+  @Enumerated(EnumType.STRING)
   @Column(name = "day", nullable = false)
-  private String day;
+  private DayOfWeek day;
 
   @Column(name = "start_time", nullable = false)
-  private String startTime;
+  private LocalTime startTime;
 
   @Column(name = "end_time", nullable = false)
-  private String endTime;
+  private LocalTime endTime;
 }

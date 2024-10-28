@@ -3,6 +3,7 @@ package com.ujjwalgarg.mainserver.service.impl;
 import com.ujjwalgarg.mainserver.dto.LoginRequest;
 import com.ujjwalgarg.mainserver.dto.LoginResponse;
 import com.ujjwalgarg.mainserver.dto.SignupRequest;
+import com.ujjwalgarg.mainserver.entity.profile.ConsultationTiming;
 import com.ujjwalgarg.mainserver.entity.user.Admin;
 import com.ujjwalgarg.mainserver.entity.user.Doctor;
 import com.ujjwalgarg.mainserver.entity.user.Patient;
@@ -14,6 +15,10 @@ import com.ujjwalgarg.mainserver.service.AuthService;
 import com.ujjwalgarg.mainserver.service.JwtService;
 import com.ujjwalgarg.mainserver.service.UserService;
 import jakarta.validation.Valid;
+import java.time.DayOfWeek;
+import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -72,6 +77,7 @@ public class AuthServiceImpl implements AuthService {
         Doctor doctor = new Doctor();
         updateUserFromSignupRequest(doctor, signupRequest);
         doctor.setRole(Role.DOCTOR);
+        doctor.setConsultationTimings(getDefaultConsultationTimings());
         userService.saveDoctor(doctor);
         log.info("Doctor signed up successfully: {}", signupRequest.email());
       }
@@ -115,5 +121,44 @@ public class AuthServiceImpl implements AuthService {
     user.setLastName(signupRequest.lastName());
     user.setDob(signupRequest.dob());
     user.setPasswordHash(passwordEncoder.encode(signupRequest.password()));
+  }
+
+  private Set<ConsultationTiming> getDefaultConsultationTimings() {
+    Set<ConsultationTiming> consultationTimings = new HashSet<>();
+
+    for (DayOfWeek day : DayOfWeek.values()) {
+      if (day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY) {
+        continue;  // Skip weekends
+      }
+
+      // Morning session: 9:00 AM to 1:00 PM
+      consultationTimings.add(
+          ConsultationTiming.builder()
+              .day(day)
+              .startTime(LocalTime.of(9, 0))
+              .endTime(LocalTime.of(13, 0))
+              .build()
+      );
+
+      // Afternoon session: 2:30 PM to 6:00 PM
+      consultationTimings.add(
+          ConsultationTiming.builder()
+              .day(day)
+              .startTime(LocalTime.of(14, 30))
+              .endTime(LocalTime.of(18, 0))
+              .build()
+      );
+
+      // Evening session: 6:30 PM to 8:00 PM
+      consultationTimings.add(
+          ConsultationTiming.builder()
+              .day(day)
+              .startTime(LocalTime.of(18, 30))
+              .endTime(LocalTime.of(20, 0))
+              .build()
+      );
+    }
+
+    return consultationTimings;
   }
 }

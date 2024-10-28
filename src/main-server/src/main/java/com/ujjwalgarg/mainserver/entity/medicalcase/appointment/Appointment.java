@@ -10,11 +10,9 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "appointment")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "appointmentType", discriminatorType = DiscriminatorType.STRING)
 @Getter
 @Setter
-public abstract class Appointment implements Serializable {
+public class Appointment implements Serializable {
 
   @Serial
   private static final long serialVersionUID = 1L;
@@ -29,6 +27,15 @@ public abstract class Appointment implements Serializable {
 
   @Column(name = "end_time")
   private LocalDateTime endTime;
+
+  @Enumerated(EnumType.STRING)
+  private AppointmentType appointmentType;
+
+  @Enumerated(EnumType.STRING)
+  private AppointmentStatus appointmentStatus;
+
+  @Column(name = "meet_link")
+  private String meetLink;
 
   @ManyToOne
   @JoinColumn(name = "doctor_assignment_id")

@@ -1,12 +1,16 @@
 package com.ujjwalgarg.mainserver.dto;
 
+import com.ujjwalgarg.mainserver.entity.medicalcase.appointment.AppointmentStatus;
+import com.ujjwalgarg.mainserver.entity.medicalcase.appointment.AppointmentType;
 import com.ujjwalgarg.mainserver.entity.medicalcase.questionnaire.ModelPrediction;
 import com.ujjwalgarg.mainserver.entity.medicalcase.questionnaire.ReviewStatus;
+import com.ujjwalgarg.mainserver.entity.profile.ConsultationTiming;
 import com.ujjwalgarg.mainserver.entity.user.Role;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * DTO for {@link com.ujjwalgarg.mainserver.entity.medicalcase.MedicalCase}
@@ -39,7 +43,8 @@ public record MedicalCaseResponseDto(Long id, String caseDescription, Boolean is
      */
     public record DoctorDto(Long id, String email, String firstName, String lastName,
                             LocalDateTime dob, LocalDateTime createdAt, Role role,
-                            Double avgRating) implements
+                            Double avgRating,
+                            Set<ConsultationTiming> consultationTimings) implements
         Serializable {
 
     }
@@ -47,7 +52,10 @@ public record MedicalCaseResponseDto(Long id, String caseDescription, Boolean is
     /**
      * DTO for {@link com.ujjwalgarg.mainserver.entity.medicalcase.appointment.Appointment}
      */
-    public record AppointmentDto(Long id, LocalDateTime startTime, LocalDateTime endTime) implements
+    public record AppointmentDto(Long id, LocalDateTime startTime, LocalDateTime endTime,
+                                 AppointmentType appointmentType,
+                                 AppointmentStatus appointmentStatus, String meetLink
+    ) implements
         Serializable {
 
     }

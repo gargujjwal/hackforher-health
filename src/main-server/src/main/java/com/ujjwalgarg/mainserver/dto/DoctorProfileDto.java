@@ -2,6 +2,7 @@ package com.ujjwalgarg.mainserver.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.ujjwalgarg.mainserver.annotation.NullOrUrl;
+import com.ujjwalgarg.mainserver.entity.profile.ConsultationTiming;
 import com.ujjwalgarg.mainserver.entity.profile.MedicalPublication;
 import com.ujjwalgarg.mainserver.entity.profile.MedicalQualification;
 import jakarta.validation.Valid;
@@ -20,7 +21,10 @@ public record DoctorProfileDto(
     @NotBlank String phoneNumber,
     @NotBlank String secondaryEmail,
     @NotNull Set<@Valid MedicalQualification> qualifications,
-    @NotNull Set<@Valid MedicalPublication> publications
+    @NotNull Set<@Valid MedicalPublication> publications,
+    // Doctor attributes
+    Double avgRating,
+    Integer noAppointmentsFailed,
+    Set<ConsultationTiming> consultationTimings
 ) implements Serializable {
-
 }

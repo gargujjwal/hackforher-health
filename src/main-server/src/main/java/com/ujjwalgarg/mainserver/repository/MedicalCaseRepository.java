@@ -14,4 +14,6 @@ public interface MedicalCaseRepository extends JpaRepository<MedicalCase, Long> 
 
   Page<MedicalCase> findAllByDoctorAssignments_Doctor_IdOrderByCreatedAtDesc(Long doctorId,
       Pageable pageable);
+
+  Optional<MedicalCase> findByPatient_IdAndIsResolvedFalse(Long id);
 }
