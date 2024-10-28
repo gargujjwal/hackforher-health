@@ -2,6 +2,8 @@ package com.ujjwalgarg.mainserver.service;
 
 import com.ujjwalgarg.mainserver.dto.MedicalCaseCreationDto;
 import com.ujjwalgarg.mainserver.dto.MedicalCaseResponseDto;
+import com.ujjwalgarg.mainserver.dto.QuestionnaireSubmissionResponseDto;
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
@@ -66,5 +68,15 @@ public interface MedicalCaseService {
    * @param doctorId      the ID of the new doctor to be assigned
    */
   void assignNewDoctorToMedicalCase(Long medicalCaseId, Long doctorId);
+
+  /**
+   * Retrieves all questionnaire submissions of a medical case under a specific doctor.
+   *
+   * @param medicalCaseId the ID of the medical case
+   * @param doctorId      the ID of the doctor
+   * @return a list of QuestionnaireSubmissionResponseDto representing the questionnaire submissions
+   */
+  List<QuestionnaireSubmissionResponseDto> getAllQuestionnaireSubmissionOfMedicalCaseUnderDoctor(
+      Long medicalCaseId, Long doctorId);
 
 }

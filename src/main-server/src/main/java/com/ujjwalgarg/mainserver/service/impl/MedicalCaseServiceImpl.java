@@ -2,6 +2,7 @@ package com.ujjwalgarg.mainserver.service.impl;
 
 import com.ujjwalgarg.mainserver.dto.MedicalCaseCreationDto;
 import com.ujjwalgarg.mainserver.dto.MedicalCaseResponseDto;
+import com.ujjwalgarg.mainserver.dto.QuestionnaireSubmissionResponseDto;
 import com.ujjwalgarg.mainserver.entity.medicalcase.DoctorAssignment;
 import com.ujjwalgarg.mainserver.entity.medicalcase.MedicalCase;
 import com.ujjwalgarg.mainserver.entity.user.Doctor;
@@ -12,6 +13,7 @@ import com.ujjwalgarg.mainserver.exception.DoctorForbiddenToAccessPatientRecordE
 import com.ujjwalgarg.mainserver.exception.ResourceConflictException;
 import com.ujjwalgarg.mainserver.exception.ResourceNotFoundException;
 import com.ujjwalgarg.mainserver.mapper.MedicalCaseMapper;
+import com.ujjwalgarg.mainserver.mapper.QuestionnaireSubmissionMapper;
 import com.ujjwalgarg.mainserver.repository.MedicalCaseRepository;
 import com.ujjwalgarg.mainserver.service.AuthService;
 import com.ujjwalgarg.mainserver.service.MedicalCaseService;
@@ -23,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +39,7 @@ public class MedicalCaseServiceImpl implements MedicalCaseService {
   private final MedicalCaseMapper medicalCaseMapper;
   private final UserService userService;
   private final AuthService authService;
+  private final QuestionnaireSubmissionMapper questionnaireSubmissionMapper;
 
   @Override
   @PreAuthorize("hasRole('ROLE_PATIENT')")
@@ -120,6 +124,12 @@ public class MedicalCaseServiceImpl implements MedicalCaseService {
     MedicalCase medicalCase = medicalCaseRepository.findById(medicalCaseId)
         .orElseThrow(() -> new ResourceNotFoundException(MEDICAL_CASE_NOT_FOUND));
     medicalCase.setIsResolved(true);
+
+    // also unassign doctor from the medical case
+    medicalCase.getDoctorAssignments().stream()
+        .filter(doctorAssignment -> doctorAssignment.getUnassignedAt() == null)
+        .forEach(doctorAssignment -> doctorAssignment.setUnassignedAt(LocalDateTime.now()));
+
     medicalCaseRepository.save(medicalCase);
   }
 
@@ -149,6 +159,38 @@ public class MedicalCaseServiceImpl implements MedicalCaseService {
     medicalCase.getDoctorAssignments().add(newDoctorAssignment);
 
     medicalCaseRepository.save(medicalCase);
+  }
+
+  @Override
+  @PreAuthorize("hasAnyRole('ROLE_DOCTOR', 'ROLE_PATIENT')")
+  public List<QuestionnaireSubmissionResponseDto> getAllQuestionnaireSubmissionOfMedicalCaseUnderDoctor(
+      Long medicalCaseId, Long doctorId) {
+    // make sure that if the user is a patient, they can only see their own questionnaires
+    User user = authService.getAuthenticatedUser();
+    MedicalCase medicalCase = medicalCaseRepository.findById(medicalCaseId)
+        .orElseThrow(() -> new ResourceNotFoundException(MEDICAL_CASE_NOT_FOUND));
+    if (user.getRole().equals(Role.PATIENT) && !medicalCase.getPatient().getId()
+        .equals(user.getId())) {
+      throw new AccessDeniedException(
+          "You are not allowed to view this questionnaire submission");
+    }
+
+    // make sure that if user is doctor, they can only see questionnaires of their own patients
+    if (user.getRole().equals(Role.DOCTOR) && medicalCase.getDoctorAssignments().stream().noneMatch(
+        doctorAssignment -> doctorAssignment.getDoctor().getId().equals(user.getId()))) {
+      throw new AccessDeniedException(
+          "You are not allowed to view this questionnaire submission");
+    }
+
+    // return the questionnaire submissions
+    return medicalCase.getDoctorAssignments().stream()
+        .filter(da -> da.getDoctor().getId().equals(doctorId))
+        .findFirst()
+        .orElseThrow(() -> new ResourceNotFoundException("Doctor not assigned to medical case"))
+        .getQuestionnaireSubmissions().stream()
+        .map(questionnaireSubmissionMapper::toDto)
+        .toList();
+
   }
 
   public boolean isPatientAuthorizedToEditMedicalCase(Long medicalCaseId) {

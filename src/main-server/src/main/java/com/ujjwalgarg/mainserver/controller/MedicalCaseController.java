@@ -5,8 +5,10 @@ import com.ujjwalgarg.mainserver.dto.DoctorAssignmentCreationDto;
 import com.ujjwalgarg.mainserver.dto.MedicalCaseCreationDto;
 import com.ujjwalgarg.mainserver.dto.MedicalCaseResponseDto;
 import com.ujjwalgarg.mainserver.dto.PageResponse;
+import com.ujjwalgarg.mainserver.dto.QuestionnaireSubmissionResponseDto;
 import com.ujjwalgarg.mainserver.service.MedicalCaseService;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -95,5 +97,13 @@ public class MedicalCaseController {
       @RequestBody @Valid DoctorAssignmentCreationDto creationDto) {
     medicalCaseService.assignNewDoctorToMedicalCase(medicalCaseId, creationDto.doctorId());
     return ResponseEntity.ok(ApiResponse.success(null));
+  }
+
+  @GetMapping(path = "/{medicalCaseId}/questionnaire-submission/doctor/{doctorId}", consumes = MediaType.ALL_VALUE)
+  ResponseEntity<ApiResponse<List<QuestionnaireSubmissionResponseDto>>> getAllQuestionnaireSubmissionsOfMedicalCaseUnderDoctor(
+      @PathVariable("medicalCaseId") Long medicalCaseId, @PathVariable("doctorId") Long doctorId) {
+    List<QuestionnaireSubmissionResponseDto> questionnaireSubmissionResponses = medicalCaseService.getAllQuestionnaireSubmissionOfMedicalCaseUnderDoctor(
+        medicalCaseId, doctorId);
+    return ResponseEntity.ok(ApiResponse.success(questionnaireSubmissionResponses));
   }
 }
