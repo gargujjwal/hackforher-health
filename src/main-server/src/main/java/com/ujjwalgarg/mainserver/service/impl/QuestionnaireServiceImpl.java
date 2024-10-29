@@ -41,7 +41,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
 @Service
-@Slf4j
+@Slf4j(topic = "QUESTIONNAIRE_SERVICE")
 @RequiredArgsConstructor
 public class QuestionnaireServiceImpl implements QuestionnaireService {
 
@@ -108,6 +108,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
 
   @Override
   public List<SectionResponseDto> getQuestionnaire() {
+    log.info("Fetching all sections of the questionnaire");
     return sectionRepository.findAll().stream().map(sectionMapper::toDto).toList();
   }
 
@@ -115,7 +116,9 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public void createQuestionnaire(
       @Valid @NotNull @Min(1) List<@Valid SectionCreationDto> sections) {
+    log.info("Creating new questionnaire with {} sections", sections.size());
     sectionRepository.saveAll(sections.stream().map(sectionMapper::toEntity).toList());
+    log.info("Questionnaire created successfully");
   }
 
   @Override
@@ -123,27 +126,48 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
   public QuestionnaireSubmissionResponseDto submitResponseToQuestionnaire(
       Long doctorAssignmentId,
       QuestionnaireSubmissionCreationDto questionnaireSubmissionCreationDto) {
-    // validate if every question was answered or not
-    Map<String, String> mappedQuestionnaireResponse = questionRepository
+    log.info("Submitting response to questionnaire for doctor assignment ID: {}",
+        doctorAssignmentId);
+
+    Map<String, String> mappedQuestionnaireResponse = validateAndMapQuestionnaireResponse(
+        questionnaireSubmissionCreationDto);
+
+    ModelPrediction modelPrediction = getModelPrediction(mappedQuestionnaireResponse);
+
+    DoctorAssignment doctorAssignment = getDoctorAssignment(doctorAssignmentId);
+
+    QuestionnaireSubmission savedSubmission = saveQuestionnaireSubmission(
+        questionnaireSubmissionCreationDto, doctorAssignment, modelPrediction);
+
+    log.info("Questionnaire response submitted successfully for doctor assignment ID: {}",
+        doctorAssignmentId);
+    return questionnaireSubmissionMapper.toDto(savedSubmission);
+  }
+
+  private Map<String, String> validateAndMapQuestionnaireResponse(
+      QuestionnaireSubmissionCreationDto questionnaireSubmissionCreationDto) {
+    return questionRepository
         .findAll()
         .stream()
         .map(q -> {
           if (!questionnaireSubmissionCreationDto.questionResponses().containsKey(q.getId())) {
+            log.warn("Question not answered, question ID: {}", q.getId());
             throw new QuestionNotAnsweredException(
                 "Question not answered, question: " + q.getText());
           }
-          // make sure its answered the right way
           String answer = questionnaireSubmissionCreationDto.questionResponses().get(q.getId());
           if (isQuestionNotAnsweredCorrectly(q, answer)) {
+            log.warn("Question not answered correctly, question ID: {}, answer: {}", q.getId(),
+                answer);
             throw new QuestionNotAnsweredException("Question not answered correctly, question: "
                 + q.getText() + ", answer: " + answer);
           }
-
           return Map.entry(questionnaireAttributeName.get(q.getId()), answer);
         })
         .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+  }
 
-    // get model prediction
+  private ModelPrediction getModelPrediction(Map<String, String> mappedQuestionnaireResponse) {
     log.info("Sending questionnaire response to model prediction service: {}",
         mappedQuestionnaireResponse);
     ResponseEntity<ModelPrediction> predictionResponse = questionnaireModelClient
@@ -152,23 +176,29 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
         .retrieve()
         .toEntity(ModelPrediction.class);
     if (!predictionResponse.getStatusCode().is2xxSuccessful()) {
+      log.error("Model prediction failed with status code: {}", predictionResponse.getStatusCode());
       throw new QuestionnairePredictionModelException(
           "Model prediction failed with status code: " + predictionResponse.getStatusCode());
     }
+    return predictionResponse.getBody();
+  }
 
-    // get doctor assignment
-    DoctorAssignment doctorAssignment = doctorAssignmentRepository.findById(doctorAssignmentId)
-        .orElseThrow(() -> new ResourceNotFoundException("Doctor assignment not found"));
+  private DoctorAssignment getDoctorAssignment(Long doctorAssignmentId) {
+    return doctorAssignmentRepository.findById(doctorAssignmentId)
+        .orElseThrow(() -> {
+          log.error("Doctor assignment not found for ID: {}", doctorAssignmentId);
+          return new ResourceNotFoundException("Doctor assignment not found");
+        });
+  }
 
-    // create questionnaire submission object and save it
+  private QuestionnaireSubmission saveQuestionnaireSubmission(
+      QuestionnaireSubmissionCreationDto questionnaireSubmissionCreationDto,
+      DoctorAssignment doctorAssignment, ModelPrediction modelPrediction) {
     QuestionnaireSubmission prospectSubmission = questionnaireSubmissionMapper.toEntity(
         questionnaireSubmissionCreationDto);
     prospectSubmission.setDoctorAssignment(doctorAssignment);
-    prospectSubmission.setModelPrediction(predictionResponse.getBody());
-    QuestionnaireSubmission savedSubmission = questionnaireSubmissionRepository.save(
-        prospectSubmission);
-
-    return questionnaireSubmissionMapper.toDto(savedSubmission);
+    prospectSubmission.setModelPrediction(modelPrediction);
+    return questionnaireSubmissionRepository.save(prospectSubmission);
   }
 
   private boolean isQuestionNotAnsweredCorrectly(Question q, String answer) {
@@ -180,7 +210,6 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     if (q.getType() == QuestionType.OPEN_ENDED && answer.isBlank()) {
       questionNotAnsweredCorrectly = true;
     }
-
     return questionNotAnsweredCorrectly;
   }
 
@@ -188,41 +217,57 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
   @PreAuthorize("hasRole('ROLE_DOCTOR')")
   public void reviewQuestionnaireSubmission(Long questionnaireSubmissionId,
       QuestionnaireReviewDto reviewDto) {
-    // make sure that the questionnaire can only be reviewed by doctor who is currently
-    // treating the patient
-    QuestionnaireSubmission submission = questionnaireSubmissionRepository.findById(
-            questionnaireSubmissionId)
-        .orElseThrow(() -> new ResourceNotFoundException("Questionnaire submission not found"));
+    log.info("Reviewing questionnaire submission ID: {}", questionnaireSubmissionId);
+
+    QuestionnaireSubmission submission = getQuestionnaireSubmission(questionnaireSubmissionId);
+
     User user = authService.getAuthenticatedUser();
     if (!submission.getDoctorAssignment().getDoctor().getId().equals(user.getId())) {
+      log.warn("Doctor ID: {} is not allowed to review questionnaire submission ID: {}",
+          user.getId(), questionnaireSubmissionId);
       throw new AccessDeniedException("You are not allowed to review this questionnaire");
     }
 
-    // review the questionnaire
     submission = questionnaireSubmissionMapper.partialUpdate(reviewDto, submission);
     questionnaireSubmissionRepository.save(submission);
+    log.info("Questionnaire submission ID: {} reviewed successfully", questionnaireSubmissionId);
   }
 
   @Override
   @PreAuthorize("hasAnyRole('ROLE_DOCTOR', 'ROLE_PATIENT')")
   public QuestionnaireSubmissionResponseDto getQuestionnaireSubmissionById(
       Long questionnaireSubmissionId) {
-    // make sure that the questionnaire can only be viewed by doctor who is currently
-    // treating the patient or the patient himself
+    log.info("Fetching questionnaire submission by ID: {}", questionnaireSubmissionId);
+
     User user = authService.getAuthenticatedUser();
-    QuestionnaireSubmission submission = questionnaireSubmissionRepository.findById(
-            questionnaireSubmissionId)
-        .orElseThrow(() -> new ResourceNotFoundException("Questionnaire submission not found"));
+    QuestionnaireSubmission submission = getQuestionnaireSubmission(questionnaireSubmissionId);
+    validateUserAccessToSubmission(user, submission);
+
+    log.info("Questionnaire submission ID: {} fetched successfully", questionnaireSubmissionId);
+    return questionnaireSubmissionMapper.toDto(submission);
+  }
+
+  private QuestionnaireSubmission getQuestionnaireSubmission(Long questionnaireSubmissionId) {
+    return questionnaireSubmissionRepository.findById(questionnaireSubmissionId)
+        .orElseThrow(() -> {
+          log.error("Questionnaire submission not found for ID: {}", questionnaireSubmissionId);
+          return new ResourceNotFoundException("Questionnaire submission not found");
+        });
+  }
+
+  private void validateUserAccessToSubmission(User user, QuestionnaireSubmission submission) {
     if (user.getRole().equals(Role.PATIENT) && !submission.getDoctorAssignment().getMedicalCase()
         .getPatient().getId()
         .equals(user.getId())) {
+      log.warn("Patient ID: {} is not allowed to view questionnaire submission ID: {}",
+          user.getId(), submission.getId());
       throw new AccessDeniedException(QUESTIONNAIRE_FORBIDDEN);
     }
     if (user.getRole().equals(Role.DOCTOR) && !submission.getDoctorAssignment().getDoctor().getId()
         .equals(user.getId())) {
+      log.warn("Doctor ID: {} is not allowed to view questionnaire submission ID: {}", user.getId(),
+          submission.getId());
       throw new AccessDeniedException(QUESTIONNAIRE_FORBIDDEN);
     }
-
-    return questionnaireSubmissionMapper.toDto(submission);
   }
 }

@@ -29,7 +29,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-@Slf4j
+@Slf4j(topic = "AUTH_SERVICE")
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
@@ -41,7 +41,7 @@ public class AuthServiceImpl implements AuthService {
 
   @Override
   public LoginResponse loginUser(@Valid LoginRequest loginRequest) {
-    // Authenticate the user
+    log.info("Attempting to authenticate user with email: {}", loginRequest.email());
     Authentication authentication = authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(
             loginRequest.email(),
@@ -54,14 +54,15 @@ public class AuthServiceImpl implements AuthService {
     String accessToken = jwtService.generateAccessToken(authenticatedUser);
     String refreshToken = jwtService.generateRefreshToken(authenticatedUser);
 
-    log.info("User logged in successfully: {}", loginRequest.email());
+    log.info("User authenticated successfully: {}", loginRequest.email());
     return userMapper.toDto(authenticatedUser, accessToken, refreshToken);
   }
 
   @Override
   public void signUpUser(@Valid SignupRequest signupRequest, Role role) {
-    // check if user already exists in db
+    log.info("Attempting to sign up user with email: {}", signupRequest.email());
     if (userService.existsByEmail(signupRequest.email())) {
+      log.error("User with email {} already exists", signupRequest.email());
       throw new ResourceConflictException(
           "User with email " + signupRequest.email() + " already exists");
     }
@@ -93,11 +94,13 @@ public class AuthServiceImpl implements AuthService {
 
   @Override
   public LoginResponse refreshSession(String refreshToken) {
+    log.info("Attempting to refresh session with refresh token");
     String email = jwtService.getEmailFromToken(refreshToken);
     User user = (User) userService.loadUserByUsername(email);
     String accessToken = jwtService.generateAccessToken(user);
     String newRefreshToken = jwtService.generateRefreshToken(user);
 
+    log.info("Session refreshed successfully for user: {}", email);
     LoginResponse loginResponse = new LoginResponse();
     loginResponse.setRefreshToken(newRefreshToken);
     loginResponse.setAccessToken(accessToken);
@@ -106,15 +109,11 @@ public class AuthServiceImpl implements AuthService {
 
   @Override
   public User getAuthenticatedUser() {
-    return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    log.info("Retrieved authenticated user: {}", user.getEmail());
+    return user;
   }
 
-  /**
-   * Updates the user entity with the details from the signup request.
-   *
-   * @param user          the user entity to update
-   * @param signupRequest the signup request containing user details
-   */
   private void updateUserFromSignupRequest(User user, SignupRequest signupRequest) {
     user.setEmail(signupRequest.email());
     user.setFirstName(signupRequest.firstName());

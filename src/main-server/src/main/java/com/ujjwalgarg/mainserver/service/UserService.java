@@ -3,6 +3,7 @@ package com.ujjwalgarg.mainserver.service;
 import com.ujjwalgarg.mainserver.entity.user.Admin;
 import com.ujjwalgarg.mainserver.entity.user.Doctor;
 import com.ujjwalgarg.mainserver.entity.user.Patient;
+import com.ujjwalgarg.mainserver.exception.ResourceNotFoundException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**
@@ -39,7 +40,21 @@ public interface UserService extends UserDetailsService {
    */
   void saveAdmin(Admin admin);
 
+  /**
+   * Finds a doctor by their ID.
+   *
+   * @param doctorId the ID of the doctor to find
+   * @return the doctor entity
+   * @throws ResourceNotFoundException if the doctor is not found
+   */
   Doctor findDoctorById(Long doctorId);
 
+  /**
+   * Finds a patient by their ID.
+   *
+   * @param patientId the ID of the patient to find
+   * @return the patient entity
+   * @throws ResourceNotFoundException if the patient is not found
+   */
   Patient findPatientById(Long patientId);
 }

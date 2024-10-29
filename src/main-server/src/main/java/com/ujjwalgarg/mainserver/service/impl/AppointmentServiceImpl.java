@@ -28,7 +28,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 @Service
-@Slf4j
+@Slf4j(topic = "APPOINTMENT_SERVICE")
 @RequiredArgsConstructor
 public class AppointmentServiceImpl implements AppointmentService {
 
@@ -41,10 +41,8 @@ public class AppointmentServiceImpl implements AppointmentService {
   @PreAuthorize("hasRole('ROLE_PATIENT')")
   public Page<AppointmentDto> getAllAppointmentsWithDoctor(Long doctorAssignmentId,
       PageRequest pageRequest) {
-    // make sure that only patient can access this method
-    if (!doctorAssignmentRepository.existsById(doctorAssignmentId)) {
-      throw new ResourceNotFoundException("DoctorAssignment not found");
-    }
+    log.info("Fetching all appointments for doctor assignment ID: {}", doctorAssignmentId);
+    validateDoctorAssignmentExists(doctorAssignmentId);
 
     return appointmentRepository.findAllAppointmentByDoctorAssignment_Id(doctorAssignmentId,
             pageRequest)
@@ -54,31 +52,25 @@ public class AppointmentServiceImpl implements AppointmentService {
   @Override
   @PreAuthorize("hasRole('ROLE_PATIENT') and #patientId == authentication.principal.id")
   public Page<AppointmentDto> getAllAppointmentsOfPatient(Long patientId, PageRequest pageRequest) {
+    log.info("Fetching all appointments for patient ID: {}", patientId);
     return appointmentRepository.findAllByDoctorAssignment_MedicalCase_PatientId(patientId,
         pageRequest).map(appointmentMapper::toDto);
   }
 
   @Override
   public AppointmentDto getAppointmentById(Long appointmentId) {
+    log.info("Fetching appointment by ID: {}", appointmentId);
     User user = authService.getAuthenticatedUser();
-    // only patient who created the appointment or doctor assigned to the appointment can access it
-    if (user.getRole().equals(Role.PATIENT)
-        && !appointmentRepository.existsByDoctorAssignment_MedicalCase_Patient_Id(user.getId())) {
-      throw new AccessDeniedException("You are not authorized to access this appointment");
-    }
-    if (user.getRole().equals(Role.DOCTOR)
-        && !appointmentRepository.existsByDoctorAssignment_Doctor_Id(user.getId())) {
-      throw new AccessDeniedException("You are not authorized to access this appointment");
-    }
+    validateUserAccessToAppointment(user, appointmentId);
 
-    Appointment appointment = appointmentRepository.findById(appointmentId)
-        .orElseThrow(() -> new ResourceNotFoundException("Appointment not found"));
+    Appointment appointment = getAppointment(appointmentId);
     return appointmentMapper.toDto(appointment);
   }
 
   @Override
   @PreAuthorize("hasAnyRole('ROLE_DOCTOR') and #doctorId == authentication.principal.id")
   public Page<AppointmentDto> getAllAppointmentsOfDoctor(Long doctorId, PageRequest pageRequest) {
+    log.info("Fetching all appointments for doctor ID: {}", doctorId);
     return appointmentRepository
         .findByDoctorAssignment_Doctor_IdOrderByStartTimeDesc(doctorId, pageRequest)
         .map(appointmentMapper::toDto);
@@ -88,60 +80,107 @@ public class AppointmentServiceImpl implements AppointmentService {
   @PreAuthorize("hasRole('ROLE_PATIENT')")
   public void createAppointment(Long doctorAssignmentId,
       @Valid AppointmentDto appointmentCreationDto) {
-    // check if the doctor slot is available in the given time slot for the doctor
-    DoctorAssignment doctorAssignment = doctorAssignmentRepository.findById(doctorAssignmentId)
-        .orElseThrow(() -> new ResourceNotFoundException("DoctorAssignment not found"));
+    log.info("Creating appointment for doctor assignment ID: {}", doctorAssignmentId);
+    DoctorAssignment doctorAssignment = getDoctorAssignment(doctorAssignmentId);
     Doctor doctor = doctorAssignment.getDoctor();
 
-    // validating new appointment
     LocalDateTime requestedStart = appointmentCreationDto.startTime();
     LocalDateTime requestedEnd = appointmentCreationDto.endTime();
     validateAppointmentTime(doctor, requestedStart, requestedEnd);
 
-    // save appointment
     Appointment appointment = appointmentMapper.toEntity(appointmentCreationDto);
     appointment.setDoctorAssignment(doctorAssignment);
     doctorAssignment.getAppointments().add(appointment);
     appointment.setAppointmentStatus(AppointmentStatus.PENDING);
     appointment.setId(null);
     appointmentRepository.save(appointment);
+    log.info("Appointment created successfully for doctor assignment ID: {}", doctorAssignmentId);
   }
 
   @Override
   @PreAuthorize("hasRole('ROLE_PATIENT')")
   public void updateAppointment(Long appointmentId, @Valid AppointmentDto appointmentUpdateDto) {
-    // check if the appointment belongs to the patient currently logged in
+    log.info("Updating appointment ID: {}", appointmentId);
     User user = authService.getAuthenticatedUser();
-    if (!appointmentRepository.existsByIdAndDoctorAssignment_MedicalCase_Patient_Id(appointmentId,
-        user.getId())) {
-      throw new AccessDeniedException("You are not authorized to update this appointment");
-    }
+    validateUserAccessToUpdateAppointment(user, appointmentId);
 
-    Appointment oldAppointment = appointmentRepository.findById(appointmentId)
-        .orElseThrow(() -> new ResourceNotFoundException("Appointment not found"));
+    Appointment oldAppointment = getAppointment(appointmentId);
     Doctor doctor = oldAppointment.getDoctorAssignment().getDoctor();
     validateAppointmentTime(doctor, appointmentUpdateDto.startTime(),
         appointmentUpdateDto.endTime());
 
     Appointment updatedAppointment = appointmentMapper.partialUpdate(appointmentUpdateDto,
         oldAppointment);
-    // prevent dto from changing the id
     updatedAppointment.setId(appointmentId);
     updatedAppointment.setAppointmentStatus(oldAppointment.getAppointmentStatus());
     appointmentRepository.save(updatedAppointment);
+    log.info("Appointment updated successfully for ID: {}", appointmentId);
   }
 
   @Override
   @PreAuthorize("hasAnyRole('ROLE_PATIENT', 'ROLE_DOCTOR')")
   public void changeStatusOfAppointment(Long appointmentId, AppointmentStatus newStatus) {
-    // make sure that only patient who created the appointment or doctor assigned to the appointment can access it
+    log.info("Changing status of appointment ID: {} to {}", appointmentId, newStatus);
     User user = authService.getAuthenticatedUser();
 
-    Appointment oldAppointment = appointmentRepository.findById(appointmentId)
-        .orElseThrow(() -> new ResourceNotFoundException("Appointment not found"));
+    Appointment oldAppointment = getAppointment(appointmentId);
+    validateStatusChange(user, oldAppointment, newStatus);
 
-    // Prevent further changes if the appointment is already canceled
+    oldAppointment.setAppointmentStatus(newStatus);
+    appointmentRepository.save(oldAppointment);
+    log.info("Status of appointment ID: {} changed to {}", appointmentId, newStatus);
+  }
+
+  private void validateDoctorAssignmentExists(Long doctorAssignmentId) {
+    if (!doctorAssignmentRepository.existsById(doctorAssignmentId)) {
+      log.error("DoctorAssignment does not exist for ID: {}", doctorAssignmentId);
+      throw new ResourceNotFoundException("DoctorAssignment not found");
+    }
+  }
+
+  private DoctorAssignment getDoctorAssignment(Long doctorAssignmentId) {
+    return doctorAssignmentRepository.findById(doctorAssignmentId)
+        .orElseThrow(() -> {
+          log.error("DoctorAssignment not found for ID: {}", doctorAssignmentId);
+          return new ResourceNotFoundException("DoctorAssignment not found");
+        });
+  }
+
+  private Appointment getAppointment(Long appointmentId) {
+    return appointmentRepository.findById(appointmentId)
+        .orElseThrow(() -> {
+          log.error("Appointment not found for ID: {}", appointmentId);
+          return new ResourceNotFoundException("Appointment not found");
+        });
+  }
+
+  private void validateUserAccessToAppointment(User user, Long appointmentId) {
+    if (user.getRole().equals(Role.PATIENT)
+        && !appointmentRepository.existsByDoctorAssignment_MedicalCase_Patient_Id(user.getId())) {
+      log.error("Access denied for user ID: {} to appointment ID: {}", user.getId(), appointmentId);
+      throw new AccessDeniedException("You are not authorized to access this appointment");
+    }
+    if (user.getRole().equals(Role.DOCTOR)
+        && !appointmentRepository.existsByDoctorAssignment_Doctor_Id(user.getId())) {
+      log.error("Access denied for user ID: {} to appointment ID: {}", user.getId(), appointmentId);
+      throw new AccessDeniedException("You are not authorized to access this appointment");
+    }
+  }
+
+  private void validateUserAccessToUpdateAppointment(User user, Long appointmentId) {
+    if (!appointmentRepository.existsByIdAndDoctorAssignment_MedicalCase_Patient_Id(appointmentId,
+        user.getId())) {
+      log.error("Access denied for user ID: {} to update appointment ID: {}", user.getId(),
+          appointmentId);
+      throw new AccessDeniedException("You are not authorized to update this appointment");
+    }
+  }
+
+  private void validateStatusChange(User user, Appointment oldAppointment,
+      AppointmentStatus newStatus) {
     if (oldAppointment.getAppointmentStatus().equals(AppointmentStatus.CANCELLED)) {
+      log.error("Cannot change the status of a canceled appointment ID: {}",
+          oldAppointment.getId());
       throw new IllegalArgumentException("Cannot change the status of a canceled appointment.");
     }
 
@@ -150,63 +189,71 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     if (user.getRole().equals(Role.PATIENT)) {
       if (!user.getId().equals(patient.getId())) {
+        log.error("Access denied for patient ID: {} to change status of appointment ID: {}",
+            user.getId(), oldAppointment.getId());
         throw new AccessDeniedException(
             "You are not authorized to change the status of this appointment");
       }
       if (!newStatus.equals(AppointmentStatus.CANCELLED)) {
+        log.error("Patients can only change the status to CANCELLED for appointment ID: {}",
+            oldAppointment.getId());
         throw new IllegalArgumentException("Patients can only change the status to CANCELLED.");
       }
     }
 
-    // Check if the user is a doctor and ensure they can change the status to ACCEPTED, REJECTED, or CANCELLED
     if (user.getRole().equals(Role.DOCTOR)) {
       if (!user.getId().equals(doctor.getId())) {
+        log.error("Access denied for doctor ID: {} to change status of appointment ID: {}",
+            user.getId(), oldAppointment.getId());
         throw new AccessDeniedException(
             "You are not authorized to change the status of this appointment");
       }
       if (!newStatus.equals(AppointmentStatus.ACCEPTED) &&
           !newStatus.equals(AppointmentStatus.REJECTED) &&
           !newStatus.equals(AppointmentStatus.CANCELLED)) {
+        log.error(
+            "Doctors can only change the status to ACCEPTED, REJECTED, or CANCELLED for appointment ID: {}",
+            oldAppointment.getId());
         throw new IllegalArgumentException(
             "Doctors can only change the status to ACCEPTED, REJECTED, or CANCELLED.");
       }
     }
-
-    oldAppointment.setAppointmentStatus(newStatus);
-    appointmentRepository.save(oldAppointment);
   }
 
   private void validateAppointmentTime(Doctor doctor, LocalDateTime requestedStart,
       LocalDateTime requestedEnd) {
-    // Validation 1: Check if the appointment time is within the doctor's consultation timings
+    log.info("Validating appointment time for doctor ID: {}", doctor.getId());
     boolean withinConsultationTiming = doctor.getConsultationTimings().stream().anyMatch(timing -> {
       DayOfWeek dayOfWeek = timing.getDay();
       LocalTime consultationStart = timing.getStartTime();
       LocalTime consultationEnd = timing.getEndTime();
 
-      // Check if the appointment is on the same day and within the consultation time
       return requestedStart.toLocalDate().getDayOfWeek().equals(dayOfWeek) &&
           !requestedStart.toLocalTime().isBefore(consultationStart) &&
           !requestedEnd.toLocalTime().isAfter(consultationEnd);
     });
 
     if (!withinConsultationTiming) {
+      log.error("Appointment time is outside of doctor's consultation hours for doctor ID: {}",
+          doctor.getId());
       throw new ResourceConflictException(
           "Appointment time is outside of doctor's consultation hours");
     }
 
-    // Step 2: Check for conflicts with existing appointments, excluding canceled ones
     boolean hasConflict = appointmentRepository.findByDoctorAndTimeRange(doctor, requestedStart,
             requestedEnd)
         .stream()
         .filter(existingAppointment -> !existingAppointment.getAppointmentStatus()
-            .equals(AppointmentStatus.CANCELLED)) // Exclude canceled appointments
+            .equals(AppointmentStatus.CANCELLED))
         .anyMatch(existingAppointment ->
             existingAppointment.getEndTime().isAfter(requestedStart) &&
                 existingAppointment.getStartTime().isBefore(requestedEnd)
         );
 
     if (hasConflict) {
+      log.error(
+          "The requested appointment time conflicts with another appointment for doctor ID: {}",
+          doctor.getId());
       throw new ResourceConflictException(
           "The requested appointment time conflicts with another appointment.");
     }

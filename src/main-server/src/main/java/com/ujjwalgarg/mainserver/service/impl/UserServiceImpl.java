@@ -17,7 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-@Slf4j
+@Slf4j(topic = "USER_SERVICE")
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -29,45 +29,66 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public boolean existsByEmail(String email) {
-    return userRepository.existsByEmail(email);
+    log.info("Checking if user exists with email: {}", email);
+    boolean exists = userRepository.existsByEmail(email);
+    log.info("User exists with email {}: {}", email, exists);
+    return exists;
   }
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    log.info("Loading user by username: {}", username);
     return userRepository.findByEmail(username)
-        .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        .orElseThrow(() -> {
+          log.error("User not found with username: {}", username);
+          return new UsernameNotFoundException("User not found");
+        });
   }
 
   @Override
   public void savePatient(Patient patient) {
+    log.info("Saving new patient with email: {}", patient.getEmail());
     PatientProfile profile = new PatientProfile();
     profile.setPatient(patient);
     patient.setProfile(profile);
     patientRepository.save(patient);
+    log.info("Patient saved with ID: {}", patient.getId());
   }
 
   @Override
   public void saveDoctor(Doctor doctor) {
+    log.info("Saving new doctor with email: {}", doctor.getEmail());
     DoctorProfile profile = new DoctorProfile();
     profile.setDoctor(doctor);
     doctor.setProfile(profile);
     doctorRepository.save(doctor);
+    log.info("Doctor saved with ID: {}", doctor.getId());
   }
 
   @Override
   public void saveAdmin(Admin admin) {
+    log.info("Saving new admin with email: {}", admin.getEmail());
     adminRepository.save(admin);
+    log.info("Admin saved with ID: {}", admin.getId());
   }
 
   @Override
   public Doctor findDoctorById(Long doctorId) {
+    log.info("Finding doctor by ID: {}", doctorId);
     return doctorRepository.findById(doctorId)
-        .orElseThrow(() -> new ResourceNotFoundException("Doctor not found"));
+        .orElseThrow(() -> {
+          log.error("Doctor not found with ID: {}", doctorId);
+          return new ResourceNotFoundException("Doctor not found");
+        });
   }
 
   @Override
   public Patient findPatientById(Long patientId) {
+    log.info("Finding patient by ID: {}", patientId);
     return patientRepository.findById(patientId)
-        .orElseThrow(() -> new ResourceNotFoundException("Patient not found"));
+        .orElseThrow(() -> {
+          log.error("Patient not found with ID: {}", patientId);
+          return new ResourceNotFoundException("Patient not found");
+        });
   }
 }

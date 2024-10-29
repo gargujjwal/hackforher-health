@@ -19,7 +19,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 @Service
-@Slf4j
+@Slf4j(topic = "USER_PROFILE_SERVICE")
 @RequiredArgsConstructor
 public class UserProfileServiceImpl implements UserProfileService {
 
@@ -32,23 +32,21 @@ public class UserProfileServiceImpl implements UserProfileService {
   @Override
   @PreAuthorize("hasRole('ROLE_DOCTOR') or (hasRole('ROLE_PATIENT') and #patientId == authentication.principal.id) or hasRole('ROLE_ADMIN')")
   public PatientProfileDto getPatientProfile(Long patientId) {
+    log.info("Fetching patient profile for patient ID: {}", patientId);
     PatientProfile profile = patientProfileRepository.findById(patientId).orElseThrow(() -> {
-      log.error("Patient profile not found for id: {}", patientId);
+      log.error("Patient profile not found for ID: {}", patientId);
       return new ResourceNotFoundException("Patient profile not found");
     });
+    log.info("Patient profile found for patient ID: {}", patientId);
     return patientProfileMapper.toDto(profile);
   }
 
   @Override
   public DoctorProfileDto getDoctorProfile(Long doctorId) {
-    Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(() -> {
-      log.error("Doctor not found for id: {}", doctorId);
-      return new ResourceNotFoundException("Doctor not found");
-    });
-    DoctorProfile profile = doctorProfileRepository.findById(doctorId).orElseThrow(() -> {
-      log.error("Doctor profile not found for id: {}", doctorId);
-      return new ResourceNotFoundException("Doctor profile not found");
-    });
+    log.info("Fetching doctor profile for doctor ID: {}", doctorId);
+    Doctor doctor = getDoctorById(doctorId);
+    DoctorProfile profile = getDoctorProfileById(doctorId);
+    log.info("Doctor profile found for doctor ID: {}", doctorId);
     return doctorProfileMapper.toDto(profile, doctor);
   }
 
@@ -56,25 +54,44 @@ public class UserProfileServiceImpl implements UserProfileService {
   @PreAuthorize("hasRole('ROLE_PATIENT') and #patientId == authentication.principal.id")
   public PatientProfileDto updatePatientProfile(Long patientId,
       @Valid PatientProfileDto patientProfileUpdateDto) {
-    PatientProfile patientProfile = patientProfileRepository.findById(patientId)
-        .orElseThrow(
-            () -> new ResourceNotFoundException("Patient not found with id: " + patientId));
+    log.info("Updating patient profile for patient ID: {}", patientId);
+    PatientProfile patientProfile = getPatientProfileById(patientId);
     patientProfile = patientProfileMapper.partialUpdate(patientProfileUpdateDto, patientProfile);
-
     PatientProfile updatedProfile = patientProfileRepository.save(patientProfile);
+    log.info("Patient profile updated for patient ID: {}", patientId);
     return patientProfileMapper.toDto(updatedProfile);
   }
 
   @Override
   public DoctorProfileDto updateDoctorProfile(Long doctorId,
       @Valid DoctorProfileDto doctorProfileRequestDto) {
-    DoctorProfile doctorProfile = doctorProfileRepository.findById(doctorId)
-        .orElseThrow(
-            () -> new ResourceNotFoundException("Doctor not found with id: " + doctorId));
+    log.info("Updating doctor profile for doctor ID: {}", doctorId);
+    DoctorProfile doctorProfile = getDoctorProfileById(doctorId);
     doctorProfile = doctorProfileMapper.partialUpdate(doctorProfileRequestDto, doctorProfile);
-
     DoctorProfile updatedProfile = doctorProfileRepository.save(doctorProfile);
-    Doctor doctor = doctorRepository.findById(doctorId).orElseThrow();
+    Doctor doctor = getDoctorById(doctorId);
+    log.info("Doctor profile updated for doctor ID: {}", doctorId);
     return doctorProfileMapper.toDto(updatedProfile, doctor);
+  }
+
+  private Doctor getDoctorById(Long doctorId) {
+    return doctorRepository.findById(doctorId).orElseThrow(() -> {
+      log.error("Doctor not found for ID: {}", doctorId);
+      return new ResourceNotFoundException("Doctor not found");
+    });
+  }
+
+  private DoctorProfile getDoctorProfileById(Long doctorId) {
+    return doctorProfileRepository.findById(doctorId).orElseThrow(() -> {
+      log.error("Doctor profile not found for ID: {}", doctorId);
+      return new ResourceNotFoundException("Doctor profile not found");
+    });
+  }
+
+  private PatientProfile getPatientProfileById(Long patientId) {
+    return patientProfileRepository.findById(patientId).orElseThrow(() -> {
+      log.error("Patient not found with ID: {}", patientId);
+      return new ResourceNotFoundException("Patient not found with ID: " + patientId);
+    });
   }
 }

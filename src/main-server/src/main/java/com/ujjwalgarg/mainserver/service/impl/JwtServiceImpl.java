@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-@Slf4j
+@Slf4j(topic = "JWT_SERVICE")
 public class JwtServiceImpl implements JwtService {
 
   @Value("${my.jwt.secret.key}")
@@ -42,13 +42,11 @@ public class JwtServiceImpl implements JwtService {
           .signWith(getSecretKey())
           .compact();
 
-      log.info("Access token generated for user with email: {}, token: {}", user.getUsername(),
-          token);
+      log.info("Generated access token for user: {}", user.getUsername());
       return token;
     } catch (Exception e) {
-      log.error("Failed to generate access token for user with email: {}, exception: {}",
-          user.getUsername(),
-          e.getClass().getSimpleName());
+      log.error("Failed to generate access token for user: {}, error: {}", user.getUsername(),
+          e.getMessage());
       throw new TokenGenerationException("Could not generate access token", e);
     }
   }
@@ -66,13 +64,11 @@ public class JwtServiceImpl implements JwtService {
           .signWith(getSecretKey())
           .compact();
 
-      log.info("Refresh token generated for user with email: {}, token: {}", user.getUsername(),
-          token);
+      log.info("Generated refresh token for user: {}", user.getUsername());
       return token;
     } catch (Exception e) {
-      log.error("Failed to generate refresh token for user with email: {}, exception: {}",
-          user.getUsername(),
-          e.getClass().getSimpleName());
+      log.error("Failed to generate refresh token for user: {}, error: {}", user.getUsername(),
+          e.getMessage());
       throw new TokenGenerationException("Could not generate refresh token", e);
     }
   }
@@ -84,12 +80,11 @@ public class JwtServiceImpl implements JwtService {
           .getPayload();
       String email = claims.getSubject();
 
-      log.debug("User Id extracted from token: {}, user email: {}", token, email);
+      log.debug("Extracted email from token: {}", email);
       return email;
     } catch (Exception e) {
-      log.error("Failed to extract username from token, token: {}, exception: {}", token,
-          e.getClass().getSimpleName());
-      throw new TokenValidationException("Could not extract username from token", e);
+      log.error("Failed to extract email from token: {}, error: {}", token, e.getMessage());
+      throw new TokenValidationException("Could not extract email from token", e);
     }
   }
 
@@ -97,21 +92,18 @@ public class JwtServiceImpl implements JwtService {
   public boolean validateToken(String token) {
     try {
       Jwts.parser().verifyWith(getSecretKey()).build().parseSignedClaims(token);
-      log.debug("Token validated successfully, token: {}", token);
+      log.debug("Token validated successfully: {}", token);
       return true;
     } catch (SignatureException e) {
-      log.warn("Invalid JWT signature, token: {}, exception: {}", token,
-          e.getClass().getSimpleName());
+      log.warn("Invalid JWT signature: {}", token);
     } catch (MalformedJwtException e) {
-      log.warn("Invalid JWT token, token: {}, exception: {}", token, e.getClass().getSimpleName());
+      log.warn("Invalid JWT token: {}", token);
     } catch (ExpiredJwtException e) {
-      log.info("Expired JWT token, token: {}, exception: {}", token, e.getClass().getSimpleName());
+      log.info("Expired JWT token: {}", token);
     } catch (UnsupportedJwtException e) {
-      log.warn("Unsupported JWT token, token: {}, exception: {}", token,
-          e.getClass().getSimpleName());
+      log.warn("Unsupported JWT token: {}", token);
     } catch (IllegalArgumentException e) {
-      log.warn("JWT claims string is empty, token: {}, exception: {}", token,
-          e.getClass().getSimpleName());
+      log.warn("JWT claims string is empty: {}", token);
     }
     return false;
   }

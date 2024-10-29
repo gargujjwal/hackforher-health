@@ -35,5 +35,10 @@ public interface AuthService {
    */
   LoginResponse refreshSession(String refreshToken);
 
+  /**
+   * Retrieves the currently authenticated user.
+   *
+   * @return the authenticated user
+   */
   User getAuthenticatedUser();
 }
