@@ -5,12 +5,17 @@ import com.ujjwalgarg.mainserver.dto.LoginRequest;
 import com.ujjwalgarg.mainserver.dto.LoginResponse;
 import com.ujjwalgarg.mainserver.dto.SignupRequest;
 import com.ujjwalgarg.mainserver.entity.user.Role;
+import com.ujjwalgarg.mainserver.entity.user.User;
+import com.ujjwalgarg.mainserver.exception.InvalidRoleException;
 import com.ujjwalgarg.mainserver.exception.TokenValidationException;
+import com.ujjwalgarg.mainserver.mapper.UserMapper;
 import com.ujjwalgarg.mainserver.service.AuthService;
 import com.ujjwalgarg.mainserver.service.JwtService;
+import com.ujjwalgarg.mainserver.service.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -25,34 +30,45 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping(path = "/auth", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(
+    path = "/auth",
+    consumes = MediaType.APPLICATION_JSON_VALUE,
+    produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class AuthController {
 
   private final AuthService authService;
+  private final UserService userService;
+  private final UserMapper userMapper;
 
   @PostMapping("/login")
-  public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest,
-      HttpServletResponse response) {
+  public ResponseEntity<ApiResponse<LoginResponse>> login(
+      @Valid @RequestBody LoginRequest loginRequest, HttpServletResponse response) {
     LoginResponse loginResponse = authService.loginUser(loginRequest);
     // put both tokens generated in cookies
-    setTokenCookies(response, loginResponse);
+    addTokenCookie(response, loginResponse.getRefreshToken(), true);
     // remove the tokens from the response body
-    loginResponse.setAccessToken(null);
     loginResponse.setRefreshToken(null);
 
-    return ResponseEntity.ok(loginResponse);
+    return ResponseEntity.ok(ApiResponse.success(loginResponse));
+  }
+
+  @PostMapping("/logout")
+  public ResponseEntity<ApiResponse<Void>> logout(HttpServletResponse response) {
+    addTokenCookie(response, "", false);
+    authService.logoutUser();
+    return ResponseEntity.ok(ApiResponse.success(null));
   }
 
   @PostMapping("/signup/{role}")
-  public ResponseEntity<ApiResponse<Void>> signup(@PathVariable("role") Role role,
-      @Valid @RequestBody SignupRequest signupRequest) {
+  public ResponseEntity<ApiResponse<Void>> signup(
+      @PathVariable("role") Role role, @Valid @RequestBody SignupRequest signupRequest) {
     authService.signUpUser(signupRequest, role);
     return ResponseEntity.status(201).body(ApiResponse.success(null));
   }
 
   @GetMapping(value = "/refresh", consumes = MediaType.ALL_VALUE)
-  public ResponseEntity<ApiResponse<Void>> refreshToken(
+  public ResponseEntity<ApiResponse<Map<String, String>>> refreshToken(
       @CookieValue(value = "refresh-token", defaultValue = "invalid") String refreshToken,
       HttpServletResponse response) {
     if (refreshToken.equals("invalid")) {
@@ -60,29 +76,35 @@ public class AuthController {
     }
     LoginResponse loginResponse = authService.refreshSession(refreshToken);
     // put both tokens generated in cookies
-    setTokenCookies(response, loginResponse);
-    return ResponseEntity.ok(ApiResponse.success(null));
+    addTokenCookie(response, loginResponse.getRefreshToken(), true);
+    return ResponseEntity.ok(
+        ApiResponse.success(Map.of("accessToken", loginResponse.getAccessToken())));
+  }
+
+  @GetMapping(path = "/me", consumes = MediaType.ALL_VALUE)
+  public ResponseEntity<ApiResponse<?>> getAuthenticatedUser() {
+    User user = authService.getAuthenticatedUser();
+    return switch (user.getRole()) {
+      case PATIENT -> ResponseEntity.ok(
+          ApiResponse.success(userMapper.toDto(userService.findPatientById(user.getId()))));
+      case DOCTOR -> ResponseEntity.ok(
+          ApiResponse.success(userMapper.toDto(userService.findDoctorById(user.getId()))));
+      default -> throw new InvalidRoleException("Invalid role: " + user.getRole());
+    };
   }
 
   /**
-   * Sets the access and refresh token cookies in the HTTP response.
+   * Sets/Unsets the access and refresh token cookies in the HTTP response.
    *
-   * @param response      the HTTP response to which the cookies will be added
-   * @param loginResponse the login response containing the tokens
+   * @param response the HTTP response to which the cookies will be added
    */
-  private void setTokenCookies(HttpServletResponse response, LoginResponse loginResponse) {
-    Cookie accessTokenCookie = new Cookie("access-token", loginResponse.getAccessToken());
-    accessTokenCookie.setMaxAge(JwtService.ACCESS_TOKEN_VALIDITY_IN_SECS);
-    accessTokenCookie.setPath("/");
-    accessTokenCookie.setHttpOnly(true);
-    accessTokenCookie.setSecure(false);
-    Cookie refreshTokenCookie = new Cookie("refresh-token", loginResponse.getRefreshToken());
-    refreshTokenCookie.setMaxAge(JwtService.REFRESH_TOKEN_VALIDITY_IN_SECS);
+  private void addTokenCookie(HttpServletResponse response, String refreshToken, boolean willSet) {
+    Cookie refreshTokenCookie = new Cookie("refresh-token", refreshToken);
+    refreshTokenCookie.setMaxAge(willSet ? JwtService.REFRESH_TOKEN_VALIDITY_IN_SECS : 0);
     refreshTokenCookie.setPath("/");
     refreshTokenCookie.setHttpOnly(true);
     refreshTokenCookie.setSecure(false);
 
-    response.addCookie(accessTokenCookie);
     response.addCookie(refreshTokenCookie);
   }
 }

@@ -10,6 +10,7 @@ import com.ujjwalgarg.mainserver.entity.user.Patient;
 import com.ujjwalgarg.mainserver.entity.user.Role;
 import com.ujjwalgarg.mainserver.entity.user.User;
 import com.ujjwalgarg.mainserver.exception.ResourceConflictException;
+import com.ujjwalgarg.mainserver.exception.UnAuthorizedAccessException;
 import com.ujjwalgarg.mainserver.mapper.UserMapper;
 import com.ujjwalgarg.mainserver.service.AuthService;
 import com.ujjwalgarg.mainserver.service.JwtService;
@@ -21,6 +22,7 @@ import java.util.HashSet;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -42,12 +44,9 @@ public class AuthServiceImpl implements AuthService {
   @Override
   public LoginResponse loginUser(@Valid LoginRequest loginRequest) {
     log.info("Attempting to authenticate user with email: {}", loginRequest.email());
-    Authentication authentication = authenticationManager.authenticate(
-        new UsernamePasswordAuthenticationToken(
-            loginRequest.email(),
-            loginRequest.password()
-        )
-    );
+    Authentication authentication =
+        authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(loginRequest.email(), loginRequest.password()));
     User authenticatedUser = (User) authentication.getPrincipal();
 
     SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -56,6 +55,12 @@ public class AuthServiceImpl implements AuthService {
 
     log.info("User authenticated successfully: {}", loginRequest.email());
     return userMapper.toDto(authenticatedUser, accessToken, refreshToken);
+  }
+
+  @Override
+  public void logoutUser() {
+    log.info("Logging out user");
+    SecurityContextHolder.clearContext();
   }
 
   @Override
@@ -109,7 +114,13 @@ public class AuthServiceImpl implements AuthService {
 
   @Override
   public User getAuthenticatedUser() {
-    User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (authentication instanceof AnonymousAuthenticationToken) {
+      log.error("No authenticated user found");
+      throw new UnAuthorizedAccessException("No authenticated user found");
+    }
+    log.debug(authentication.getPrincipal().toString());
+    User user = (User) authentication.getPrincipal();
     log.info("Retrieved authenticated user: {}", user.getEmail());
     return user;
   }
@@ -127,7 +138,7 @@ public class AuthServiceImpl implements AuthService {
 
     for (DayOfWeek day : DayOfWeek.values()) {
       if (day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY) {
-        continue;  // Skip weekends
+        continue; // Skip weekends
       }
 
       // Morning session: 9:00 AM to 1:00 PM
@@ -136,8 +147,7 @@ public class AuthServiceImpl implements AuthService {
               .day(day)
               .startTime(LocalTime.of(9, 0))
               .endTime(LocalTime.of(13, 0))
-              .build()
-      );
+              .build());
 
       // Afternoon session: 2:30 PM to 6:00 PM
       consultationTimings.add(
@@ -145,8 +155,7 @@ public class AuthServiceImpl implements AuthService {
               .day(day)
               .startTime(LocalTime.of(14, 30))
               .endTime(LocalTime.of(18, 0))
-              .build()
-      );
+              .build());
 
       // Evening session: 6:30 PM to 8:00 PM
       consultationTimings.add(
@@ -154,8 +163,7 @@ public class AuthServiceImpl implements AuthService {
               .day(day)
               .startTime(LocalTime.of(18, 30))
               .endTime(LocalTime.of(20, 0))
-              .build()
-      );
+              .build());
     }
 
     return consultationTimings;

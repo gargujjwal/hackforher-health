@@ -1,19 +1,24 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useState} from "react";
 
-export default function useLocalStorageJSON<T>(key: string, initialValue: T): [T, (value: T) => void] {
+export default function useLocalStorageJSON<T>(
+    key: string,
+    initialValue: T,
+): [T, (value: T) => void] {
   // Get from local storage then
   // parse stored json or return initialValue
   const readValue = (): T => {
     // Prevent build error "window is undefined" but keep working
-    if (typeof window === 'undefined') {
+    if (typeof window === "undefined") {
       return initialValue;
     }
 
     try {
       const item = window.localStorage.getItem(key);
+
       return item ? JSON.parse(item) : initialValue;
     } catch (error) {
       console.warn(`Error reading localStorage key "${key}":`, error);
+
       return initialValue;
     }
   };
@@ -26,8 +31,10 @@ export default function useLocalStorageJSON<T>(key: string, initialValue: T): [T
   // ... persists the new value to localStorage.
   const setValue = (value: T) => {
     // Prevent build error "window is undefined" but keep working
-    if (typeof window == 'undefined') {
-      console.warn(`Tried setting localStorage key "${key}" even though environment is not a client`);
+    if (typeof window == "undefined") {
+      console.warn(
+          `Tried setting localStorage key "${key}" even though environment is not a client`,
+      );
     }
 
     try {

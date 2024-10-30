@@ -14,34 +14,23 @@ import lombok.Setter;
 public class ApiResponse<T> {
 
   /**
-   * Indicates whether the API call was successful.
-   */
-  private boolean success;
-
-  /**
    * The data returned by the API call.
    */
   private T data;
 
-  /**
-   * The error information if the API call was not successful.
-   */
+  /** The error information if the API call was not successful. */
   private ApiError error;
 
-  /**
-   * The timestamp when the response was created.
-   */
+  /** The timestamp when the response was created. */
   private String timestamp;
 
   /**
    * Constructs a new ApiResponse with the specified success status, data, and error.
    *
-   * @param success indicates whether the API call was successful
-   * @param data    the data returned by the API call
-   * @param error   the error information if the API call was not successful
+   * @param data the data returned by the API call
+   * @param error the error information if the API call was not successful
    */
-  public ApiResponse(boolean success, T data, ApiError error) {
-    this.success = success;
+  public ApiResponse(T data, ApiError error) {
     this.data = data;
     this.error = error;
     this.timestamp = Instant.now().toString();
@@ -51,10 +40,14 @@ public class ApiResponse<T> {
    * Creates a new successful ApiResponse with the specified data.
    *
    * @param data the data returned by the API call
-   * @param <T>  the type of the data contained in the response
+   * @param <T> the type of the data contained in the response
    * @return a new ApiResponse indicating success
    */
   public static <T> ApiResponse<T> success(T data) {
-    return new ApiResponse<>(true, data, null);
+    return new ApiResponse<>(data, null);
+  }
+
+  public static ApiResponse<Void> error(ApiError error) {
+    return new ApiResponse<>(null, error);
   }
 }

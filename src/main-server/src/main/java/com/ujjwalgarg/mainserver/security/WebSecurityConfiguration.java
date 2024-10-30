@@ -1,8 +1,14 @@
 package com.ujjwalgarg.mainserver.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ujjwalgarg.mainserver.dto.ApiError;
+import com.ujjwalgarg.mainserver.dto.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -23,8 +29,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfiguration {
 
   private static final String[] fullyWhiteListUrls = {
-      "/api/auth/**",
-      "/error" // FIXME: Remove this line when project is complete
+      "/api/auth/**", "/error" // FIXME: Remove this line when project is complete
   };
   private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
@@ -36,8 +41,7 @@ public class WebSecurityConfiguration {
    * @throws Exception if an error occurs during configuration
    */
   @Bean
-  public SecurityFilterChain securityFilterChain(
-      HttpSecurity httpSecurity) throws Exception {
+  public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
     // disable csrf attack
     httpSecurity.csrf(AbstractHttpConfigurer::disable);
     // disable sessions
@@ -45,13 +49,33 @@ public class WebSecurityConfiguration {
         config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
     // allowlist certain urls
     httpSecurity.authorizeHttpRequests(
-        config -> config.requestMatchers(fullyWhiteListUrls)
-            .permitAll()
-            .anyRequest()
-            .authenticated());
-    // add authentication filter
-    httpSecurity.addFilterBefore(jwtAuthenticationFilter,
-        UsernamePasswordAuthenticationFilter.class);
+        config ->
+            config
+                .requestMatchers(fullyWhiteListUrls)
+                .permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/profile/DOCTOR/**", "/api/questionnaire")
+                .permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/questionnaire/submit")
+                .permitAll()
+                .anyRequest()
+                .authenticated());
+    httpSecurity.exceptionHandling(
+        exception ->
+            exception
+                // Return 401 Unauthorized for unauthenticated users
+                .authenticationEntryPoint(
+                    (request, response, authException) -> {
+                      ApiError error =
+                          new ApiError(
+                              "SECURITY_ERROR_008", "Unauthorized Exception", "Please Login first");
+                      ApiResponse<Void> res = ApiResponse.error(error);
+                      response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                      response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                      ObjectMapper mapper = new ObjectMapper();
+                      mapper.writeValue(response.getWriter(), res);
+                    }));
+    httpSecurity.addFilterBefore(
+        jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     return httpSecurity.build();
   }
 
@@ -74,8 +98,7 @@ public class WebSecurityConfiguration {
    */
   @Bean
   public AuthenticationManager authenticationManager(
-      AuthenticationConfiguration authenticationConfiguration)
-      throws Exception {
+      AuthenticationConfiguration authenticationConfiguration) throws Exception {
     return authenticationConfiguration.getAuthenticationManager();
   }
 }

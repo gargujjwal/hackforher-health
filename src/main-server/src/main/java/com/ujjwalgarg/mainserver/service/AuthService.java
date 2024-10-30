@@ -19,11 +19,13 @@ public interface AuthService {
    */
   LoginResponse loginUser(LoginRequest loginRequest);
 
+  void logoutUser();
+
   /**
    * Registers a new user with the specified signup request and role.
    *
    * @param signupRequest the signup request containing user details
-   * @param role          the role to be assigned to the new user
+   * @param role the role to be assigned to the new user
    */
   void signUpUser(SignupRequest signupRequest, Role role);
 

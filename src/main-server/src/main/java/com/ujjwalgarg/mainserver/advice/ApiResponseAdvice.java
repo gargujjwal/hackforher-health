@@ -39,85 +39,97 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
-@Slf4j
+@Slf4j(topic = "API_RESPONSE_ADVICE")
 @RestControllerAdvice
 public class ApiResponseAdvice extends ResponseEntityExceptionHandler {
 
-  private static final String GENERIC_ERROR_MESSAGE = "An internal error occurred. Please contact support.";
+  private static final String GENERIC_ERROR_MESSAGE =
+      "An internal error occurred. Please contact support.";
 
   @Override
   protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(
-      HttpRequestMethodNotSupportedException ex, HttpHeaders headers, HttpStatusCode status,
+      HttpRequestMethodNotSupportedException ex,
+      HttpHeaders headers,
+      HttpStatusCode status,
       WebRequest request) {
     log.error("Request method not supported: {}", ex.getMessage());
     ApiError error = new ApiError("ERROR_001", "Request method not supported",
         GENERIC_ERROR_MESSAGE);
-    ApiResponse<Object> response = new ApiResponse<>(false, null, error);
-    return new ResponseEntity<>(response, HttpStatus.METHOD_NOT_ALLOWED);
+    return buildResponseEntityObj(error, HttpStatus.METHOD_NOT_ALLOWED);
   }
 
   @Override
   protected ResponseEntity<Object> handleHttpMediaTypeNotSupported(
-      HttpMediaTypeNotSupportedException ex, HttpHeaders headers, HttpStatusCode status,
+      HttpMediaTypeNotSupportedException ex,
+      HttpHeaders headers,
+      HttpStatusCode status,
       WebRequest request) {
     log.error("Media type not supported: {}", ex.getMessage());
     ApiError error = new ApiError("ERROR_002", "Media type not supported", GENERIC_ERROR_MESSAGE);
-    ApiResponse<Object> response = new ApiResponse<>(false, null, error);
-    return new ResponseEntity<>(response, HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+    return buildResponseEntityObj(error, HttpStatus.UNSUPPORTED_MEDIA_TYPE);
   }
 
   @Override
   protected ResponseEntity<Object> handleHttpMediaTypeNotAcceptable(
-      HttpMediaTypeNotAcceptableException ex, HttpHeaders headers, HttpStatusCode status,
+      HttpMediaTypeNotAcceptableException ex,
+      HttpHeaders headers,
+      HttpStatusCode status,
       WebRequest request) {
     log.error("Media type not acceptable: {}", ex.getMessage());
     ApiError error = new ApiError("ERROR_003", "Media type not acceptable", GENERIC_ERROR_MESSAGE);
-    ApiResponse<Object> response = new ApiResponse<>(false, null, error);
-    return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
+    return buildResponseEntityObj(error, HttpStatus.NOT_ACCEPTABLE);
   }
 
   @Override
-  protected ResponseEntity<Object> handleMissingPathVariable(MissingPathVariableException ex,
-      HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+  protected ResponseEntity<Object> handleMissingPathVariable(
+      MissingPathVariableException ex,
+      HttpHeaders headers,
+      HttpStatusCode status,
+      WebRequest request) {
     log.error("Missing path variable: {}", ex.getMessage());
     ApiError error = new ApiError("ERROR_004", "Missing path variable", GENERIC_ERROR_MESSAGE);
-    ApiResponse<Object> response = new ApiResponse<>(false, null, error);
-    return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    return buildResponseEntityObj(error, HttpStatus.BAD_REQUEST);
   }
 
   @Override
   protected ResponseEntity<Object> handleMissingServletRequestParameter(
-      MissingServletRequestParameterException ex, HttpHeaders headers, HttpStatusCode status,
+      MissingServletRequestParameterException ex,
+      HttpHeaders headers,
+      HttpStatusCode status,
       WebRequest request) {
     log.error("Missing request parameter: {}", ex.getMessage());
     ApiError error = new ApiError("ERROR_005", "Missing request parameter", GENERIC_ERROR_MESSAGE);
-    ApiResponse<Object> response = new ApiResponse<>(false, null, error);
-    return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    return buildResponseEntityObj(error, HttpStatus.BAD_REQUEST);
   }
 
   @Override
   protected ResponseEntity<Object> handleMissingServletRequestPart(
-      MissingServletRequestPartException ex, HttpHeaders headers, HttpStatusCode status,
+      MissingServletRequestPartException ex,
+      HttpHeaders headers,
+      HttpStatusCode status,
       WebRequest request) {
     log.error("Missing request part: {}", ex.getMessage());
     ApiError error = new ApiError("ERROR_006", "Missing request part", GENERIC_ERROR_MESSAGE);
-    ApiResponse<Object> response = new ApiResponse<>(false, null, error);
-    return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    return buildResponseEntityObj(error, HttpStatus.BAD_REQUEST);
   }
 
   @Override
   protected ResponseEntity<Object> handleServletRequestBindingException(
-      ServletRequestBindingException ex, HttpHeaders headers, HttpStatusCode status,
+      ServletRequestBindingException ex,
+      HttpHeaders headers,
+      HttpStatusCode status,
       WebRequest request) {
     log.error("Request binding error: {}", ex.getMessage());
     ApiError error = new ApiError("ERROR_007", "Request binding error", GENERIC_ERROR_MESSAGE);
-    ApiResponse<Object> response = new ApiResponse<>(false, null, error);
-    return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    return buildResponseEntityObj(error, HttpStatus.BAD_REQUEST);
   }
 
   @Override
-  protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-      HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+  protected ResponseEntity<Object> handleMethodArgumentNotValid(
+      MethodArgumentNotValidException ex,
+      HttpHeaders headers,
+      HttpStatusCode status,
+      WebRequest request) {
     log.error("Validation error: {}", ex.getMessage());
 
     Map<String, String> validationErrors = new HashMap<>();
@@ -126,13 +138,14 @@ public class ApiResponseAdvice extends ResponseEntityExceptionHandler {
     }
 
     ApiError error = new ApiError("ERROR_008", "Validation error", validationErrors);
-    ApiResponse<Object> response = new ApiResponse<>(false, null, error);
-    return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    return buildResponseEntityObj(error, HttpStatus.BAD_REQUEST);
   }
 
   @Override
   protected ResponseEntity<Object> handleHandlerMethodValidationException(
-      HandlerMethodValidationException ex, HttpHeaders headers, HttpStatusCode status,
+      HandlerMethodValidationException ex,
+      HttpHeaders headers,
+      HttpStatusCode status,
       WebRequest request) {
     log.error("Handler method validation error: {}", ex.getMessage());
 
@@ -140,8 +153,7 @@ public class ApiResponseAdvice extends ResponseEntityExceptionHandler {
 
     ApiError error = new ApiError("ERROR_008", "Validation Error", validationErrors);
     error.setMessage("Please clear validation errors before proceeding");
-    ApiResponse<Object> response = new ApiResponse<>(false, null, error);
-    return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    return buildResponseEntityObj(error, HttpStatus.BAD_REQUEST);
   }
 
   private Map<String, String> getValidationErrorsFromException(
@@ -163,141 +175,151 @@ public class ApiResponseAdvice extends ResponseEntityExceptionHandler {
   }
 
   @Override
-  protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex,
-      HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+  protected ResponseEntity<Object> handleNoHandlerFoundException(
+      NoHandlerFoundException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
     log.error("No handler found for request: {}", ex.getMessage());
     ApiError error = new ApiError("ERROR_009", "No handler found for request",
         GENERIC_ERROR_MESSAGE);
-    ApiResponse<Object> response = new ApiResponse<>(false, null, error);
-    return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    return buildResponseEntityObj(error, HttpStatus.NOT_FOUND);
   }
 
   @Override
-  protected ResponseEntity<Object> handleNoResourceFoundException(NoResourceFoundException ex,
-      HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+  protected ResponseEntity<Object> handleNoResourceFoundException(
+      NoResourceFoundException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
     log.error("No resource found for request: {}", ex.getMessage());
     ApiError error = new ApiError("ERROR_010", "No resource found for request",
         GENERIC_ERROR_MESSAGE);
-    ApiResponse<Object> response = new ApiResponse<>(false, null, error);
-    return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    return buildResponseEntityObj(error, HttpStatus.NOT_FOUND);
   }
 
   @Override
   protected ResponseEntity<Object> handleAsyncRequestTimeoutException(
-      AsyncRequestTimeoutException ex, HttpHeaders headers, HttpStatusCode status,
+      AsyncRequestTimeoutException ex,
+      HttpHeaders headers,
+      HttpStatusCode status,
       WebRequest request) {
     log.error("Async request timeout: {}", ex.getMessage());
     ApiError error = new ApiError("ERROR_011", "Async request timeout", GENERIC_ERROR_MESSAGE);
-    ApiResponse<Object> response = new ApiResponse<>(false, null, error);
-    return new ResponseEntity<>(response, HttpStatus.SERVICE_UNAVAILABLE);
+    return buildResponseEntityObj(error, HttpStatus.SERVICE_UNAVAILABLE);
   }
 
   @Override
-  protected ResponseEntity<Object> handleErrorResponseException(ErrorResponseException ex,
-      HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+  protected ResponseEntity<Object> handleErrorResponseException(
+      ErrorResponseException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
     log.error("Error response exception: {}", ex.getMessage());
     ApiError error = new ApiError("ERROR_012", "Error response exception", GENERIC_ERROR_MESSAGE);
-    ApiResponse<Object> response = new ApiResponse<>(false, null, error);
-    return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    return buildResponseEntityObj(error, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
   @Override
   protected ResponseEntity<Object> handleMaxUploadSizeExceededException(
-      MaxUploadSizeExceededException ex, HttpHeaders headers, HttpStatusCode status,
+      MaxUploadSizeExceededException ex,
+      HttpHeaders headers,
+      HttpStatusCode status,
       WebRequest request) {
     log.error("Max upload size exceeded: {}", ex.getMessage());
     ApiError error = new ApiError("ERROR_013", "Max upload size exceeded", GENERIC_ERROR_MESSAGE);
-    ApiResponse<Object> response = new ApiResponse<>(false, null, error);
-    return new ResponseEntity<>(response, HttpStatus.PAYLOAD_TOO_LARGE);
+    return buildResponseEntityObj(error, HttpStatus.PAYLOAD_TOO_LARGE);
   }
 
   @Override
-  protected ResponseEntity<Object> handleConversionNotSupported(ConversionNotSupportedException ex,
-      HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+  protected ResponseEntity<Object> handleConversionNotSupported(
+      ConversionNotSupportedException ex,
+      HttpHeaders headers,
+      HttpStatusCode status,
+      WebRequest request) {
     log.error("Conversion not supported: {}", ex.getMessage());
     ApiError error = new ApiError("ERROR_014", "Conversion not supported", GENERIC_ERROR_MESSAGE);
-    ApiResponse<Object> response = new ApiResponse<>(false, null, error);
-    return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    return buildResponseEntityObj(error, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
   @Override
-  protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers,
-      HttpStatusCode status, WebRequest request) {
+  protected ResponseEntity<Object> handleTypeMismatch(
+      TypeMismatchException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
     log.error("Type mismatch: {}", ex.getMessage());
     ApiError error = new ApiError("ERROR_015", "Type mismatch", GENERIC_ERROR_MESSAGE);
-    ApiResponse<Object> response = new ApiResponse<>(false, null, error);
-    return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    return buildResponseEntityObj(error, HttpStatus.BAD_REQUEST);
   }
 
   @Override
-  protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
-      HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+  protected ResponseEntity<Object> handleHttpMessageNotReadable(
+      HttpMessageNotReadableException ex,
+      HttpHeaders headers,
+      HttpStatusCode status,
+      WebRequest request) {
     log.error("HTTP message not readable: {}", ex.getMessage());
     ApiError error = new ApiError("ERROR_016", "HTTP message not readable", GENERIC_ERROR_MESSAGE);
-    ApiResponse<Object> response = new ApiResponse<>(false, null, error);
-    return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    return buildResponseEntityObj(error, HttpStatus.BAD_REQUEST);
   }
 
   @Override
-  protected ResponseEntity<Object> handleHttpMessageNotWritable(HttpMessageNotWritableException ex,
-      HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+  protected ResponseEntity<Object> handleHttpMessageNotWritable(
+      HttpMessageNotWritableException ex,
+      HttpHeaders headers,
+      HttpStatusCode status,
+      WebRequest request) {
     log.error("HTTP message not writable: {}", ex.getMessage());
     ApiError error = new ApiError("ERROR_017", "HTTP message not writable", GENERIC_ERROR_MESSAGE);
-    ApiResponse<Object> response = new ApiResponse<>(false, null, error);
-    return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    return buildResponseEntityObj(error, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
   @Override
-  protected ResponseEntity<Object> handleMethodValidationException(MethodValidationException ex,
-      HttpHeaders headers, HttpStatus status, WebRequest request) {
+  protected ResponseEntity<Object> handleMethodValidationException(
+      MethodValidationException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
     log.error("Method validation error: {}", ex.getMessage());
     ApiError error = new ApiError("ERROR_018", "Method validation error", GENERIC_ERROR_MESSAGE);
-    ApiResponse<Object> response = new ApiResponse<>(false, null, error);
-    return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    return buildResponseEntityObj(error, HttpStatus.BAD_REQUEST);
   }
 
   @Override
-  protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body,
-      HttpHeaders headers, HttpStatusCode statusCode, WebRequest request) {
+  protected ResponseEntity<Object> handleExceptionInternal(
+      Exception ex,
+      Object body,
+      HttpHeaders headers,
+      HttpStatusCode statusCode,
+      WebRequest request) {
     log.error("Internal server error: {}", ex.getMessage());
     ApiError error = new ApiError("ERROR_019", "Internal server error", GENERIC_ERROR_MESSAGE);
-    ApiResponse<Object> response = new ApiResponse<>(false, null, error);
-    return new ResponseEntity<>(response, statusCode);
+    return buildResponseEntityObj(error, HttpStatus.valueOf(statusCode.value()));
   }
 
   @ExceptionHandler(ResourceNotFoundException.class)
-  protected ResponseEntity<Object> handleResourceNotFoundException(ResourceNotFoundException ex,
-      WebRequest request) {
+  protected ResponseEntity<ApiResponse<Void>> handleResourceNotFoundException(
+      ResourceNotFoundException ex, WebRequest request) {
     log.error("Resource not found: {}", ex.getMessage());
     ApiError error = new ApiError("ERROR_020", ex.getMessage(), "Resource not found");
-    ApiResponse<Object> response = new ApiResponse<>(false, null, error);
-    return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    return buildResponseEntity(error, HttpStatus.NOT_FOUND);
   }
 
   @ExceptionHandler(InvalidRoleException.class)
-  protected ResponseEntity<Object> handleInvalidRoleException(InvalidRoleException ex,
-      WebRequest request) {
+  protected ResponseEntity<ApiResponse<Void>> handleInvalidRoleException(
+      InvalidRoleException ex, WebRequest request) {
     log.error("Invalid role: {}", ex.getMessage());
     ApiError error = new ApiError("ERROR_021", ex.getMessage(), "Invalid role");
-    ApiResponse<Object> response = new ApiResponse<>(false, null, error);
-    return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+    return buildResponseEntity(error, HttpStatus.FORBIDDEN);
   }
 
   @ExceptionHandler(QuestionnairePredictionModelException.class)
-  protected ResponseEntity<ApiResponse<Object>> handleQuestionnairePredictionModelException(
+  protected ResponseEntity<ApiResponse<Void>> handleQuestionnairePredictionModelException(
       QuestionnairePredictionModelException ex, WebRequest request) {
     log.error("Questionnaire prediction model error: {}", ex.getMessage());
     ApiError error = new ApiError("ERROR_022", ex.getMessage(), "Prediction model error");
-    ApiResponse<Object> response = new ApiResponse<>(false, null, error);
-    return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    return buildResponseEntity(error, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
   @ExceptionHandler(QuestionNotAnsweredException.class)
-  protected ResponseEntity<ApiResponse<Object>> handleQuestionNotAnsweredException(
+  protected ResponseEntity<ApiResponse<Void>> handleQuestionNotAnsweredException(
       QuestionNotAnsweredException ex, WebRequest request) {
     log.error("Question not answered: {}", ex.getMessage());
     ApiError error = new ApiError("ERROR_023", ex.getMessage(), "Question not answered");
-    ApiResponse<Object> response = new ApiResponse<>(false, null, error);
-    return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    return buildResponseEntity(error, HttpStatus.BAD_REQUEST);
+  }
+
+  private ResponseEntity<ApiResponse<Void>> buildResponseEntity(ApiError error, HttpStatus status) {
+    return new ResponseEntity<>(ApiResponse.error(error), status);
+  }
+
+  private ResponseEntity<Object> buildResponseEntityObj(ApiError error, HttpStatus status) {
+    return new ResponseEntity<>(ApiResponse.error(error), status);
   }
 }
