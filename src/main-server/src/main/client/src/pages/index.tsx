@@ -11,7 +11,7 @@ function IndexPage() {
   return (
     <DefaultLayout>
       <h1>Welcome, {user.firstName}</h1>
-      <button onClick={logout}>Logout</button>
+      <button onClick={() => logout.mutate()}>Logout</button>
     </DefaultLayout>
   );
 }

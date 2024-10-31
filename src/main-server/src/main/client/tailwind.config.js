@@ -7,7 +7,7 @@ module.exports = {
     "./src/layouts/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./node_modules/@nextui-org/theme/dist/components/(button|card|code|image|input|kbd|link|navbar|select|snippet|toggle|ripple|spinner|listbox|divider|popover|scroll-shadow).js",
+    "./node_modules/@nextui-org/theme/dist/components/(button|card|code|date-picker|image|input|kbd|link|navbar|radio|select|snippet|toggle|ripple|spinner|calendar|date-input|popover|listbox|divider|scroll-shadow).js"
   ],
   theme: {
     extend: {},

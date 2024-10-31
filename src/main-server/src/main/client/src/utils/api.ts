@@ -1,12 +1,13 @@
 import {
+  ApiErrorCls,
   BaseError,
   ensureError,
   RefreshAuthError,
   ValidationError,
 } from "./error";
 
-import {env} from "@/env";
-import {ApiResponse, RefreshAuthResponse} from "@/types/backend-stubs";
+import { env } from "@/env";
+import { ApiResponse, RefreshAuthResponse } from "@/types/backend-stubs";
 
 export class AccessToken {
   private static readonly ACCESS_TOKEN_KEY = "access-token";
@@ -75,13 +76,13 @@ export async function fetchWithAuth<T>(url: string, options: RequestInit = {}) {
 }
 
 export async function fetchWithoutAuth<T>(
-    url: string,
-    options: RequestInit = {},
+  url: string,
+  options: RequestInit = {},
 ) {
   try {
     const response = await fetch(env.API_BASE_URL + url, {
       ...options,
-      headers: {...options.headers, "Content-Type": "application/json"},
+      headers: { ...options.headers, "Content-Type": "application/json" },
     });
 
     return handleApiResponse<T>(response);
@@ -101,15 +102,15 @@ async function handleApiResponse<T>(response: Response): Promise<T> {
 
       throw new BaseError("Failed to parse API error response", {
         cause: err,
-        context: {endpoint: response.url},
+        context: { endpoint: response.url },
       });
     }
 
     // Handle Validation Errors (Code: ERROR_008)
     if (!errorResponse.error) {
       throw new BaseError(
-          "Invalid API response, non-success status code without error field in response",
-          {context: {endpoint: response.url, errorResponse}},
+        "Invalid API response, non-success status code without error field in response",
+        { context: { endpoint: response.url, errorResponse } },
       );
     }
     if (errorResponse.error.code === "ERROR_008") {
@@ -123,9 +124,7 @@ async function handleApiResponse<T>(response: Response): Promise<T> {
     // Handle General API Errors
     const apiError = errorResponse.error;
 
-    throw new BaseError(apiError.message || "Unknown API error", {
-      context: {errorResponse: apiError, endpoint: response.url},
-    });
+    throw new ApiErrorCls(apiError, { endpoint: response.url });
   }
 
   // return successful response

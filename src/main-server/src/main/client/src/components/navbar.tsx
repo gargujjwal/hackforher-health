@@ -106,16 +106,17 @@ export default function Navbar() {
         className="hidden sm:flex basis-1/6 sm:basis-full"
         justify="end"
       >
-        <NavbarItem className="hidden sm:flex gap-4">
+        <NavbarItem className="hidden lg:flex gap-4">
           <ThemeSwitch />
           <Button
             className="text-textPrimary"
             color="primary"
+            isLoading={auth.status === "loading"}
             onClick={
               auth.status === "authenticated"
-                ? auth.logout
+                ? () => auth.logout.mutate()
                 : auth.status === "unauthenticated"
-                  ? () => navigate("/login")
+                  ? () => navigate("/auth/login")
                   : undefined
             }
           >
@@ -123,21 +124,22 @@ export default function Navbar() {
               ? "Logout"
               : auth.status === "unauthenticated"
                 ? "Login"
-                : "Loading..."}
+                : null}
           </Button>
         </NavbarItem>
       </NavbarContent>
 
-      <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
+      <NavbarContent className="lg:hidden basis-1 pl-4" justify="end">
         <ThemeSwitch />
         <Button
           className="text-textPrimary"
           color="primary"
+          isLoading={auth.status === "loading"}
           onClick={
             auth.status === "authenticated"
-              ? auth.logout
+              ? () => auth.logout.mutate()
               : auth.status === "unauthenticated"
-                ? () => navigate("/login")
+                ? () => navigate("/auth/login")
                 : undefined
           }
         >
@@ -145,7 +147,7 @@ export default function Navbar() {
             ? "Logout"
             : auth.status === "unauthenticated"
               ? "Login"
-              : "Loading..."}
+              : null}
         </Button>
         <NavbarMenuToggle />
       </NavbarContent>

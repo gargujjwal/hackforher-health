@@ -9,7 +9,7 @@ export default function DefaultLayout({ children }: ChildrenProps) {
   return (
     <div className="relative flex flex-col h-screen">
       <Navbar />
-      <main className="container mx-auto px-6 flex-grow pt-16">{children}</main>
+      <main className="container mx-auto px-6 flex-grow py-16">{children}</main>
       <footer className="w-full flex items-center justify-center py-3 gap-1 text-current">
         <Link
           isExternal

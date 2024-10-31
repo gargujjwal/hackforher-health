@@ -6,8 +6,8 @@ export interface ApiError {
 }
 
 export type ApiResponse<T> =
-    | { data: T; error: null; timestamp: string }
-    | { data: null; error: ApiError; timestamp: string };
+  | { data: T; error: null; timestamp: string }
+  | { data: null; error: ApiError; timestamp: string };
 
 export interface AppointmentDto {
   startTime: string;
@@ -21,11 +21,11 @@ export interface AppointmentDto {
 export type AppointmentType = "ONLINE" | "OFFLINE";
 
 export type AppointmentStatus =
-    | "PENDING"
-    | "ACCEPTED"
-    | "REJECTED"
-    | "CANCELLED"
-    | "COMPLETED";
+  | "PENDING"
+  | "ACCEPTED"
+  | "REJECTED"
+  | "CANCELLED"
+  | "COMPLETED";
 
 export interface DoctorAssignmentCreationDto {
   doctorId: number;
@@ -88,13 +88,13 @@ export interface ConsultationTiming {
 }
 
 export type DayOfWeek =
-    | "MONDAY"
-    | "TUESDAY"
-    | "WEDNESDAY"
-    | "THURSDAY"
-    | "FRIDAY"
-    | "SATURDAY"
-    | "SUNDAY";
+  | "MONDAY"
+  | "TUESDAY"
+  | "WEDNESDAY"
+  | "THURSDAY"
+  | "FRIDAY"
+  | "SATURDAY"
+  | "SUNDAY";
 
 export interface LoginRequest {
   email: string;
@@ -114,6 +114,14 @@ export interface LoginResponse {
 
 export interface RefreshAuthResponse {
   accessToken: string;
+}
+
+export interface SignupRequest {
+  email: string;
+  firstName: string;
+  lastName: string;
+  dob: Date;
+  password: string;
 }
 
 export type Role = "PATIENT" | "DOCTOR" | "ADMIN";

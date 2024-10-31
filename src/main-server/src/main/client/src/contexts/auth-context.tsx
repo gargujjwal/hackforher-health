@@ -1,28 +1,37 @@
-import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {createContext, useContext, useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import {
+  useMutation,
+  UseMutationResult,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+import { createContext, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-import {ChildrenProps} from "@/types";
+import { ChildrenProps } from "@/types";
 import {
   AuthenticatedUserResponse,
   LoginRequest,
   LoginResponse,
 } from "@/types/backend-stubs";
-import {AccessToken, fetchWithAuth, fetchWithoutAuth} from "@/utils/api";
+import { AccessToken, fetchWithAuth, fetchWithoutAuth } from "@/utils/api";
 
 type User = Omit<LoginResponse, "accessToken">;
 
 type AuthContextType =
-    | { status: "loading" }
-    | { status: "authenticated"; user: User; logout: () => void }
-    | {
-  status: "unauthenticated";
-  login: (credentials: LoginRequest) => void;
-};
+  | { status: "loading" }
+  | {
+      status: "authenticated";
+      user: User;
+      logout: UseMutationResult<null, Error, void, unknown>;
+    }
+  | {
+      status: "unauthenticated";
+      login: UseMutationResult<LoginResponse, Error, LoginRequest, unknown>;
+    };
 
-const AuthContext = createContext<AuthContextType>({status: "loading"});
+const AuthContext = createContext<AuthContextType>({ status: "loading" });
 
-export function AuthProvider({children}: ChildrenProps) {
+export function AuthProvider({ children }: ChildrenProps) {
   const [authState, setAuthState] = useState<AuthContextType>({
     status: "loading",
   });
@@ -31,38 +40,38 @@ export function AuthProvider({children}: ChildrenProps) {
   const authenticatedUserQuery = useQuery({
     queryKey: ["auth", "user"],
     queryFn: () =>
-        fetchWithAuth<AuthenticatedUserResponse>("/auth/me", {method: "GET"}),
+      fetchWithAuth<AuthenticatedUserResponse>("/auth/me", { method: "GET" }),
     retry: 1,
   });
   const loginUserMutation = useMutation({
     mutationKey: ["auth", "login"],
     mutationFn: (credentials: LoginRequest) =>
-        fetchWithoutAuth<LoginResponse>("/auth/login", {
-          method: "POST",
-          body: JSON.stringify(credentials),
-        }),
+      fetchWithoutAuth<LoginResponse>("/auth/login", {
+        method: "POST",
+        body: JSON.stringify(credentials),
+      }),
     onSuccess(res) {
       setAuthState({
         status: "authenticated",
         user: res,
-        logout: logoutUserMutation.mutate,
+        logout: logoutUserMutation,
       });
       AccessToken.setAccessToken(res.accessToken);
-      queryClient.invalidateQueries({queryKey: ["auth", "user"]});
+      queryClient.invalidateQueries({ queryKey: ["auth", "user"] });
       navigate(`/dashboard/${res.role.toLowerCase()}`);
     },
   });
   const logoutUserMutation = useMutation({
     mutationKey: ["auth", "logout"],
     mutationFn: () =>
-        fetchWithoutAuth<null>("/auth/logout", {method: "POST"}),
+      fetchWithoutAuth<null>("/auth/logout", { method: "POST" }),
     onSuccess() {
       setAuthState({
         status: "unauthenticated",
-        login: loginUserMutation.mutate,
+        login: loginUserMutation,
       });
       AccessToken.clearAccessToken();
-      queryClient.invalidateQueries({queryKey: ["auth", "user"]});
+      queryClient.invalidateQueries({ queryKey: ["auth", "user"] });
       navigate("/");
     },
   });
@@ -73,19 +82,19 @@ export function AuthProvider({children}: ChildrenProps) {
         setAuthState({
           status: "authenticated",
           user: authenticatedUserQuery.data,
-          logout: logoutUserMutation.mutate,
+          logout: logoutUserMutation,
         });
         break;
       case "error":
         setAuthState({
           status: "unauthenticated",
-          login: loginUserMutation.mutate,
+          login: loginUserMutation,
         });
     }
   }, [authenticatedUserQuery.status]);
 
   return (
-      <AuthContext.Provider value={authState}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={authState}>{children}</AuthContext.Provider>
   );
 }
 
