@@ -1,7 +1,17 @@
 package com.ujjwalgarg.mainserver.entity.medicalcase;
 
 import com.ujjwalgarg.mainserver.entity.user.Patient;
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
+import jakarta.persistence.Table;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -23,8 +33,7 @@ import org.hibernate.annotations.CreationTimestamp;
 @Builder
 public class MedicalCase implements Serializable {
 
-  @Serial
-  private static final long serialVersionUID = 1L;
+  @Serial private static final long serialVersionUID = 1L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,6 +42,7 @@ public class MedicalCase implements Serializable {
   @Column(name = "case_description")
   private String caseDescription;
 
+  @Builder.Default
   @Column(name = "is_resolved")
   private Boolean isResolved = false;
 
@@ -44,8 +54,8 @@ public class MedicalCase implements Serializable {
   @JoinColumn(name = "patient_id")
   private Patient patient;
 
+  @Builder.Default
   @OneToMany(mappedBy = "medicalCase", cascade = CascadeType.ALL, orphanRemoval = true)
   @OrderBy("assignedAt DESC")
   private List<DoctorAssignment> doctorAssignments = new ArrayList<>();
-
 }

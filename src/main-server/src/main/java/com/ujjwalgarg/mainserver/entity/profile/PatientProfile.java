@@ -23,11 +23,9 @@ import lombok.ToString;
 @ToString
 public class PatientProfile implements Serializable {
 
-  @Serial
-  private static final long serialVersionUID = 1L;
+  @Serial private static final long serialVersionUID = 1L;
 
-  @Id
-  private Long id;
+  @Id private Long id;
 
   @OneToOne
   @MapsId
@@ -58,6 +56,7 @@ public class PatientProfile implements Serializable {
   @Column(name = "address")
   private String address;
 
+  @Builder.Default
   @ElementCollection
   @CollectionTable(name = "patient_phone_numbers", joinColumns = @JoinColumn(name = "patient_id"))
   @Column(name = "phone_number")
@@ -75,15 +74,22 @@ public class PatientProfile implements Serializable {
   @Column(name = "emergency_contact_email")
   private String emergencyContactEmail;
 
+  @Builder.Default
   @ElementCollection
-  @CollectionTable(name = "patient_insurance_details", joinColumns = @JoinColumn(name = "patient_id"))
+  @CollectionTable(
+      name = "patient_insurance_details",
+      joinColumns = @JoinColumn(name = "patient_id"))
   private Set<Insurance> insuranceDetails = new HashSet<>();
 
+  @Builder.Default
   @ElementCollection
-  @CollectionTable(name = "patient_current_medications", joinColumns = @JoinColumn(name = "patient_id"))
+  @CollectionTable(
+      name = "patient_current_medications",
+      joinColumns = @JoinColumn(name = "patient_id"))
   @Column(name = "medication")
   private Set<String> currentMedications = new HashSet<>();
 
+  @Builder.Default
   @ElementCollection
   @CollectionTable(name = "patient_allergies", joinColumns = @JoinColumn(name = "patient_id"))
   @Column(name = "allergy")

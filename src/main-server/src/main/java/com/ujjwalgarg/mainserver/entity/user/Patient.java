@@ -23,15 +23,16 @@ import lombok.Setter;
 @PrimaryKeyJoinColumn(name = "user_id")
 public class Patient extends User {
 
-  @Serial
-  private static final long serialVersionUID = 1L;
+  @Serial private static final long serialVersionUID = 1L;
 
   @OneToOne(mappedBy = "patient", cascade = CascadeType.ALL, optional = false)
   private PatientProfile profile;
 
+  @Builder.Default
   @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
   private List<MedicalCase> medicalCases = new ArrayList<>();
 
+  @Builder.Default
   @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
   private List<DoctorReview> doctorReviews = new ArrayList<>();
 }

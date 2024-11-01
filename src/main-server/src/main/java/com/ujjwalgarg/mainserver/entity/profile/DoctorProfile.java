@@ -21,11 +21,9 @@ import lombok.Setter;
 @Builder
 public class DoctorProfile implements Serializable {
 
-  @Serial
-  private static final long serialVersionUID = 1L;
+  @Serial private static final long serialVersionUID = 1L;
 
-  @Id
-  private Long id;
+  @Id private Long id;
 
   @OneToOne
   @MapsId
@@ -49,11 +47,17 @@ public class DoctorProfile implements Serializable {
   @Column(name = "secondary_email")
   private String secondaryEmail;
 
+  @Builder.Default
   @ElementCollection(fetch = FetchType.LAZY)
-  @CollectionTable(name = "doctor_qualifications", joinColumns = @JoinColumn(name = "doctor_profile_id"))
+  @CollectionTable(
+      name = "doctor_qualifications",
+      joinColumns = @JoinColumn(name = "doctor_profile_id"))
   private Set<MedicalQualification> qualifications = new HashSet<>();
 
+  @Builder.Default
   @ElementCollection(fetch = FetchType.LAZY)
-  @CollectionTable(name = "doctor_publications", joinColumns = @JoinColumn(name = "doctor_profile_id"))
+  @CollectionTable(
+      name = "doctor_publications",
+      joinColumns = @JoinColumn(name = "doctor_profile_id"))
   private Set<MedicalPublication> publications = new HashSet<>();
 }

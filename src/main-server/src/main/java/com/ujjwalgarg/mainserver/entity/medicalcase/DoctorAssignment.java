@@ -25,8 +25,7 @@ import org.hibernate.annotations.CreationTimestamp;
 @Table(name = "doctor_assignment")
 public class DoctorAssignment implements Serializable {
 
-  @Serial
-  private static final long serialVersionUID = 1L;
+  @Serial private static final long serialVersionUID = 1L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,12 +47,15 @@ public class DoctorAssignment implements Serializable {
   @JoinColumn(name = "medical_case_id")
   private MedicalCase medicalCase;
 
+  @Builder.Default
   @OneToMany(mappedBy = "doctorAssignment", cascade = CascadeType.ALL)
   private List<Appointment> appointments = new ArrayList<>();
 
+  @Builder.Default
   @OneToMany(mappedBy = "doctorAssignment", cascade = CascadeType.ALL)
   private List<ChatMessage> chatMessages = new ArrayList<>();
 
+  @Builder.Default
   @OneToMany(mappedBy = "doctorAssignment", cascade = CascadeType.ALL)
   private List<QuestionnaireSubmission> questionnaireSubmissions = new ArrayList<>();
 }
