@@ -48,6 +48,7 @@ export function AuthProvider({ children }: ChildrenProps) {
     mutationFn: (credentials: LoginRequest) =>
       fetchWithoutAuth<LoginResponse>("/auth/login", {
         method: "POST",
+        credentials: "include",
         body: JSON.stringify(credentials),
       }),
     onSuccess(res) {

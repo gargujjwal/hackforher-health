@@ -7,7 +7,7 @@ module.exports = {
     "./src/layouts/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./node_modules/@nextui-org/theme/dist/components/(button|card|code|date-picker|image|input|kbd|link|navbar|radio|select|snippet|toggle|ripple|spinner|calendar|date-input|popover|listbox|divider|scroll-shadow).js"
+    "./node_modules/@nextui-org/theme/dist/components/(button|card|code|date-picker|image|input|kbd|link|navbar|radio|select|snippet|toggle|ripple|spinner|calendar|date-input|popover|listbox|divider|scroll-shadow).js",
   ],
   theme: {
     extend: {},
@@ -34,6 +34,11 @@ module.exports = {
             buttonText: "#F8F1F1", // Off-white for buttons
             borderColor: "#C4C4C4", // Light Gray for borders/dividers
             accent: "#F5E9E2", // Warm Beige for badges or highlights
+            // Custom accents for each card
+            cardAccent1: "#C75B7A", // Muted Pink for Medical Case
+            cardAccent2: "#F5E9E2", // Warm Beige for Questionnaire
+            cardAccent3: "#921A40", // Deep Maroon for Appointment
+            cardAccent4: "#D9ABAB", // Soft Blush for Chat with Doctor
           },
         },
         dark: {
@@ -49,6 +54,11 @@ module.exports = {
             buttonText: "#F5E9E2", // Warm Beige for buttons
             borderColor: "#4A4A4A", // Dark Gray for dividers
             accent: "#D9ABAB", // Soft Blush for badges
+            // Custom accents for each card
+            cardAccent1: "#C75B7A",
+            cardAccent2: "#F5E9E2",
+            cardAccent3: "#921A40",
+            cardAccent4: "#D9ABAB",
           },
         },
       },
