@@ -125,3 +125,155 @@ export interface SignupRequest {
 }
 
 export type Role = "PATIENT" | "DOCTOR" | "ADMIN";
+
+export type QuestionType = "MCQ" | "BOOLEAN" | "OPEN_ENDED";
+
+export type ReviewStatus = "CORRECT" | "WRONG" | "NEEDS_DISCUSSION";
+
+export interface MedicalCaseCreationDto {
+  caseDescription: string;
+  doctorAssignments: {
+    doctor: {
+      id: number;
+    };
+  }[];
+}
+
+export interface MedicalCaseResponseDto {
+  id: number;
+  caseDescription: string;
+  isResolved: boolean;
+  patient: {
+    id: number;
+    email: string;
+    firstName: string;
+    lastName: string;
+    dob: string;
+    createdAt: string;
+    role: Role;
+  };
+  doctorAssignments: {
+    id: number;
+    assignedAt: string;
+    unassignedAt: string | null;
+    doctor: {
+      id: number;
+      email: string;
+      firstName: string;
+      lastName: string;
+      dob: string;
+      createdAt: string;
+      role: Role;
+      avgRating: number;
+      consultationTimings: ConsultationTiming[];
+    };
+    appointments: {
+      id: number;
+      startTime: string;
+      endTime: string;
+      appointmentType: AppointmentType;
+      appointmentStatus: AppointmentStatus;
+      meetLink: string;
+    }[];
+    questionnaireSubmissions: {
+      id: number;
+      submittedAt: string;
+      questionResponses: Record<number, string>;
+      modelPrediction: ModelPrediction;
+      reviewStatus: ReviewStatus;
+      doctorNotes: string;
+    }[];
+  }[];
+  createdAt: string;
+}
+
+export interface PageResponse<T> {
+  content: T[];
+  pageNumber: number;
+  pageSize: number;
+  totalElements: number;
+  totalPages: number;
+  last: boolean;
+}
+
+export interface PatientProfileDto {
+  gender?: string;
+  isSmoker: boolean;
+  drinksAlcohol: boolean;
+  bloodType?: string;
+  medicalHistory?: string;
+  foodPreference?: string;
+  familyMedicalHistory?: string;
+  address?: string;
+  phoneNumber: Set<string>;
+  secondaryEmail?: string;
+  emergencyContactName?: string;
+  emergencyContactNumber?: string;
+  emergencyContactEmail?: string;
+  insuranceDetails: Set<Insurance>;
+  currentMedications: Set<string>;
+  allergies: Set<string>;
+}
+
+export interface QuestionnaireReviewDto {
+  reviewStatus: ReviewStatus;
+  doctorNotes?: string;
+}
+
+export interface QuestionnaireSubmissionCreationDto {
+  questionResponses: Record<number, string>;
+}
+
+export interface QuestionnaireSubmissionResponseDto {
+  id: number;
+  submittedAt: string;
+  questionResponses: Record<number, string>;
+  modelPrediction: ModelPrediction;
+  reviewStatus: ReviewStatus;
+  doctorNotes: string;
+}
+
+export interface SectionCreationDto {
+  title: string;
+  questions: {
+    text: string;
+    type: QuestionType;
+    options?: string[];
+  }[];
+}
+
+export interface SectionResponseDto {
+  id: number;
+  title: string;
+  questions: {
+    id: number;
+    text: string;
+    type: QuestionType;
+    options?: string[];
+  }[];
+}
+
+export interface ModelPrediction {
+  hasCervicalCancer: boolean;
+  accuracy: number;
+  predictedAt: string;
+}
+
+export interface Insurance {
+  policyNumber: string;
+  insuranceProvider: string;
+  coverageDetail: string;
+}
+
+export interface MedicalPublication {
+  publicationName?: string;
+  publicationYear?: number;
+  publicationUrl?: string;
+}
+
+export interface MedicalQualification {
+  qualificationName: string;
+  institutionName: string;
+  year: number;
+  certificateUrl: string;
+}

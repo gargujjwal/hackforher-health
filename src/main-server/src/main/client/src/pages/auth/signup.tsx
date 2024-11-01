@@ -1,5 +1,6 @@
+import { DateInput } from "@nextui-org/date-input";
+import { FaCalendarDays } from "react-icons/fa6";
 import { Button } from "@nextui-org/button";
-import { DatePicker } from "@nextui-org/date-picker";
 import { RadioGroup, Radio } from "@nextui-org/radio";
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
 import { Input } from "@nextui-org/input";
@@ -16,8 +17,8 @@ import { LoginRequest, Role, SignupRequest } from "@/types/backend-stubs";
 import { ApiErrorCls, ValidationError } from "@/utils/error";
 import { capitalize } from "@/utils/string";
 import { calendarDateToJSDate, jsDateToCalendarDate } from "@/utils/date";
-import { fetchWithoutAuth } from "@/utils/api";
 import FormError from "@/components/ui/form-error";
+import { signupMut } from "@/react-query/mutations";
 
 function SignupPage() {
   const auth = useAuth();
@@ -38,13 +39,9 @@ function SignupPage() {
       firstName: "",
     },
   });
+  const selectedRole = watch("role");
   const signupMutation = useMutation({
-    mutationKey: ["auth", "signup"],
-    mutationFn: (data: SignupRequest) =>
-      fetchWithoutAuth<null>(`/auth/signup/${selectedRole}`, {
-        method: "POST",
-        body: JSON.stringify(data),
-      }),
+    ...signupMut(selectedRole),
     onSuccess() {
       toast.success("Signup successful, now you can login to your account");
       navigate("/auth/login");
@@ -61,7 +58,6 @@ function SignupPage() {
       }
     },
   });
-  const selectedRole = watch("role");
 
   if (auth.status === "authenticated") {
     return (
@@ -201,9 +197,9 @@ function SignupPage() {
               control={control}
               name="dob"
               render={({ fieldState, field: { value, onChange } }) => (
-                <DatePicker
+                <DateInput
                   className="mb-10"
-                  classNames={{ selectorIcon: "text-secondary" }}
+                  endContent={<FaCalendarDays className="text-secondary" />}
                   errorMessage={fieldState.error?.message}
                   isInvalid={fieldState.invalid}
                   label="Date of Birth"

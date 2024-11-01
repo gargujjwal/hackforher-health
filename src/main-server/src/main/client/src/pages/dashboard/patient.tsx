@@ -2,11 +2,9 @@ import { FaBriefcaseMedical, FaUserClock } from "react-icons/fa6";
 import { HiChatBubbleLeftRight } from "react-icons/hi2";
 import { FaClipboardQuestion } from "react-icons/fa6";
 import { BsThreeDots } from "react-icons/bs";
-import { LuDot } from "react-icons/lu";
-import { Card, CardBody, CardFooter, CardHeader } from "@nextui-org/card";
 
 import { useAuth } from "@/contexts/auth-context";
-import Link from "@/components/util/link";
+import ActionCard from "@/components/action-card";
 
 function PatientDashboard() {
   const auth = useAuth();
@@ -26,80 +24,40 @@ function PatientDashboard() {
 
       <ul className="grid grid-cols-2 gap-1.5 md:gap-3 lg:grid-cols-4 xl:gap-4">
         <li>
-          <Card
-            as={Link}
-            className="bg-cardAccent1 text-white h-full w-full text-center"
+          <ActionCard
+            footer={["View", "Create"]}
             href="/dashboard/patient/medical-case"
-          >
-            <CardHeader className="text-xl font-bold text-buttonText justify-center">
-              Medical Case
-            </CardHeader>
-            <CardBody className="items-center">
-              <FaBriefcaseMedical className="text-buttonText size-8" />
-            </CardBody>
-            <CardFooter className="text-xs md:text-sm text-buttonText flex items-center justify-center space-x-0.5">
-              <p>View</p>
-              <LuDot />
-              <p>Create</p>
-            </CardFooter>
-          </Card>
+            icon={<FaBriefcaseMedical className="text-buttonText size-8" />}
+            title="Medical Case"
+            variant={1}
+          />
         </li>
         <li>
-          <Card
-            as={Link}
-            className="bg-cardAccent2 text-white h-full w-full"
+          <ActionCard
+            footer="Check for Cervical Cancer with AI"
             href="/dashboard/patient/questionnaire"
-          >
-            <CardHeader className="text-xl font-bold text-headline justify-center">
-              Questionnaire
-            </CardHeader>
-            <CardBody className="items-center">
-              <FaClipboardQuestion className="text-headline size-8" />
-            </CardBody>
-            <CardFooter className="text-xs md:text-sm text-textSecondary justify-center">
-              <p>Check for Cervical Cancer with AI</p>
-            </CardFooter>
-          </Card>
+            icon={<FaClipboardQuestion className="text-headline size-8" />}
+            title="Questionnaire"
+            variant={2}
+          />
         </li>
         <li>
-          <Card
-            as={Link}
-            className="bg-cardAccent3 text-white h-full w-full justify-between"
+          <ActionCard
+            footer={["View", "Create", "Update", "Cancel"]}
             href="/dashboard/patient/appointment"
-          >
-            <CardHeader className="text-xl justify-center font-extrabold text-white drop-shadow-md">
-              Appointment
-            </CardHeader>
-            <CardBody className="items-center">
-              <FaUserClock className="text-white size-8" />
-            </CardBody>
-            <CardFooter className="text-xs md:text-sm text-buttonText flex items-center flex-wrap justify-center space-x-0.5">
-              <p>View</p>
-              <LuDot />
-              <p>Create</p>
-              <LuDot />
-              <p>Update</p>
-              <LuDot />
-              <p>Cancel</p>
-            </CardFooter>
-          </Card>
+            icon={<FaUserClock className="text-buttonText size-8" />}
+            title="Appointment"
+            variant={3}
+          />
         </li>
         <li>
-          <Card
-            as={Link}
-            className="bg-cardAccent4 text-white"
+          <ActionCard
+            footer="Chat with doctor handling your current case"
             href="/dashboard/patient/chat"
-          >
-            <CardHeader className="text-xl font-extrabold text-primary justify-center text-center drop-shadow-md">
-              Chat with Doctor
-            </CardHeader>
-            <CardBody className="items-center">
-              <HiChatBubbleLeftRight className="text-primary size-8" />
-            </CardBody>
-            <CardFooter className="text-xs md:text-sm text-primary justify-center">
-              <p>Chat with doctor handling your current case</p>
-            </CardFooter>
-          </Card>
+            icon={<HiChatBubbleLeftRight className="text-primary size-8" />}
+            title="Chat with Doctor"
+            variant={4}
+          />
         </li>
       </ul>
 

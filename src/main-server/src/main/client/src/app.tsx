@@ -1,5 +1,6 @@
 import {
   MutationCache,
+  QueryCache,
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
@@ -21,7 +22,6 @@ import LoginPage from "./pages/auth/login";
 import SignupPage from "./pages/auth/signup";
 import DoctorDashboard from "./pages/dashboard/doctor";
 import PatientDashboard from "./pages/dashboard/patient";
-import ErrorPage from "./pages/error";
 import NotFoundPage from "./pages/not-found";
 import NextUiProvider from "./providers/next-ui";
 import { ChildrenProps } from "./types";
@@ -31,13 +31,14 @@ import {
   RefreshAuthError,
   ValidationError,
 } from "./utils/error";
+import DashboardLayout from "./layouts/dashboard";
+import ErrorBoundary from "./components/ui/error-boundary";
 
 export default function App() {
   const router = createBrowserRouter([
     {
       path: "/",
       element: <Root />,
-      errorElement: <ErrorPage />,
       children: [
         {
           path: "",
@@ -55,20 +56,22 @@ export default function App() {
           ],
         },
         {
-          path: "dashboard/patient",
+          path: "dashboard",
           element: (
             <ProtectedRoute>
-              <PatientDashboard />
+              <DashboardLayout />
             </ProtectedRoute>
           ),
-        },
-        {
-          path: "dashboard/doctor",
-          element: (
-            <ProtectedRoute>
-              <DoctorDashboard />
-            </ProtectedRoute>
-          ),
+          children: [
+            {
+              path: "patient",
+              element: <PatientDashboard />,
+            },
+            {
+              path: "doctor",
+              element: <DoctorDashboard />,
+            },
+          ],
         },
         { path: "*", element: <NotFoundPage /> },
       ],
@@ -93,6 +96,21 @@ function Root() {
             staleTime: 1000 * 60 * 10, // 10 mins
           },
         },
+        queryCache: new QueryCache({
+          onError: (error) => {
+            const err = ensureError(error);
+
+            console.error("Error in api call", err.message);
+            console.dir(err);
+            if (err instanceof RefreshAuthError) {
+              navigate("/auth/login");
+            } else if (err instanceof ApiErrorCls) {
+              toast.error(err.description);
+            } else {
+              toast.error("Failed to connect to server, are you offline?");
+            }
+          },
+        }),
         mutationCache: new MutationCache({
           onError: (error) => {
             const err = ensureError(error);
@@ -114,15 +132,17 @@ function Root() {
   );
 
   return (
-    <NextUiProvider>
-      <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <DefaultLayout>
-            <Outlet />
-          </DefaultLayout>
-        </AuthProvider>
-      </QueryClientProvider>
-    </NextUiProvider>
+    <ErrorBoundary>
+      <NextUiProvider>
+        <QueryClientProvider client={queryClient}>
+          <AuthProvider>
+            <DefaultLayout>
+              <Outlet />
+            </DefaultLayout>
+          </AuthProvider>
+        </QueryClientProvider>
+      </NextUiProvider>
+    </ErrorBoundary>
   );
 }
 

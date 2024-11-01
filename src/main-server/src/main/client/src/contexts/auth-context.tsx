@@ -8,12 +8,10 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { ChildrenProps } from "@/types";
-import {
-  AuthenticatedUserResponse,
-  LoginRequest,
-  LoginResponse,
-} from "@/types/backend-stubs";
-import { AccessToken, fetchWithAuth, fetchWithoutAuth } from "@/utils/api";
+import { LoginRequest, LoginResponse } from "@/types/backend-stubs";
+import { AccessToken } from "@/utils/api";
+import { authenticatedUser } from "@/react-query/queries";
+import { loginUserMut, logoutUserMut } from "@/react-query/mutations";
 
 type User = Omit<LoginResponse, "accessToken">;
 
@@ -37,20 +35,9 @@ export function AuthProvider({ children }: ChildrenProps) {
   });
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const authenticatedUserQuery = useQuery({
-    queryKey: ["auth", "user"],
-    queryFn: () =>
-      fetchWithAuth<AuthenticatedUserResponse>("/auth/me", { method: "GET" }),
-    retry: 1,
-  });
+  const authenticatedUserQuery = useQuery({ ...authenticatedUser });
   const loginUserMutation = useMutation({
-    mutationKey: ["auth", "login"],
-    mutationFn: (credentials: LoginRequest) =>
-      fetchWithoutAuth<LoginResponse>("/auth/login", {
-        method: "POST",
-        credentials: "include",
-        body: JSON.stringify(credentials),
-      }),
+    ...loginUserMut,
     onSuccess(res) {
       setAuthState({
         status: "authenticated",
@@ -58,21 +45,19 @@ export function AuthProvider({ children }: ChildrenProps) {
         logout: logoutUserMutation,
       });
       AccessToken.setAccessToken(res.accessToken);
-      queryClient.invalidateQueries({ queryKey: ["auth", "user"] });
+      queryClient.invalidateQueries({ queryKey: loginUserMut.invalidateKeys });
       navigate(`/dashboard/${res.role.toLowerCase()}`);
     },
   });
   const logoutUserMutation = useMutation({
-    mutationKey: ["auth", "logout"],
-    mutationFn: () =>
-      fetchWithoutAuth<null>("/auth/logout", { method: "POST" }),
+    ...logoutUserMut,
     onSuccess() {
       setAuthState({
         status: "unauthenticated",
         login: loginUserMutation,
       });
       AccessToken.clearAccessToken();
-      queryClient.invalidateQueries({ queryKey: ["auth", "user"] });
+      queryClient.invalidateQueries({ queryKey: logoutUserMut.invalidateKeys });
       navigate("/");
     },
   });
