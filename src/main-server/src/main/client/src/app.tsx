@@ -1,3 +1,9 @@
+import {
+  MutationCache,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
+import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import {
   createBrowserRouter,
@@ -6,33 +12,32 @@ import {
   RouterProvider,
   useNavigate,
 } from "react-router-dom";
-import {
-  MutationCache,
-  QueryClient,
-  QueryClientProvider,
-} from "@tanstack/react-query";
-import { useState } from "react";
 
+import LoadingScreen from "./components/ui/loading-screen";
+import { AuthProvider, useAuth } from "./contexts/auth-context";
+import DefaultLayout from "./layouts/default";
+import IndexPage from "./pages";
+import LoginPage from "./pages/auth/login";
+import SignupPage from "./pages/auth/signup";
+import DoctorDashboard from "./pages/dashboard/doctor";
+import PatientDashboard from "./pages/dashboard/patient";
+import ErrorPage from "./pages/error";
+import NotFoundPage from "./pages/not-found";
 import NextUiProvider from "./providers/next-ui";
+import { ChildrenProps } from "./types";
 import {
   ApiErrorCls,
   ensureError,
   RefreshAuthError,
   ValidationError,
 } from "./utils/error";
-import { ChildrenProps } from "./types";
-import LoadingScreen from "./components/ui/loading-screen";
-import IndexPage from "./pages";
-import LoginPage from "./pages/auth/login";
-import { AuthProvider, useAuth } from "./contexts/auth-context";
-import SignupPage from "./pages/auth/signup";
-import DefaultLayout from "./layouts/default";
 
 export default function App() {
   const router = createBrowserRouter([
     {
       path: "/",
       element: <Root />,
+      errorElement: <ErrorPage />,
       children: [
         {
           path: "",
@@ -50,13 +55,22 @@ export default function App() {
           ],
         },
         {
-          path: "/dashboard/:role",
+          path: "dashboard/patient",
           element: (
             <ProtectedRoute>
-              <p>Dashboard</p>
+              <PatientDashboard />
             </ProtectedRoute>
           ),
         },
+        {
+          path: "dashboard/doctor",
+          element: (
+            <ProtectedRoute>
+              <DoctorDashboard />
+            </ProtectedRoute>
+          ),
+        },
+        { path: "*", element: <NotFoundPage /> },
       ],
     },
   ]);

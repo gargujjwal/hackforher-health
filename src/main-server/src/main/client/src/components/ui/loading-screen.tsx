@@ -1,6 +1,6 @@
-import {useState, useEffect} from "react";
-import {motion, AnimatePresence} from "framer-motion";
-import {DotLottieReact} from "@lottiefiles/dotlottie-react";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 const FACTS = [
   "Cervical cancer is the fourth most common cancer in women worldwide.",
@@ -27,32 +27,31 @@ function LoadingScreen() {
   }, []);
 
   return (
-      <div
-          className="flex items-center justify-center h-screen bg-gradient-to-br from-pink-400 to-green-500 text-white">
-        <div className="text-center space-y-6">
-          <AnimatePresence mode="wait">
-            <motion.div
-                key={factIndex}
-                animate={{opacity: 1, y: 0}}
-                className="text-xl font-medium px-4"
-                exit={{opacity: 0, y: -10}}
-                initial={{opacity: 0, y: 10}}
-                transition={{duration: 0.8}}
-            >
-              {FACTS[factIndex]}
-            </motion.div>
-          </AnimatePresence>
+    <div className="flex items-center justify-center h-full">
+      <div className="text-center space-y-8">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={factIndex}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-xl font-medium px-4"
+            exit={{ opacity: 0, y: -10 }}
+            initial={{ opacity: 0, y: 10 }}
+            transition={{ duration: 0.8 }}
+          >
+            {FACTS[factIndex]}
+          </motion.div>
+        </AnimatePresence>
 
-          <div className="mt-6 grid place-content-center">
-            <DotLottieReact
-                autoplay
-                loop
-                className="size-24"
-                src="/lottie-animations/loading-screen-animation.lottie"
-            />
-          </div>
+        <div className="mt-6 grid place-content-center">
+          <DotLottieReact
+            autoplay
+            loop
+            className="size-24"
+            src="/lottie-animations/loading-screen-animation.lottie"
+          />
         </div>
       </div>
+    </div>
   );
 }
 

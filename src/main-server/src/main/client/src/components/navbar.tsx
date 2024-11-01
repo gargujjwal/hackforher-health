@@ -1,4 +1,3 @@
-import { Link } from "@nextui-org/link";
 import { Image } from "@nextui-org/image";
 import {
   NavbarBrand,
@@ -16,6 +15,7 @@ import { Button } from "@nextui-org/button";
 
 import { ThemeSwitch } from "./ui/theme-switch";
 
+import Link from "@/components/util/link";
 import { useAuth } from "@/contexts/auth-context";
 
 const navbarItemsPreLogin = [
@@ -29,16 +29,16 @@ const navbarItemsPreLogin = [
 ];
 
 const navbarItemsPostLoginForPatient = [
-  { label: "Dashboard", href: "/dashboard/p" },
-  { label: "My cases", href: "/dashboard/p/cases" },
-  { label: "Appointments", href: "/dashboard/p/appointments" },
-  { label: "Chat", href: "/dashboard/p/chat" },
-  { label: "Questionnaire", href: "/dashboard/p/questionnaire" },
+  { label: "Dashboard", href: "/dashboard/patient" },
+  { label: "My cases", href: "/dashboard/patient/cases" },
+  { label: "Appointments", href: "/dashboard/patient/appointments" },
+  { label: "Chat", href: "/dashboard/patient/chat" },
+  { label: "Questionnaire", href: "/dashboard/patient/questionnaire" },
   { label: "Sitemap", href: "/sitemap" },
 ];
 
 const navbarItemsPostLoginForDoctor = [
-  { label: "Dashboard", href: "/dashboard/d" },
+  { label: "Dashboard", href: "/dashboard/doctor" },
   { label: "Survivor Stories", href: "/survivor-stories" },
   { label: "Support Groups", href: "/support-groups" },
   { label: "Awareness & Prevention", href: "/awareness-prevention" },
@@ -69,12 +69,12 @@ export default function Navbar() {
 
   return (
     <NextUINavbar maxWidth="xl" position="sticky">
-      <NavbarBrand className="gap-2">
+      <NavbarBrand as={Link} className="gap-2" href="/">
         <Image
           classNames={{ wrapper: "size-[3.1rem] rounded-full" }}
           src="/logo.webp"
         />
-        <p className="font-bold text-inherit leading-tight">
+        <p className="font-bold text-black leading-tight">
           Cervical <br /> Buddy
         </p>
       </NavbarBrand>
