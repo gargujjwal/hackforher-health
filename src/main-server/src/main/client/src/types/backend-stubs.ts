@@ -49,7 +49,7 @@ export interface DoctorDto {
   dob: string;
   createdAt: string;
   role: Role;
-  avgRating: number | null;
+  avgRating: number;
   noAppointmentsFailed: number;
 }
 
@@ -63,9 +63,18 @@ export interface DoctorProfileDto {
   secondaryEmail: string;
   qualifications: MedicalQualification[];
   publications: MedicalPublication[];
-  avgRating?: number;
-  noAppointmentsFailed?: number;
-  consultationTimings?: ConsultationTiming[];
+  doctor: {
+    id: number;
+    email: string;
+    firstName: string;
+    lastName: string;
+    dob: string;
+    createdAt: string;
+    role: Role;
+    avgRating: number;
+    noAppointmentsFailed: number;
+    consultationTimings: ConsultationTiming[];
+  };
 }
 
 export interface MedicalQualification {

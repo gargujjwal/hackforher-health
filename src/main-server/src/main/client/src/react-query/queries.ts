@@ -1,12 +1,13 @@
 import {
   AppointmentDto,
   AuthenticatedUserResponse,
+  DoctorProfileDto,
   MedicalCaseResponseDto,
   PageResponse,
   QuestionnaireSubmissionResponseDto,
   SectionResponseDto,
 } from "@/types/backend-stubs";
-import { fetchWithAuth } from "@/utils/api";
+import {fetchWithAuth, fetchWithoutAuth} from "@/utils/api";
 
 export const authenticatedUser = {
   queryKey: ["auth", "user"],
@@ -14,6 +15,15 @@ export const authenticatedUser = {
     fetchWithAuth<AuthenticatedUserResponse>("/auth/me", { method: "GET" }),
   retry: 1,
 } as const;
+
+export const getAllDoctors = (page: number = 0, size: number = 10) => ({
+  queryKey: ["doctors", page, size],
+  queryFn: () =>
+      fetchWithoutAuth<PageResponse<DoctorProfileDto>>(
+          `/profile/DOCTOR?page=${page}&size=${size}`,
+          {method: "GET"},
+      ),
+});
 
 export const getAppointmentsByDoctorAssignmentId = (
   doctorAssignmentId: number,

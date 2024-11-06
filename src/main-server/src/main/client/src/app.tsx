@@ -1,38 +1,17 @@
-import {
-  MutationCache,
-  QueryCache,
-  QueryClient,
-  QueryClientProvider,
-} from "@tanstack/react-query";
-import { useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
-import {
-  createBrowserRouter,
-  Navigate,
-  Outlet,
-  RouterProvider,
-  useNavigate,
-} from "react-router-dom";
+import {Toaster} from "react-hot-toast";
+import {createBrowserRouter, RouterProvider} from "react-router-dom";
 
-import LoadingScreen from "./components/ui/loading-screen";
-import { AuthProvider, useAuth } from "./contexts/auth-context";
-import DefaultLayout from "./layouts/default";
+import ProtectedRoute from "./components/protected-route";
+import Root from "./components/root";
+import DashboardLayout from "./layouts/dashboard";
 import IndexPage from "./pages";
 import LoginPage from "./pages/auth/login";
 import SignupPage from "./pages/auth/signup";
 import DoctorDashboard from "./pages/dashboard/doctor";
+import MedicalCasePage from "./pages/dashboard/patient/medical-case";
 import PatientDashboard from "./pages/dashboard/patient";
 import NotFoundPage from "./pages/not-found";
-import NextUiProvider from "./providers/next-ui";
-import { ChildrenProps } from "./types";
-import {
-  ApiErrorCls,
-  ensureError,
-  RefreshAuthError,
-  ValidationError,
-} from "./utils/error";
-import DashboardLayout from "./layouts/dashboard";
-import ErrorBoundary from "./components/ui/error-boundary";
+import CreateMedicalCasePage from "./pages/dashboard/patient/medical-case/create.index";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -44,7 +23,8 @@ export default function App() {
           path: "",
           element: (
             <ProtectedRoute>
-              <IndexPage />
+              {" "}
+              <IndexPage/>{" "}
             </ProtectedRoute>
           ),
         },
@@ -63,14 +43,13 @@ export default function App() {
             </ProtectedRoute>
           ),
           children: [
+            {path: "patient", element: <PatientDashboard/>},
+            {path: "patient/medical-case", element: <MedicalCasePage/>},
             {
-              path: "patient",
-              element: <PatientDashboard />,
+              path: "patient/medical-case/create",
+              element: <CreateMedicalCasePage/>,
             },
-            {
-              path: "doctor",
-              element: <DoctorDashboard />,
-            },
+            {path: "doctor", element: <DoctorDashboard/>},
           ],
         },
         { path: "*", element: <NotFoundPage /> },
@@ -84,77 +63,4 @@ export default function App() {
       <RouterProvider router={router} />
     </>
   );
-}
-
-function Root() {
-  const navigate = useNavigate();
-  const [queryClient] = useState(
-    () =>
-      new QueryClient({
-        defaultOptions: {
-          queries: {
-            staleTime: 1000 * 60 * 10, // 10 mins
-          },
-        },
-        queryCache: new QueryCache({
-          onError: (error) => {
-            const err = ensureError(error);
-
-            console.error("Error in api call", err.message);
-            console.dir(err);
-            if (err instanceof RefreshAuthError) {
-              navigate("/auth/login");
-            } else if (err instanceof ApiErrorCls) {
-              toast.error(err.description);
-            } else {
-              toast.error("Failed to connect to server, are you offline?");
-            }
-          },
-        }),
-        mutationCache: new MutationCache({
-          onError: (error) => {
-            const err = ensureError(error);
-
-            console.error("Error in api call", err.message);
-            console.dir(err);
-            if (err instanceof RefreshAuthError) {
-              navigate("/auth/login");
-            } else if (err instanceof ApiErrorCls) {
-              toast.error(err.message);
-            } else if (err instanceof ValidationError) {
-              toast.error("Validation error, please check your inputs");
-            } else {
-              toast.error("Failed to connect to server, are you offline?");
-            }
-          },
-        }),
-      }),
-  );
-
-  return (
-    <ErrorBoundary>
-      <NextUiProvider>
-        <QueryClientProvider client={queryClient}>
-          <AuthProvider>
-            <DefaultLayout>
-              <Outlet />
-            </DefaultLayout>
-          </AuthProvider>
-        </QueryClientProvider>
-      </NextUiProvider>
-    </ErrorBoundary>
-  );
-}
-
-function ProtectedRoute({ children }: ChildrenProps) {
-  const { status } = useAuth();
-
-  switch (status) {
-    case "authenticated":
-      return children;
-    case "unauthenticated":
-      return <Navigate replace to="/auth/login" />;
-    case "loading":
-      return <LoadingScreen />;
-  }
 }
