@@ -16,7 +16,7 @@ function ActionCard({ href, title, icon, footer, variant }: Props) {
   return (
     <Card
       as={Link}
-      className={clsx("text-white h-full w-full text-center", {
+      className={clsx("h-full w-full text-center text-white", {
         "bg-cardAccent1": variant === 1,
         "bg-cardAccent2": variant === 2,
         "bg-cardAccent3": variant === 3,
@@ -25,7 +25,7 @@ function ActionCard({ href, title, icon, footer, variant }: Props) {
       href={href}
     >
       <CardHeader
-        className={clsx("text-xl font-bold justify-center", {
+        className={clsx("justify-center text-xl font-bold", {
           "text-buttonText": [1, 3].includes(variant),
           "text-headline": variant === 2,
           "text-primary": variant === 4,
@@ -35,7 +35,7 @@ function ActionCard({ href, title, icon, footer, variant }: Props) {
       </CardHeader>
       <CardBody className="items-center">{icon}</CardBody>
       {Array.isArray(footer) ? (
-        <CardFooter className="text-xs md:text-sm text-buttonText flex items-center justify-center space-x-0.5">
+        <CardFooter className="flex items-center justify-center space-x-0.5 text-xs text-buttonText md:text-sm">
           {footer.map((text, index) => (
             <>
               <p key={index}>{text}</p>
@@ -45,7 +45,7 @@ function ActionCard({ href, title, icon, footer, variant }: Props) {
         </CardFooter>
       ) : (
         <CardFooter
-          className={clsx("text-xs md:text-sm text-primary justify-center", {
+          className={clsx("justify-center text-xs text-primary md:text-sm", {
             "text-buttonText": [1, 3].includes(variant),
             "text-headline": variant === 2,
             "text-primary": variant === 4,

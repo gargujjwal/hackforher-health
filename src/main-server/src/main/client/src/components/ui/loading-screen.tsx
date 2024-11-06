@@ -20,20 +20,20 @@ function LoadingScreen() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setFactIndex((prevIndex) => (prevIndex + 1) % FACTS.length);
+      setFactIndex(prevIndex => (prevIndex + 1) % FACTS.length);
     }, 3000); // Change fact every 3 seconds
 
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <div className="flex items-center justify-center h-full">
-      <div className="text-center space-y-8">
+    <div className="flex h-full items-center justify-center">
+      <div className="space-y-8 text-center">
         <AnimatePresence mode="wait">
           <motion.div
             key={factIndex}
             animate={{ opacity: 1, y: 0 }}
-            className="text-xl font-medium px-4"
+            className="px-4 text-xl font-medium"
             exit={{ opacity: 0, y: -10 }}
             initial={{ opacity: 0, y: 10 }}
             transition={{ duration: 0.8 }}

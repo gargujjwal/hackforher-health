@@ -1,8 +1,8 @@
-import {useQuery} from "@tanstack/react-query";
-import {createContext, ReactNode, useContext} from "react";
+import { useQuery } from "@tanstack/react-query";
+import { createContext, ReactNode, useContext } from "react";
 
-import {getUnresolvedMedicalCaseByPatientId} from "@/react-query/queries";
-import {MedicalCaseResponseDto} from "@/types/backend-stubs";
+import { getUnresolvedMedicalCaseByPatientId } from "@/react-query/queries";
+import { MedicalCaseResponseDto } from "@/types/backend-stubs";
 
 interface UnResolvedMedicalCaseContextType {
   medicalCase: MedicalCaseResponseDto | undefined;
@@ -17,10 +17,7 @@ type Props = Readonly<{
   children: ReactNode;
 }>;
 
-export function UnResolvedMedicalCaseProvider({
-  patientId,
-  children,
-                                              }: Props) {
+export function UnResolvedMedicalCaseProvider({ patientId, children }: Props) {
   const { data: medicalCase, isLoading } = useQuery({
     ...getUnresolvedMedicalCaseByPatientId(patientId),
     retry: false,
@@ -32,7 +29,7 @@ export function UnResolvedMedicalCaseProvider({
       {children}
     </UnResolvedMedicalCaseContext.Provider>
   );
-};
+}
 
 export function useUnresolvedMedicalCase() {
   const context = useContext(UnResolvedMedicalCaseContext);

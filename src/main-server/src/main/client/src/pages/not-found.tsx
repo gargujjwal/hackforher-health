@@ -8,14 +8,14 @@ export default function NotFoundPage() {
 
   return (
     <div className="md:grid md:place-content-center">
-      <Card className="p-4 gap-4 mx-auto md:min-w-[44rem] md:gap-0" shadow="lg">
+      <Card className="mx-auto gap-4 p-4 md:min-w-[44rem] md:gap-0" shadow="lg">
         <CardHeader className="pb-0">
-          <h1 className="text-center font-semibold text-3xl flex-1 lg:text-4xl">
+          <h1 className="flex-1 text-center text-3xl font-semibold lg:text-4xl">
             404: Page Not Found
           </h1>
         </CardHeader>
         <CardBody className="gap-8 md:gap-0">
-          <p className="text-gray-500 text-center">
+          <p className="text-center text-gray-500">
             Sorry, the page you are looking for does not exist or has been
             moved.
           </p>

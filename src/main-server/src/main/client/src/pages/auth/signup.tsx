@@ -67,15 +67,15 @@ function SignupPage() {
 
   return (
     <div className="md:grid md:place-content-center">
-      <Card className="p-4 gap-4 mx-auto md:min-w-[44rem]" shadow="lg">
+      <Card className="mx-auto gap-4 p-4 md:min-w-[44rem]" shadow="lg">
         <CardHeader>
-          <h1 className="text-center font-semibold text-3xl flex-1 lg:text-4xl">
+          <h1 className="flex-1 text-center text-3xl font-semibold lg:text-4xl">
             Signup
           </h1>
         </CardHeader>
         <CardBody className="gap-8">
           {errors.root && <FormError message={errors.root.message} />}
-          <form onSubmit={handleSubmit((data) => signupMutation.mutate(data))}>
+          <form onSubmit={handleSubmit(data => signupMutation.mutate(data))}>
             <Controller
               control={control}
               name="role"
@@ -122,7 +122,7 @@ function SignupPage() {
               )}
             />
 
-            <div className="flex flex-row gap-4 mb-12">
+            <div className="mb-12 flex flex-row gap-4">
               <Controller
                 control={control}
                 name="firstName"
@@ -205,7 +205,7 @@ function SignupPage() {
                   label="Date of Birth"
                   labelPlacement="outside"
                   value={jsDateToCalendarDate(value)}
-                  onChange={(date) => onChange(calendarDateToJSDate(date))}
+                  onChange={date => onChange(calendarDateToJSDate(date))}
                 />
               )}
             />

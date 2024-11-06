@@ -74,13 +74,13 @@ export default function Navbar() {
           classNames={{ wrapper: "size-[3.1rem] rounded-full" }}
           src="/logo.webp"
         />
-        <p className="font-bold text-black leading-tight">
+        <p className="font-bold leading-tight text-black">
           Cervical <br /> Buddy
         </p>
       </NavbarBrand>
       <NavbarContent className="basis-1/5 sm:basis-full" justify="center">
-        <div className="hidden lg:flex gap-4 xl:gap-6 justify-start ml-2">
-          {navbarItemsToRender.map((item) => (
+        <div className="ml-2 hidden justify-start gap-4 lg:flex xl:gap-6">
+          {navbarItemsToRender.map(item => (
             <NavbarItem key={item.href}>
               <Link
                 className={clsx(
@@ -90,7 +90,7 @@ export default function Navbar() {
                         ? "foreground"
                         : "primary",
                   }),
-                  "data-[active=true]:text-primary data-[active=true]:font-medium",
+                  "data-[active=true]:font-medium data-[active=true]:text-primary",
                 )}
                 color="foreground"
                 href={item.href}
@@ -103,10 +103,10 @@ export default function Navbar() {
       </NavbarContent>
 
       <NavbarContent
-        className="hidden sm:flex basis-1/6 sm:basis-full"
+        className="hidden basis-1/6 sm:flex sm:basis-full"
         justify="end"
       >
-        <NavbarItem className="hidden lg:flex gap-4">
+        <NavbarItem className="hidden gap-4 lg:flex">
           <ThemeSwitch />
           <Button
             className="text-textPrimary"
@@ -129,7 +129,7 @@ export default function Navbar() {
         </NavbarItem>
       </NavbarContent>
 
-      <NavbarContent className="lg:hidden basis-1 pl-4" justify="end">
+      <NavbarContent className="basis-1 pl-4 lg:hidden" justify="end">
         <ThemeSwitch />
         <Button
           className="text-textPrimary"
@@ -164,7 +164,7 @@ export default function Navbar() {
                         ? "foreground"
                         : "primary",
                   }),
-                  "data-[active=true]:text-primary data-[active=true]:font-medium",
+                  "data-[active=true]:font-medium data-[active=true]:text-primary",
                 )}
                 color="foreground"
                 href={item.href}

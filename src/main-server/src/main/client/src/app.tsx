@@ -1,5 +1,5 @@
-import {Toaster} from "react-hot-toast";
-import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import ProtectedRoute from "./components/protected-route";
 import Root from "./components/root";
@@ -24,7 +24,7 @@ export default function App() {
           element: (
             <ProtectedRoute>
               {" "}
-              <IndexPage/>{" "}
+              <IndexPage />{" "}
             </ProtectedRoute>
           ),
         },
@@ -43,13 +43,13 @@ export default function App() {
             </ProtectedRoute>
           ),
           children: [
-            {path: "patient", element: <PatientDashboard/>},
-            {path: "patient/medical-case", element: <MedicalCasePage/>},
+            { path: "patient", element: <PatientDashboard /> },
+            { path: "patient/medical-case", element: <MedicalCasePage /> },
             {
               path: "patient/medical-case/create",
-              element: <CreateMedicalCasePage/>,
+              element: <CreateMedicalCasePage />,
             },
-            {path: "doctor", element: <DoctorDashboard/>},
+            { path: "doctor", element: <DoctorDashboard /> },
           ],
         },
         { path: "*", element: <NotFoundPage /> },

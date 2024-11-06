@@ -1,4 +1,4 @@
-import {CalendarDate} from "@internationalized/date";
+import { CalendarDate } from "@internationalized/date";
 
 export function calendarDateToJSDate(calendarDate: CalendarDate): Date {
   // Note: month in JavaScript Date is zero-based (0 for January, 11 for December)

@@ -35,7 +35,7 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({
   }, [isMounted]);
 
   // Prevent Hydration Mismatch
-  if (!isMounted) return <div className="w-6 h-6" />;
+  if (!isMounted) return <div className="h-6 w-6" />;
 
   return (
     <Component
@@ -55,7 +55,7 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({
         className={slots.wrapper({
           class: clsx(
             [
-              "w-auto h-auto",
+              "h-auto w-auto",
               "bg-transparent",
               "rounded-lg",
               "flex items-center justify-center",

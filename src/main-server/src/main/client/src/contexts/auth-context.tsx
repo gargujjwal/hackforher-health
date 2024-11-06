@@ -1,13 +1,18 @@
-import {useMutation, UseMutationResult, useQuery, useQueryClient,} from "@tanstack/react-query";
-import {createContext, useContext, useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import {
+  useMutation,
+  UseMutationResult,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+import { createContext, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-import {ChildrenProps} from "@/types";
-import {LoginRequest, LoginResponse} from "@/types/backend-stubs";
-import {AccessToken} from "@/utils/api";
-import {authenticatedUser} from "@/react-query/queries";
-import {loginUserMut, logoutUserMut} from "@/react-query/mutations";
-import {BaseError} from "@/utils/error";
+import { ChildrenProps } from "@/types";
+import { LoginRequest, LoginResponse } from "@/types/backend-stubs";
+import { AccessToken } from "@/utils/api";
+import { authenticatedUser } from "@/react-query/queries";
+import { loginUserMut, logoutUserMut } from "@/react-query/mutations";
+import { BaseError } from "@/utils/error";
 
 type User = Omit<LoginResponse, "accessToken">;
 
@@ -25,7 +30,7 @@ type AuthContextType =
 
 const AuthContext = createContext<AuthContextType>({ status: "loading" });
 
-export function AuthProvider({children}: Readonly<ChildrenProps>) {
+export function AuthProvider({ children }: Readonly<ChildrenProps>) {
   const [authState, setAuthState] = useState<AuthContextType>({
     status: "loading",
   });

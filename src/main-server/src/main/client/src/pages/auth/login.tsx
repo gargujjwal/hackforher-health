@@ -31,7 +31,7 @@ function LoginPage() {
     return <LoadingScreen />;
   }
 
-  const onSubmit: SubmitHandler<LoginRequest> = async (data) => {
+  const onSubmit: SubmitHandler<LoginRequest> = async data => {
     try {
       await auth.login.mutateAsync(data);
     } catch (error) {
@@ -49,9 +49,9 @@ function LoginPage() {
 
   return (
     <div className="md:grid md:place-content-center">
-      <Card className="p-4 gap-4 mx-auto md:min-w-[44rem]" shadow="lg">
+      <Card className="mx-auto gap-4 p-4 md:min-w-[44rem]" shadow="lg">
         <CardHeader>
-          <h1 className="text-center font-semibold text-3xl flex-1 lg:text-4xl">
+          <h1 className="flex-1 text-center text-3xl font-semibold lg:text-4xl">
             Login
           </h1>
         </CardHeader>
