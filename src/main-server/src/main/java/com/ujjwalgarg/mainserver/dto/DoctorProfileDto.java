@@ -5,9 +5,11 @@ import com.ujjwalgarg.mainserver.annotation.NullOrUrl;
 import com.ujjwalgarg.mainserver.entity.profile.ConsultationTiming;
 import com.ujjwalgarg.mainserver.entity.profile.MedicalPublication;
 import com.ujjwalgarg.mainserver.entity.profile.MedicalQualification;
+import com.ujjwalgarg.mainserver.entity.user.Role;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 /**
@@ -22,9 +24,16 @@ public record DoctorProfileDto(
     @NotBlank String secondaryEmail,
     @NotNull Set<@Valid MedicalQualification> qualifications,
     @NotNull Set<@Valid MedicalPublication> publications,
-    // Doctor attributes
-    Double avgRating,
-    Integer noAppointmentsFailed,
-    Set<ConsultationTiming> consultationTimings
-) implements Serializable {
+    Long id, DoctorDto doctor) implements Serializable {
+
+  /**
+   * DTO for {@link com.ujjwalgarg.mainserver.entity.user.Doctor}
+   */
+  public record DoctorDto(Long id, String email, String firstName, String lastName,
+                          LocalDateTime dob, String passwordHash, LocalDateTime createdAt,
+                          Role role, Double avgRating, Integer noAppointmentsFailed,
+                          Set<ConsultationTiming> consultationTimings) implements
+      Serializable {
+
+  }
 }

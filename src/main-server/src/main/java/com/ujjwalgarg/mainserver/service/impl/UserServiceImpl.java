@@ -38,11 +38,13 @@ public class UserServiceImpl implements UserService {
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     log.info("Loading user by username: {}", username);
-    return userRepository.findByEmail(username)
-        .orElseThrow(() -> {
-          log.error("User not found with username: {}", username);
-          return new UsernameNotFoundException("User not found");
-        });
+    return userRepository
+        .findByEmail(username)
+        .orElseThrow(
+            () -> {
+              log.error("User not found with username: {}", username);
+              return new UsernameNotFoundException("User not found");
+            });
   }
 
   @Override
@@ -61,6 +63,7 @@ public class UserServiceImpl implements UserService {
     DoctorProfile profile = new DoctorProfile();
     profile.setDoctor(doctor);
     doctor.setProfile(profile);
+    doctor.setAvgRating(0.0);
     doctorRepository.save(doctor);
     log.info("Doctor saved with ID: {}", doctor.getId());
   }
@@ -75,20 +78,24 @@ public class UserServiceImpl implements UserService {
   @Override
   public Doctor findDoctorById(Long doctorId) {
     log.info("Finding doctor by ID: {}", doctorId);
-    return doctorRepository.findById(doctorId)
-        .orElseThrow(() -> {
-          log.error("Doctor not found with ID: {}", doctorId);
-          return new ResourceNotFoundException("Doctor not found");
-        });
+    return doctorRepository
+        .findById(doctorId)
+        .orElseThrow(
+            () -> {
+              log.error("Doctor not found with ID: {}", doctorId);
+              return new ResourceNotFoundException("Doctor not found");
+            });
   }
 
   @Override
   public Patient findPatientById(Long patientId) {
     log.info("Finding patient by ID: {}", patientId);
-    return patientRepository.findById(patientId)
-        .orElseThrow(() -> {
-          log.error("Patient not found with ID: {}", patientId);
-          return new ResourceNotFoundException("Patient not found");
-        });
+    return patientRepository
+        .findById(patientId)
+        .orElseThrow(
+            () -> {
+              log.error("Patient not found with ID: {}", patientId);
+              return new ResourceNotFoundException("Patient not found");
+            });
   }
 }

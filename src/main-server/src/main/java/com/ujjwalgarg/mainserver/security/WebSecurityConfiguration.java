@@ -29,7 +29,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfiguration {
 
   private static final String[] fullyWhiteListUrls = {
-      "/api/auth/**", "/error" // FIXME: Remove this line when project is complete
+      "/api/auth/**", "/error"
   };
   private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
@@ -53,7 +53,8 @@ public class WebSecurityConfiguration {
             config
                 .requestMatchers(fullyWhiteListUrls)
                 .permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/profile/DOCTOR/**", "/api/questionnaire")
+                .requestMatchers(HttpMethod.GET, "/api/profile/DOCTOR/**", "/api/profile/DOCTOR",
+                    "/api/questionnaire")
                 .permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/questionnaire/submit")
                 .permitAll()
