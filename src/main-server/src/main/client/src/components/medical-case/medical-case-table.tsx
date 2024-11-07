@@ -1,22 +1,29 @@
-import {IoEyeOutline} from "react-icons/io5";
-import {Spinner} from "@nextui-org/spinner";
-import {FaUserClock} from "react-icons/fa";
-import {FaClipboardQuestion} from "react-icons/fa6";
-import {HiChatBubbleLeftRight} from "react-icons/hi2";
-import {Key, useCallback, useState} from "react";
-import {Pagination} from "@nextui-org/pagination";
-import {Tooltip} from "@nextui-org/tooltip";
-import {Chip, ChipProps} from "@nextui-org/chip";
-import {Table, TableBody, TableCell, TableColumn, TableHeader, TableRow,} from "@nextui-org/table";
-import {useQuery} from "@tanstack/react-query";
-import {Button, ButtonGroup} from "@nextui-org/button";
+import { IoEyeOutline } from "react-icons/io5";
+import { Spinner } from "@nextui-org/spinner";
+import { FaUserClock } from "react-icons/fa";
+import { FaClipboardQuestion } from "react-icons/fa6";
+import { HiChatBubbleLeftRight } from "react-icons/hi2";
+import { Key, useCallback, useState } from "react";
+import { Pagination } from "@nextui-org/pagination";
+import { Tooltip } from "@nextui-org/tooltip";
+import { Chip, ChipProps } from "@nextui-org/chip";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableColumn,
+  TableHeader,
+  TableRow,
+} from "@nextui-org/table";
+import { useQuery } from "@tanstack/react-query";
+import { Button, ButtonGroup } from "@nextui-org/button";
 
 import FormError from "../ui/form-error";
 import Link from "../util/link";
 
-import {useAuthenticatedUser} from "@/contexts/auth-context";
-import {getMedicalCasesByPatientId} from "@/react-query/queries";
-import {MedicalCaseResponseDto} from "@/types/backend-stubs";
+import { useAuthenticatedUser } from "@/contexts/auth-context";
+import { getMedicalCasesByPatientId } from "@/react-query/queries";
+import { MedicalCaseResponseDto } from "@/types/backend-stubs";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   resolved: "success",
@@ -75,7 +82,7 @@ function MedicalCasesTable() {
           return <CreatedAtCell createdAt={medicalCase.createdAt} />;
         case "caseDescription":
           return (
-              <p className="text-bold text-ellipsis text-sm capitalize">
+            <p className="text-bold text-ellipsis text-sm capitalize">
               {medicalCase.caseDescription}
             </p>
           );
@@ -101,57 +108,57 @@ function MedicalCasesTable() {
           );
         case "actions":
           return (
-              <div className="relative flex items-center justify-center gap-2">
-                <ButtonGroup size="md">
-                  <Tooltip content="Details">
-                    <Button
-                        isIconOnly
-                        as={Link}
-                        href={`/dashboard/patient/medical-case/${medicalCase.id}`}
-                    >
-                      <IoEyeOutline/>
-                    </Button>
-                  </Tooltip>
-                  <Tooltip content="Fill questionnaire">
-                    <Button
-                        isIconOnly
-                        as={Link}
-                        href="/dashboard/patient/questionnaire/"
-                    >
-                      <FaClipboardQuestion/>
-                    </Button>
-                  </Tooltip>
-                  <Tooltip
-                      className="text-textPrimary"
-                      color="primary"
-                      content="Appointments"
+            <div className="relative flex items-center justify-center gap-2">
+              <ButtonGroup size="md">
+                <Tooltip content="Details">
+                  <Button
+                    isIconOnly
+                    as={Link}
+                    href={`/dashboard/patient/medical-case/${medicalCase.id}`}
                   >
-                    <Button
-                        isIconOnly
-                        as={Link}
-                        className="text-textPrimary"
-                        color="primary"
-                        href="/dashboard/patient/appointment/"
-                    >
-                      <FaUserClock/>
-                    </Button>
-                  </Tooltip>
-                  <Tooltip
-                      className="text-textPrimary"
-                      color="primary"
-                      content="Chat with Doctor"
+                    <IoEyeOutline />
+                  </Button>
+                </Tooltip>
+                <Tooltip content="Fill questionnaire">
+                  <Button
+                    isIconOnly
+                    as={Link}
+                    href="/dashboard/patient/questionnaire/"
                   >
-                    <Button
-                        isIconOnly
-                        as={Link}
-                        className="text-textPrimary"
-                        color="primary"
-                        href="/dashboard/patient/chat/"
-                    >
-                      <HiChatBubbleLeftRight/>
-                    </Button>
-                  </Tooltip>
-                </ButtonGroup>
+                    <FaClipboardQuestion />
+                  </Button>
+                </Tooltip>
+                <Tooltip
+                  className="text-textPrimary"
+                  color="primary"
+                  content="Appointments"
+                >
+                  <Button
+                    isIconOnly
+                    as={Link}
+                    className="text-textPrimary"
+                    color="primary"
+                    href="/dashboard/patient/appointment/"
+                  >
+                    <FaUserClock />
+                  </Button>
+                </Tooltip>
+                <Tooltip
+                  className="text-textPrimary"
+                  color="primary"
+                  content="Chat with Doctor"
+                >
+                  <Button
+                    isIconOnly
+                    as={Link}
+                    className="text-textPrimary"
+                    color="primary"
+                    href="/dashboard/patient/chat/"
+                  >
+                    <HiChatBubbleLeftRight />
+                  </Button>
+                </Tooltip>
+              </ButtonGroup>
             </div>
           );
         default:

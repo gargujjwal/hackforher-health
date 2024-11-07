@@ -11,7 +11,7 @@ import {
   SectionCreationDto,
   SignupRequest,
 } from "@/types/backend-stubs";
-import {fetchWithAuth, fetchWithoutAuth} from "@/utils/api";
+import { fetchWithAuth, fetchWithoutAuth } from "@/utils/api";
 
 export const loginUserMut = {
   mutationKey: ["auth", "login"],
@@ -130,10 +130,10 @@ export const submitQuestionnaireResponseMut = (doctorAssignmentId: number) =>
 
 export const predictQuestionnaireMut = {
   mutationFn: (data: QuestionnaireSubmissionCreationDto) =>
-      fetchWithoutAuth<QuestionnaireSubmissionResponseDto>(
-          "/questionnaire/predict",
-          {method: "POST", body: JSON.stringify(data)},
-      ),
+    fetchWithoutAuth<QuestionnaireSubmissionResponseDto>(
+      "/questionnaire/predict",
+      { method: "POST", body: JSON.stringify(data) },
+    ),
 };
 
 export const reviewQuestionnaireSubmissionMut = (

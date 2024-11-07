@@ -1,5 +1,5 @@
-import {Toaster} from "react-hot-toast";
-import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import ProtectedRoute from "./components/protected-route";
 import Root from "./components/root";
@@ -25,7 +25,7 @@ export default function App() {
           path: "",
           element: (
             <ProtectedRoute>
-              <IndexPage/>
+              <IndexPage />
             </ProtectedRoute>
           ),
         },
@@ -36,7 +36,7 @@ export default function App() {
             { path: "signup", element: <SignupPage /> },
           ],
         },
-        {path: "questionnaire", element: <QuestionnaireIndexPage/>},
+        { path: "questionnaire", element: <QuestionnaireIndexPage /> },
         {
           path: "dashboard",
           element: (
@@ -49,7 +49,7 @@ export default function App() {
             { path: "patient/medical-case", element: <MedicalCasePage /> },
             {
               path: "patient/medical-case/:medicalCaseId",
-              element: <MedicalCaseDetailPage/>,
+              element: <MedicalCaseDetailPage />,
             },
             {
               path: "patient/medical-case/create",

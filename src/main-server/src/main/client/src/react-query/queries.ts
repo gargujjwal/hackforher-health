@@ -7,7 +7,7 @@ import {
   QuestionnaireSubmissionResponseDto,
   SectionResponseDto,
 } from "@/types/backend-stubs";
-import {fetchWithAuth, fetchWithoutAuth} from "@/utils/api";
+import { fetchWithAuth, fetchWithoutAuth } from "@/utils/api";
 
 export const authenticatedUser = {
   queryKey: ["auth", "user"],
@@ -170,7 +170,7 @@ export const getQuestionnaireSubmissionsOfMedicalCase = (
 export const getQuestionnaireQuery = {
   queryKey: ["questionnaire"],
   queryFn: () =>
-      fetchWithoutAuth<SectionResponseDto[]>("/questionnaire", {method: "GET"}),
+    fetchWithoutAuth<SectionResponseDto[]>("/questionnaire", { method: "GET" }),
   retry: 1,
 } as const;
 

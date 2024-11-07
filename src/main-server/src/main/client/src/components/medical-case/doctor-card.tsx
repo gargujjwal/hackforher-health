@@ -1,13 +1,13 @@
-import {TiTick} from "react-icons/ti";
-import {Divider} from "@nextui-org/divider";
-import {Avatar} from "@nextui-org/avatar";
-import {Badge} from "@nextui-org/badge";
-import {Button} from "@nextui-org/button";
-import {Card, CardBody, CardHeader} from "@nextui-org/card";
-import {FaMapMarkerAlt, FaStar} from "react-icons/fa";
+import { TiTick } from "react-icons/ti";
+import { Divider } from "@nextui-org/divider";
+import { Avatar } from "@nextui-org/avatar";
+import { Badge } from "@nextui-org/badge";
+import { Button } from "@nextui-org/button";
+import { Card, CardBody, CardHeader } from "@nextui-org/card";
+import { FaMapMarkerAlt, FaStar } from "react-icons/fa";
 
-import {calculateAge, formatDistanceFromNow} from "@/utils/date";
-import {DoctorProfileDto} from "@/types/backend-stubs";
+import { calculateAge, formatDistanceFromNow } from "@/utils/date";
+import { DoctorProfileDto } from "@/types/backend-stubs";
 import Link from "@/components/util/link";
 
 type Props = Readonly<{
