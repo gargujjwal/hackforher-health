@@ -32,6 +32,7 @@ function QuestionnaireTable({
     CORRECT: "success",
     WRONG: "danger",
     NEEDS_DISCUSSION: "warning",
+    PENDING: "warning",
   } satisfies Record<ReviewStatus, ChipProps["color"]>;
   const renderCell = useCallback(
     (

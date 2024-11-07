@@ -24,6 +24,7 @@ import Link from "../util/link";
 import { useAuthenticatedUser } from "@/contexts/auth-context";
 import { getMedicalCasesByPatientId } from "@/react-query/queries";
 import { MedicalCaseResponseDto } from "@/types/backend-stubs";
+import { getHandlingDoctorAssignment } from "@/utils/logic";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   resolved: "success",
@@ -55,10 +56,7 @@ type HandlingDoctorCellProps = Readonly<{
 }>;
 
 function HandlingDoctorCell({ doctorAssignments }: HandlingDoctorCellProps) {
-  const sortedDoctorAssignment = [...doctorAssignments].sort((a, b) => {
-    return new Date(b.assignedAt).getTime() - new Date(a.assignedAt).getTime();
-  });
-  const handlingDoctor = sortedDoctorAssignment[0];
+  const handlingDoctor = getHandlingDoctorAssignment(doctorAssignments);
 
   return (
     <p>

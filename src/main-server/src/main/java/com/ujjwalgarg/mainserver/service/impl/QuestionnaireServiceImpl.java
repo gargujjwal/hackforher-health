@@ -10,6 +10,7 @@ import com.ujjwalgarg.mainserver.entity.medicalcase.questionnaire.ModelPredictio
 import com.ujjwalgarg.mainserver.entity.medicalcase.questionnaire.Question;
 import com.ujjwalgarg.mainserver.entity.medicalcase.questionnaire.QuestionType;
 import com.ujjwalgarg.mainserver.entity.medicalcase.questionnaire.QuestionnaireSubmission;
+import com.ujjwalgarg.mainserver.entity.medicalcase.questionnaire.ReviewStatus;
 import com.ujjwalgarg.mainserver.entity.user.Role;
 import com.ujjwalgarg.mainserver.entity.user.User;
 import com.ujjwalgarg.mainserver.exception.QuestionNotAnsweredException;
@@ -172,6 +173,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
         questionnaireSubmissionMapper.toEntity(questionnaireSubmissionCreationDto);
     prospectSubmission.setDoctorAssignment(doctorAssignment);
     prospectSubmission.setModelPrediction(modelPrediction);
+    prospectSubmission.setReviewStatus(ReviewStatus.PENDING);
     return questionnaireSubmissionRepository.save(prospectSubmission);
   }
 
@@ -250,11 +252,11 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
   private void validateUserAccessToSubmission(User user, QuestionnaireSubmission submission) {
     if (user.getRole().equals(Role.PATIENT)
         && !submission
-        .getDoctorAssignment()
-        .getMedicalCase()
-        .getPatient()
-        .getId()
-        .equals(user.getId())) {
+            .getDoctorAssignment()
+            .getMedicalCase()
+            .getPatient()
+            .getId()
+            .equals(user.getId())) {
       log.warn(
           "Patient ID: {} is not allowed to view questionnaire submission ID: {}",
           user.getId(),

@@ -138,7 +138,7 @@ export type Role = "PATIENT" | "DOCTOR" | "ADMIN";
 
 export type QuestionType = "MCQ" | "BOOLEAN" | "OPEN_ENDED";
 
-export type ReviewStatus = "CORRECT" | "WRONG" | "NEEDS_DISCUSSION";
+export type ReviewStatus = "CORRECT" | "WRONG" | "NEEDS_DISCUSSION" | "PENDING";
 
 export interface MedicalCaseCreationDto {
   caseDescription: string;

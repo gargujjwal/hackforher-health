@@ -14,6 +14,9 @@ import NotFoundPage from "./pages/not-found";
 import CreateMedicalCasePage from "./pages/dashboard/patient/medical-case/create.index";
 import MedicalCaseDetailPage from "./pages/dashboard/patient/medical-case/detail";
 import QuestionnaireIndexPage from "./components/questionnaire";
+import QuestionnairePatientPage from "./pages/dashboard/patient/questionnaire/questionnaire-patient-page.index";
+import BadRequestPage from "./pages/bad-request";
+import QuestionnaireSubmissionViewPage from "./pages/dashboard/patient/questionnaire/submission/view.index";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -55,9 +58,18 @@ export default function App() {
               path: "patient/medical-case/create",
               element: <CreateMedicalCasePage />,
             },
+            {
+              path: "patient/questionnaire",
+              element: <QuestionnairePatientPage />,
+            },
+            {
+              path: "patient/questionnaire-submission/:questionnaireSubmissionId",
+              element: <QuestionnaireSubmissionViewPage />,
+            },
             { path: "doctor", element: <DoctorDashboard /> },
           ],
         },
+        { path: "400", element: <BadRequestPage /> },
         { path: "*", element: <NotFoundPage /> },
       ],
     },

@@ -1,3 +1,4 @@
+import { Button } from "@nextui-org/button";
 import {
   Modal,
   ModalBody,
@@ -7,19 +8,16 @@ import {
   useDisclosure,
 } from "@nextui-org/modal";
 import { useMutation } from "@tanstack/react-query";
-import { Button } from "@nextui-org/button";
 import { useEffect } from "react";
-import { Badge } from "@nextui-org/badge";
-import { Chip } from "@nextui-org/chip";
 
 import FormError from "../ui/form-error";
 import Link from "../util/link";
 
+import ModelPredictionCard from "./model-prediction-card";
 import QuestionnaireForm from "./questionnaire-form";
 
 import { useAuth } from "@/contexts/auth-context";
 import { predictQuestionnaireMut } from "@/react-query/mutations";
-import { formatDistanceFromNow } from "@/utils/date";
 import { ApiErrorCls } from "@/utils/error";
 
 function QuestionnaireIndexPage() {
@@ -67,6 +65,7 @@ function QuestionnaireIndexPage() {
       )}
       <QuestionnaireForm
         isPending={predictQuestionnaireMutation.isPending}
+        strategy="create"
         onSubmit={data =>
           predictQuestionnaireMutation.mutate({ questionResponses: data })
         }
@@ -117,68 +116,15 @@ function QuestionnaireIndexPage() {
         <ModalContent>
           {onClose => (
             <>
-              <ModalHeader className="flex flex-col gap-1">
-                <Badge
-                  color={
-                    predictQuestionnaireMutation.data!.modelPrediction
-                      .hasCervicalCancer
-                      ? "danger"
-                      : "success"
-                  }
-                  content={
-                    predictQuestionnaireMutation.data!.modelPrediction
-                      .hasCervicalCancer
-                      ? "Postive"
-                      : "Negative"
-                  }
-                >
-                  AI Prediction
-                </Badge>
-              </ModalHeader>
               <ModalBody>
-                <div className="mb-4 mt-2">
-                  <p>
-                    <Chip
-                      color={
-                        predictQuestionnaireMutation.data!.modelPrediction
-                          .hasCervicalCancer
-                          ? "danger"
-                          : "success"
-                      }
-                    >
-                      {predictQuestionnaireMutation.data!.modelPrediction
-                        .hasCervicalCancer
-                        ? "Postive"
-                        : "Negative"}
-                    </Chip>
-                    : You{" "}
-                    <b className="font-bold underline">
-                      {predictQuestionnaireMutation.data?.modelPrediction
-                        .hasCervicalCancer
-                        ? "have"
-                        : "don't have"}
-                    </b>{" "}
-                    Cervical Cancer
-                  </p>
-                  <p className="pl-1 text-sm text-gray-700">
-                    Prediction Accuracy:{" "}
-                    {predictQuestionnaireMutation.data!.modelPrediction
-                      .accuracy * 100}
-                    %
-                  </p>
-                  {predictQuestionnaireMutation.data?.modelPrediction
-                    .predictedAt && (
-                    <p className="text-sm text-gray-500">
-                      Predicted At:{" "}
-                      {formatDistanceFromNow(
-                        predictQuestionnaireMutation.data.modelPrediction
-                          .predictedAt,
-                      )}
-                    </p>
-                  )}
-                </div>
+                <ModelPredictionCard
+                  modelPrediction={
+                    predictQuestionnaireMutation.data!.modelPrediction
+                  }
+                  shadow="none"
+                />
 
-                <div className="mt-4 rounded bg-yellow-100 p-3 text-xs text-yellow-900">
+                <div className="rounded bg-yellow-100 p-3 text-xs text-yellow-900">
                   <p>
                     <strong>Warning:</strong> The predictions made by this model
                     are not validated by a doctor. We recommend consulting with

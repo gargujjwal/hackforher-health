@@ -30,7 +30,7 @@ const navbarItemsPreLogin = [
 
 const navbarItemsPostLoginForPatient = [
   { label: "Dashboard", href: "/dashboard/patient" },
-  { label: "My cases", href: "/dashboard/patient/cases" },
+  { label: "My cases", href: "/dashboard/patient/medical-case" },
   { label: "Appointments", href: "/dashboard/patient/appointments" },
   { label: "Chat", href: "/dashboard/patient/chat" },
   { label: "Questionnaire", href: "/dashboard/patient/questionnaire" },
@@ -74,7 +74,7 @@ export default function Navbar() {
           classNames={{ wrapper: "size-[3.1rem] rounded-full" }}
           src="/logo.webp"
         />
-        <p className="font-bold leading-tight text-black">
+        <p className="font-bold leading-tight text-black dark:text-textPrimary">
           Cervical <br /> Buddy
         </p>
       </NavbarBrand>

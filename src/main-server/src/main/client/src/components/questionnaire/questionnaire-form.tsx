@@ -1,22 +1,34 @@
+import { Button } from "@nextui-org/button";
+import { Input } from "@nextui-org/input";
 import { Select, SelectItem } from "@nextui-org/select";
 import { Spinner } from "@nextui-org/spinner";
 import { useQuery } from "@tanstack/react-query";
-import { Button } from "@nextui-org/button";
-import { Input } from "@nextui-org/input";
 import { FormEvent } from "react";
+import { FaDownload } from "react-icons/fa6";
+import { Margin, usePDF } from "react-to-pdf";
 
 import FormError from "../ui/form-error";
 
+import ModelPredictionCard from "./model-prediction-card";
+import ReviewStatusCard from "./review-status-card";
+
 import { getQuestionnaireQuery } from "@/react-query/queries";
+import { QuestionnaireSubmissionResponseDto } from "@/types/backend-stubs";
 
-type Props = Readonly<{
-  onSubmit: (data: Record<number, string>) => void;
-  isPending: boolean;
-}>;
+type Props =
+  | {
+      strategy: "create";
+      onSubmit: (data: Record<number, string>) => void;
+      isPending: boolean;
+    }
+  | { strategy: "show"; response: QuestionnaireSubmissionResponseDto };
 
-function QuestionnaireForm({ onSubmit, isPending }: Props) {
+function QuestionnaireForm(props: Props) {
   const questionsQuery = useQuery({ ...getQuestionnaireQuery });
-
+  const { toPDF, targetRef } = usePDF({
+    filename: "medical-questionnaire-response.pdf",
+    page: { margin: Margin.MEDIUM },
+  });
   const handleQuestionnaireSubmit = (ev: FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
     const formData = new FormData(ev.currentTarget);
@@ -28,7 +40,9 @@ function QuestionnaireForm({ onSubmit, isPending }: Props) {
       ]),
     ) as Record<number, string>;
 
-    onSubmit(payload);
+    if (props.strategy === "create") {
+      props.onSubmit(payload);
+    }
   };
 
   switch (questionsQuery.status) {
@@ -42,7 +56,23 @@ function QuestionnaireForm({ onSubmit, isPending }: Props) {
       return <FormError message={questionsQuery.error.message} />;
     case "success":
       return (
-        <form className="space-y-6" onSubmit={handleQuestionnaireSubmit}>
+        <form
+          ref={targetRef}
+          className="space-y-6"
+          onSubmit={handleQuestionnaireSubmit}
+        >
+          {props.strategy === "show" && (
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+              <ModelPredictionCard
+                modelPrediction={props.response.modelPrediction}
+              />
+              <ReviewStatusCard
+                doctorNotes={props.response.doctorNotes}
+                reviewStatus={props.response.reviewStatus}
+              />
+            </div>
+          )}
+          <h2 className="text-xl font-semibold">Your Submission</h2>
           {questionsQuery.data.map(section => (
             <fieldset
               key={section.id}
@@ -61,10 +91,21 @@ function QuestionnaireForm({ onSubmit, isPending }: Props) {
                           isRequired
                           required
                           className="max-w-xs"
+                          defaultSelectedKeys={
+                            props.strategy === "show"
+                              ? props.response.questionResponses[question.id]
+                              : undefined
+                          }
                           description={question.descriptionText}
+                          disabled={props.strategy === "show"}
                           label={question.text}
                           name={question.id.toString()}
                           placeholder={question.placeholderText}
+                          value={
+                            props.strategy === "show"
+                              ? props.response.questionResponses[question.id]
+                              : undefined
+                          }
                         >
                           {question.options!.map((option, i) => (
                             <SelectItem key={i} value={option}>
@@ -80,10 +121,21 @@ function QuestionnaireForm({ onSubmit, isPending }: Props) {
                           isRequired
                           required
                           className="max-w-xs"
+                          defaultSelectedKeys={
+                            props.strategy === "show"
+                              ? props.response.questionResponses[question.id]
+                              : undefined
+                          }
                           description={question.descriptionText}
+                          disabled={props.strategy === "show"}
                           label={question.text}
                           name={question.id.toString()}
                           placeholder={question.placeholderText}
+                          value={
+                            props.strategy === "show"
+                              ? props.response.questionResponses[question.id]
+                              : undefined
+                          }
                         >
                           <SelectItem key="1" value="1">
                             Yes
@@ -101,10 +153,16 @@ function QuestionnaireForm({ onSubmit, isPending }: Props) {
                           required
                           className="max-w-xs"
                           description={question.descriptionText}
+                          disabled={props.strategy === "show"}
                           label={question.text}
                           name={question.id.toString()}
                           placeholder={question.placeholderText}
                           type="text"
+                          value={
+                            props.strategy === "show"
+                              ? props.response.questionResponses[question.id]
+                              : undefined
+                          }
                         />
                       );
                   }
@@ -112,15 +170,27 @@ function QuestionnaireForm({ onSubmit, isPending }: Props) {
               </div>
             </fieldset>
           ))}
-          <Button
-            fullWidth
-            className="text-textPrimary"
-            color="primary"
-            isLoading={isPending}
-            type="submit"
-          >
-            Get Prediction
-          </Button>
+          {props.strategy === "show" ? (
+            <Button
+              fullWidth
+              className="text-textPrimary"
+              color="primary"
+              startContent={<FaDownload />}
+              onClick={() => toPDF()}
+            >
+              Download Report as PDF
+            </Button>
+          ) : (
+            <Button
+              fullWidth
+              className="text-textPrimary"
+              color="primary"
+              isLoading={props.isPending}
+              type="submit"
+            >
+              Get Prediction
+            </Button>
+          )}
         </form>
       );
   }
