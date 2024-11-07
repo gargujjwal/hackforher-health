@@ -4,7 +4,7 @@ import InformationForm from "@/components/information-form.tsx";
 import {useNavigate} from "react-router-dom";
 
 type ServerResponse = {
-  have_cancer: boolean;
+  has_cancer: boolean;
   accuracy: number;
 }
 
@@ -20,7 +20,7 @@ export default function YourInformationPage() {
       });
       if (res.status === 200) {
         const serverRes = await res.json() as ServerResponse;
-        navigate(`/cancer-status?haveCancer=${serverRes.have_cancer}&accuracy=${serverRes.accuracy}`);
+        navigate(`/cancer-status?hasCancer=${serverRes.has_cancer}&accuracy=${serverRes.accuracy}`);
       } else {
         navigate("/error");
       }
