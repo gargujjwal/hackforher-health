@@ -29,7 +29,7 @@ public interface QuestionnaireService {
   /**
    * Submits a response to the questionnaire.
    *
-   * @param doctorAssignmentId                 the ID of the doctor assignment
+   * @param doctorAssignmentId the ID of the doctor assignment
    * @param questionnaireSubmissionCreationDto the submission data for the questionnaire
    * @return a QuestionnaireSubmissionResponseDto representing the response to the submission
    */
@@ -41,10 +41,10 @@ public interface QuestionnaireService {
    * Reviews a submitted questionnaire.
    *
    * @param questionnaireSubmissionId the ID of the questionnaire submission to be reviewed
-   * @param reviewDto                 the review data for the questionnaire submission
+   * @param reviewDto the review data for the questionnaire submission
    */
-  void reviewQuestionnaireSubmission(Long questionnaireSubmissionId,
-      QuestionnaireReviewDto reviewDto);
+  void reviewQuestionnaireSubmission(
+      Long questionnaireSubmissionId, QuestionnaireReviewDto reviewDto);
 
   /**
    * Retrieves a questionnaire submission by its ID.
@@ -54,4 +54,6 @@ public interface QuestionnaireService {
    */
   QuestionnaireSubmissionResponseDto getQuestionnaireSubmissionById(Long questionnaireSubmissionId);
 
+  QuestionnaireSubmissionResponseDto predict(
+      QuestionnaireSubmissionCreationDto questionnaireSubmissionCreationDto);
 }

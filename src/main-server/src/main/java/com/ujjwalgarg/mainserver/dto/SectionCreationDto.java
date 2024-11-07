@@ -17,7 +17,9 @@ public record SectionCreationDto(@NotNull String title,
    * DTO for {@link com.ujjwalgarg.mainserver.entity.medicalcase.questionnaire.Question}
    */
   public record QuestionDto(@NotBlank String text, @NotNull QuestionType type,
-                            List<String> options) implements
+                            List<String> options, @NotBlank String placeholderText,
+                            @NotBlank String descriptionText,
+                            String attribute) implements
       Serializable {
 
   }

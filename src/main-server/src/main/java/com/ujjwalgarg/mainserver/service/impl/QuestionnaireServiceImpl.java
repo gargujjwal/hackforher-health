@@ -26,7 +26,6 @@ import com.ujjwalgarg.mainserver.service.QuestionnaireService;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -47,46 +46,6 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
 
   private static final String QUESTIONNAIRE_FORBIDDEN =
       "You are not allowed to view this questionnaire";
-  private static final Map<Long, String> questionnaireAttributeName = new HashMap<>();
-
-  static {
-    questionnaireAttributeName.put(1L, "age");
-    questionnaireAttributeName.put(2L, "sexualPartners");
-    questionnaireAttributeName.put(3L, "firstIntercourse");
-    questionnaireAttributeName.put(4L, "numPregnancies");
-    questionnaireAttributeName.put(5L, "smokes");
-    questionnaireAttributeName.put(6L, "smokesYears");
-    questionnaireAttributeName.put(7L, "smokesPacks");
-    questionnaireAttributeName.put(8L, "hormonalContraceptives");
-    questionnaireAttributeName.put(9L, "hormonalContraceptivesYears");
-    questionnaireAttributeName.put(10L, "iud");
-    questionnaireAttributeName.put(11L, "iudYears");
-    questionnaireAttributeName.put(12L, "stds");
-    questionnaireAttributeName.put(13L, "stdsNumber");
-    questionnaireAttributeName.put(14L, "stdsNumDiagnosis");
-    questionnaireAttributeName.put(15L, "stdsTimeSinceFirstDiagnosis");
-    questionnaireAttributeName.put(16L, "stdsTimeSinceLastDiagnosis");
-    questionnaireAttributeName.put(17L, "stdsCondylomatosis");
-    questionnaireAttributeName.put(18L, "stdsCervicalCondylomatosis");
-    questionnaireAttributeName.put(19L, "stdsVaginalCondylomatosis");
-    questionnaireAttributeName.put(20L, "stdsVulvoPerinealCondylomatosis");
-    questionnaireAttributeName.put(21L, "stdsSyphilis");
-    questionnaireAttributeName.put(22L, "stdsPelvicInflammatoryDisease");
-    questionnaireAttributeName.put(23L, "stdsGenitalHerpes");
-    questionnaireAttributeName.put(24L, "stdsMolluscumContagiosum");
-    questionnaireAttributeName.put(25L, "stdsAids");
-    questionnaireAttributeName.put(26L, "stdsHiv");
-    questionnaireAttributeName.put(27L, "stdsHepatitisB");
-    questionnaireAttributeName.put(28L, "stdsHpv");
-    questionnaireAttributeName.put(29L, "dxCancer");
-    questionnaireAttributeName.put(30L, "dxCin");
-    questionnaireAttributeName.put(31L, "dxHpv");
-    questionnaireAttributeName.put(32L, "dx");
-    questionnaireAttributeName.put(33L, "hinselmann");
-    questionnaireAttributeName.put(34L, "schiller");
-    questionnaireAttributeName.put(35L, "citology");
-    questionnaireAttributeName.put(36L, "biopsy");
-  }
 
   private final DoctorAssignmentRepository doctorAssignmentRepository;
   private final SectionRepository sectionRepository;
@@ -172,7 +131,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
                         + ", answer: "
                         + answer);
               }
-              return Map.entry(questionnaireAttributeName.get(q.getId()), answer);
+              return Map.entry(q.getAttribute(), answer);
             })
         .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
   }
@@ -261,6 +220,20 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     validateUserAccessToSubmission(user, submission);
 
     log.info("Questionnaire submission ID: {} fetched successfully", questionnaireSubmissionId);
+    return questionnaireSubmissionMapper.toDto(submission);
+  }
+
+  @Override
+  public QuestionnaireSubmissionResponseDto predict(
+      QuestionnaireSubmissionCreationDto questionnaireSubmissionCreationDto) {
+    log.info("Predicting response to questionnaire");
+    Map<String, String> mappedQuestionnaireResponse =
+        validateAndMapQuestionnaireResponse(questionnaireSubmissionCreationDto);
+    log.info("sdfdsf");
+    ModelPrediction modelPrediction = getModelPrediction(mappedQuestionnaireResponse);
+    QuestionnaireSubmission submission = new QuestionnaireSubmission();
+    submission.setModelPrediction(modelPrediction);
+    log.info("Questionnaire response predicted successfully");
     return questionnaireSubmissionMapper.toDto(submission);
   }
 

@@ -14,7 +14,8 @@ public record SectionResponseDto(Long id, String title, List<QuestionDto> questi
    * DTO for {@link com.ujjwalgarg.mainserver.entity.medicalcase.questionnaire.Question}
    */
   public record QuestionDto(Long id, String text, QuestionType type,
-                            List<String> options) implements
+                            List<String> options, String placeholderText,
+                            String descriptionText) implements
       Serializable {
 
   }

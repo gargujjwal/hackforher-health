@@ -28,9 +28,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 public class WebSecurityConfiguration {
 
-  private static final String[] fullyWhiteListUrls = {
-      "/api/auth/**", "/error"
-  };
+  private static final String[] fullyWhiteListUrls = {"/api/auth/**", "/error"};
   private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
   /**
@@ -53,10 +51,13 @@ public class WebSecurityConfiguration {
             config
                 .requestMatchers(fullyWhiteListUrls)
                 .permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/profile/DOCTOR/**", "/api/profile/DOCTOR",
+                .requestMatchers(
+                    HttpMethod.GET,
+                    "/api/profile/DOCTOR/**",
+                    "/api/profile/DOCTOR",
                     "/api/questionnaire")
                 .permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/questionnaire/submit")
+                .requestMatchers(HttpMethod.POST, "/api/questionnaire/predict")
                 .permitAll()
                 .anyRequest()
                 .authenticated());

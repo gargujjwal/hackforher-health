@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Table(name = "appointment")
@@ -36,6 +37,10 @@ public class Appointment implements Serializable {
 
   @Column(name = "meet_link")
   private String meetLink;
+
+  @Column(name = "created_at")
+  @CreationTimestamp
+  private LocalDateTime createdAt;
 
   @ManyToOne
   @JoinColumn(name = "doctor_assignment_id")

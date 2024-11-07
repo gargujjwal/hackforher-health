@@ -1,20 +1,11 @@
 package com.ujjwalgarg.mainserver.entity.medicalcase.questionnaire;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "question")
@@ -29,6 +20,15 @@ public class Question {
   @Column(name = "text", nullable = false, unique = true)
   private String text;
 
+  @Column(name = "placeholder_text", nullable = false)
+  private String placeholderText;
+
+  @Column(name = "description_text", nullable = false)
+  private String descriptionText;
+
+  @Column(name = "attribute", nullable = false)
+  private String attribute;
+
   @Enumerated(EnumType.STRING)
   @Column(name = "type", nullable = false)
   private QuestionType type;
@@ -37,6 +37,7 @@ public class Question {
   @Column(name = "options")
   private Set<String> options = new HashSet<>();
 
+  @ToString.Exclude
   @ManyToOne
   @JoinColumn(name = "section_id", nullable = false)
   private Section section;

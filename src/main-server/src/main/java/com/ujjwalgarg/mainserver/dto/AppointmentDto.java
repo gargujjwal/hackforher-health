@@ -10,9 +10,12 @@ import java.time.LocalDateTime;
  * DTO for {@link com.ujjwalgarg.mainserver.entity.medicalcase.appointment.Appointment}
  */
 @ValidAppointment
-public record AppointmentDto(LocalDateTime startTime, LocalDateTime endTime,
-                             AppointmentType appointmentType, String meetLink, Long id,
-                             AppointmentStatus appointmentStatus) implements
-    Serializable {
-
-}
+public record AppointmentDto(
+    LocalDateTime startTime,
+    LocalDateTime endTime,
+    AppointmentType appointmentType,
+    String meetLink,
+    Long id,
+    LocalDateTime createdAt,
+    AppointmentStatus appointmentStatus)
+    implements Serializable {}
