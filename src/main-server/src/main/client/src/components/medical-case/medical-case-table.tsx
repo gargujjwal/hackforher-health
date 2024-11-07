@@ -1,27 +1,22 @@
-import { IoEyeOutline } from "react-icons/io5";
-import { Spinner } from "@nextui-org/spinner";
-import { FaUserClock } from "react-icons/fa";
-import { FaClipboardQuestion } from "react-icons/fa6";
-import { HiChatBubbleLeftRight } from "react-icons/hi2";
-import { Key, useCallback, useState } from "react";
-import { Pagination } from "@nextui-org/pagination";
-import { Tooltip } from "@nextui-org/tooltip";
-import { Chip, ChipProps } from "@nextui-org/chip";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableColumn,
-  TableHeader,
-  TableRow,
-} from "@nextui-org/table";
-import { useQuery } from "@tanstack/react-query";
+import {IoEyeOutline} from "react-icons/io5";
+import {Spinner} from "@nextui-org/spinner";
+import {FaUserClock} from "react-icons/fa";
+import {FaClipboardQuestion} from "react-icons/fa6";
+import {HiChatBubbleLeftRight} from "react-icons/hi2";
+import {Key, useCallback, useState} from "react";
+import {Pagination} from "@nextui-org/pagination";
+import {Tooltip} from "@nextui-org/tooltip";
+import {Chip, ChipProps} from "@nextui-org/chip";
+import {Table, TableBody, TableCell, TableColumn, TableHeader, TableRow,} from "@nextui-org/table";
+import {useQuery} from "@tanstack/react-query";
+import {Button, ButtonGroup} from "@nextui-org/button";
 
 import FormError from "../ui/form-error";
+import Link from "../util/link";
 
-import { useAuthenticatedUser } from "@/contexts/auth-context";
-import { getMedicalCasesByPatientId } from "@/react-query/queries";
-import { MedicalCaseResponseDto } from "@/types/backend-stubs";
+import {useAuthenticatedUser} from "@/contexts/auth-context";
+import {getMedicalCasesByPatientId} from "@/react-query/queries";
+import {MedicalCaseResponseDto} from "@/types/backend-stubs";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   resolved: "success",
@@ -80,7 +75,7 @@ function MedicalCasesTable() {
           return <CreatedAtCell createdAt={medicalCase.createdAt} />;
         case "caseDescription":
           return (
-            <p className="text-bold text-sm capitalize">
+              <p className="text-bold text-ellipsis text-sm capitalize">
               {medicalCase.caseDescription}
             </p>
           );
@@ -93,7 +88,6 @@ function MedicalCasesTable() {
         case "isResolved":
           return (
             <Chip
-              className="capitalize"
               color={
                 statusColorMap[
                   medicalCase.isResolved ? "resolved" : "unresolved"
@@ -102,32 +96,62 @@ function MedicalCasesTable() {
               size="sm"
               variant="flat"
             >
-              {medicalCase.isResolved ? "resolved" : "unresolved"}
+              {medicalCase.isResolved ? "RESOLVED" : "UNRESOLVED"}
             </Chip>
           );
         case "actions":
           return (
-            <div className="relative flex items-center gap-2">
-              <Tooltip content="Details">
-                <span className="cursor-pointer text-lg text-default-400 active:opacity-50">
-                  <IoEyeOutline />
-                </span>
-              </Tooltip>
-              <Tooltip content="Fill questionnaire">
-                <span className="cursor-pointer text-lg text-default-400 active:opacity-50">
-                  <FaClipboardQuestion />
-                </span>
-              </Tooltip>
-              <Tooltip color="danger" content="Appointments">
-                <span className="cursor-pointer text-lg text-danger active:opacity-50">
-                  <FaUserClock />
-                </span>
-              </Tooltip>
-              <Tooltip color="danger" content="Chat with Doctor">
-                <span className="cursor-pointer text-lg text-danger active:opacity-50">
-                  <HiChatBubbleLeftRight />
-                </span>
-              </Tooltip>
+              <div className="relative flex items-center justify-center gap-2">
+                <ButtonGroup size="md">
+                  <Tooltip content="Details">
+                    <Button
+                        isIconOnly
+                        as={Link}
+                        href={`/dashboard/patient/medical-case/${medicalCase.id}`}
+                    >
+                      <IoEyeOutline/>
+                    </Button>
+                  </Tooltip>
+                  <Tooltip content="Fill questionnaire">
+                    <Button
+                        isIconOnly
+                        as={Link}
+                        href="/dashboard/patient/questionnaire/"
+                    >
+                      <FaClipboardQuestion/>
+                    </Button>
+                  </Tooltip>
+                  <Tooltip
+                      className="text-textPrimary"
+                      color="primary"
+                      content="Appointments"
+                  >
+                    <Button
+                        isIconOnly
+                        as={Link}
+                        className="text-textPrimary"
+                        color="primary"
+                        href="/dashboard/patient/appointment/"
+                    >
+                      <FaUserClock/>
+                    </Button>
+                  </Tooltip>
+                  <Tooltip
+                      className="text-textPrimary"
+                      color="primary"
+                      content="Chat with Doctor"
+                  >
+                    <Button
+                        isIconOnly
+                        as={Link}
+                        className="text-textPrimary"
+                        color="primary"
+                        href="/dashboard/patient/chat/"
+                    >
+                      <HiChatBubbleLeftRight/>
+                    </Button>
+                  </Tooltip>
+                </ButtonGroup>
             </div>
           );
         default:
@@ -151,16 +175,18 @@ function MedicalCasesTable() {
         <Table
           aria-label="Example table with custom cells"
           bottomContent={
-            medicalCases.data.totalPages > 1 ? (
+            medicalCases.data.totalPages > 0 ? (
               <div className="flex w-full justify-center">
                 <Pagination
                   isCompact
+                  loop
                   showControls
                   showShadow
+                  className="text-textSecondary"
                   color="secondary"
-                  page={page}
+                  page={page + 1}
                   total={medicalCases.data.totalPages}
-                  onChange={page => setPage(page)}
+                  onChange={page => setPage(page - 1)}
                 />
               </div>
             ) : null

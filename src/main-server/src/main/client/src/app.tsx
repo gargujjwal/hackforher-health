@@ -1,5 +1,5 @@
-import { Toaster } from "react-hot-toast";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {Toaster} from "react-hot-toast";
+import {createBrowserRouter, RouterProvider} from "react-router-dom";
 
 import ProtectedRoute from "./components/protected-route";
 import Root from "./components/root";
@@ -12,6 +12,8 @@ import MedicalCasePage from "./pages/dashboard/patient/medical-case";
 import PatientDashboard from "./pages/dashboard/patient";
 import NotFoundPage from "./pages/not-found";
 import CreateMedicalCasePage from "./pages/dashboard/patient/medical-case/create.index";
+import MedicalCaseDetailPage from "./pages/dashboard/patient/medical-case/detail";
+import QuestionnaireIndexPage from "./components/questionnaire";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -23,8 +25,7 @@ export default function App() {
           path: "",
           element: (
             <ProtectedRoute>
-              {" "}
-              <IndexPage />{" "}
+              <IndexPage/>
             </ProtectedRoute>
           ),
         },
@@ -35,6 +36,7 @@ export default function App() {
             { path: "signup", element: <SignupPage /> },
           ],
         },
+        {path: "questionnaire", element: <QuestionnaireIndexPage/>},
         {
           path: "dashboard",
           element: (
@@ -45,6 +47,10 @@ export default function App() {
           children: [
             { path: "patient", element: <PatientDashboard /> },
             { path: "patient/medical-case", element: <MedicalCasePage /> },
+            {
+              path: "patient/medical-case/:medicalCaseId",
+              element: <MedicalCaseDetailPage/>,
+            },
             {
               path: "patient/medical-case/create",
               element: <CreateMedicalCasePage />,

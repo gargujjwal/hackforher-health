@@ -10,6 +10,7 @@ export type ApiResponse<T> =
   | { data: null; error: ApiError; timestamp: string };
 
 export interface AppointmentDto {
+  createdAt: string;
   startTime: string;
   endTime: string;
   appointmentType: AppointmentType;
@@ -182,6 +183,7 @@ export interface MedicalCaseResponseDto {
       endTime: string;
       appointmentType: AppointmentType;
       appointmentStatus: AppointmentStatus;
+      createdAt: string;
       meetLink: string;
     }[];
     questionnaireSubmissions: {
@@ -246,6 +248,8 @@ export interface SectionCreationDto {
   title: string;
   questions: {
     text: string;
+    placeholderText: string;
+    descriptionText: string;
     type: QuestionType;
     options?: string[];
   }[];
@@ -257,6 +261,8 @@ export interface SectionResponseDto {
   questions: {
     id: number;
     text: string;
+    placeholderText: string;
+    descriptionText: string;
     type: QuestionType;
     options?: string[];
   }[];

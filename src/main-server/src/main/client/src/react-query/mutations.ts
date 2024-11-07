@@ -11,7 +11,7 @@ import {
   SectionCreationDto,
   SignupRequest,
 } from "@/types/backend-stubs";
-import { fetchWithAuth, fetchWithoutAuth } from "@/utils/api";
+import {fetchWithAuth, fetchWithoutAuth} from "@/utils/api";
 
 export const loginUserMut = {
   mutationKey: ["auth", "login"],
@@ -90,7 +90,7 @@ export const markMedicalCaseAsResolvedMut = (medicalCaseId: number) =>
       fetchWithAuth<null>(`/medical-case/${medicalCaseId}/resolve`, {
         method: "PATCH",
       }),
-    invalidateKeys: ["medicalCase", medicalCaseId],
+    invalidateKeys: ["medicalCase"],
   }) as const;
 
 export const assignDoctorToMedicalCaseMut = (medicalCaseId: number) =>
@@ -127,6 +127,14 @@ export const submitQuestionnaireResponseMut = (doctorAssignmentId: number) =>
       ),
     invalidateKeys: ["questionnaire"],
   }) as const;
+
+export const predictQuestionnaireMut = {
+  mutationFn: (data: QuestionnaireSubmissionCreationDto) =>
+      fetchWithoutAuth<QuestionnaireSubmissionResponseDto>(
+          "/questionnaire/predict",
+          {method: "POST", body: JSON.stringify(data)},
+      ),
+};
 
 export const reviewQuestionnaireSubmissionMut = (
   questionnaireSubmissionId: number,

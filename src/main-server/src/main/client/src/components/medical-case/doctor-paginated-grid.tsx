@@ -1,13 +1,13 @@
-import { Spinner } from "@nextui-org/spinner";
-import { Pagination } from "@nextui-org/pagination";
-import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import {Spinner} from "@nextui-org/spinner";
+import {Pagination} from "@nextui-org/pagination";
+import {useQuery} from "@tanstack/react-query";
+import {useState} from "react";
 
 import FormError from "../ui/form-error";
 
 import DoctorCard from "./doctor-card";
 
-import { getAllDoctors } from "@/react-query/queries";
+import {getAllDoctors} from "@/react-query/queries";
 
 type Props = Readonly<{
   onSelect: (doctorId: number) => void;
@@ -41,8 +41,10 @@ function DoctorPaginatedGrid({ selectedId, onSelect }: Props) {
           {availableDoctors.data.totalPages > 0 && (
             <div className="absolute bottom-0 left-1/2 -translate-x-1/2 transform">
               <Pagination
+                  isCompact
                 loop
                 showControls
+                  showShadow
                 classNames={{ base: "text-textPrimary" }}
                 initialPage={page + 1}
                 total={availableDoctors.data.totalPages}

@@ -1,13 +1,13 @@
-import { TiTick } from "react-icons/ti";
-import { Divider } from "@nextui-org/divider";
-import { Avatar } from "@nextui-org/avatar";
-import { Badge } from "@nextui-org/badge";
-import { Button } from "@nextui-org/button";
-import { Card, CardBody, CardHeader } from "@nextui-org/card";
-import { FaMapMarkerAlt, FaStar } from "react-icons/fa";
+import {TiTick} from "react-icons/ti";
+import {Divider} from "@nextui-org/divider";
+import {Avatar} from "@nextui-org/avatar";
+import {Badge} from "@nextui-org/badge";
+import {Button} from "@nextui-org/button";
+import {Card, CardBody, CardHeader} from "@nextui-org/card";
+import {FaMapMarkerAlt, FaStar} from "react-icons/fa";
 
-import { calculateAge, formatDistanceFromNow } from "@/utils/date";
-import { DoctorProfileDto } from "@/types/backend-stubs";
+import {calculateAge, formatDistanceFromNow} from "@/utils/date";
+import {DoctorProfileDto} from "@/types/backend-stubs";
 import Link from "@/components/util/link";
 
 type Props = Readonly<{
@@ -33,7 +33,6 @@ function DoctorCard({ doctorProfile, isSelected, onSelect }: Props) {
       className={`w-full max-w-sm border-2 p-4 ${isSelected ? "border-primary bg-accent" : ""}`}
     >
       <Badge
-        className=""
         color="primary"
         content={
           <div className="flex items-center justify-center gap-0.5">
@@ -112,7 +111,7 @@ function DoctorCard({ doctorProfile, isSelected, onSelect }: Props) {
                 startContent={<TiTick className="text-textPrimary" />}
                 onClick={onSelect.bind(null, doctorProfile.doctor.id)}
               >
-                See More
+                Select
               </Button>
             </>
           )}
@@ -124,7 +123,7 @@ function DoctorCard({ doctorProfile, isSelected, onSelect }: Props) {
             href={`/doctor-profile/${doctorProfile.doctor.id}`}
             size="sm"
           >
-            See More
+            See Profile
           </Button>
           <Button
             as={Link}
@@ -132,7 +131,7 @@ function DoctorCard({ doctorProfile, isSelected, onSelect }: Props) {
             color="primary"
             href={`/doctor-profile/${doctorProfile.doctor.id}`}
           >
-            See More
+            See Profile
           </Button>
         </div>
       </CardBody>

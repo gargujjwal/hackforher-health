@@ -1,13 +1,13 @@
-import { useQuery } from "@tanstack/react-query";
-import { createContext, ReactNode, useContext } from "react";
+import {useQuery} from "@tanstack/react-query";
+import {createContext, ReactNode, useContext} from "react";
 
-import { getUnresolvedMedicalCaseByPatientId } from "@/react-query/queries";
-import { MedicalCaseResponseDto } from "@/types/backend-stubs";
+import {getUnresolvedMedicalCaseByPatientId} from "@/react-query/queries";
+import {MedicalCaseResponseDto} from "@/types/backend-stubs";
 
-interface UnResolvedMedicalCaseContextType {
+type UnResolvedMedicalCaseContextType = {
   medicalCase: MedicalCaseResponseDto | undefined;
   isLoading: boolean;
-}
+};
 
 const UnResolvedMedicalCaseContext =
   createContext<UnResolvedMedicalCaseContextType | null>(null);
