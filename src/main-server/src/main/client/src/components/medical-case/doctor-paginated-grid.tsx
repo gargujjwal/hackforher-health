@@ -1,4 +1,3 @@
-import { Spinner } from "@nextui-org/spinner";
 import { Pagination } from "@nextui-org/pagination";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
@@ -7,6 +6,7 @@ import FormError from "../ui/form-error";
 
 import DoctorCard from "./doctor-card";
 
+import Spinner from "@/components/ui/spinner";
 import { getAllDoctors } from "@/react-query/queries";
 
 type Props = Readonly<{

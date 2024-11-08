@@ -1,6 +1,5 @@
 import { Button } from "@nextui-org/button";
 import { Card, CardBody, CardFooter } from "@nextui-org/card";
-import { Spinner } from "@nextui-org/spinner";
 import { Tab, Tabs } from "@nextui-org/tabs";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
@@ -9,12 +8,13 @@ import { FaClipboardQuestion } from "react-icons/fa6";
 import { TiTick } from "react-icons/ti";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
+import AppointmentTable from "@/components/medical-case/appointment-table";
 import DoctorShowCard from "@/components/medical-case/doctor-show-card";
+import QuestionnaireTable from "@/components/medical-case/questionnaire-table";
 import FormError from "@/components/ui/form-error";
+import Spinner from "@/components/ui/spinner";
 import { markMedicalCaseAsResolvedMut } from "@/react-query/mutations";
 import { getMedicalCaseById } from "@/react-query/queries";
-import QuestionnaireTable from "@/components/medical-case/questionnaire-table";
-import AppointmentTable from "@/components/medical-case/appointment-table";
 
 function MedicalCaseDetailPage() {
   const navigate = useNavigate();

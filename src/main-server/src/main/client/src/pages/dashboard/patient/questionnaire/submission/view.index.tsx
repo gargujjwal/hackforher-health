@@ -1,7 +1,7 @@
-import { Spinner } from "@nextui-org/spinner";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 
+import Spinner from "@/components/ui/spinner";
 import QuestionnaireForm from "@/components/questionnaire/questionnaire-form";
 import FormError from "@/components/ui/form-error";
 import H1 from "@/components/ui/h1";
@@ -15,11 +15,7 @@ function QuestionnaireSubmissionViewPage() {
 
   switch (submissionQuery.status) {
     case "pending":
-      return (
-        <div className="grid place-content-center">
-          <Spinner />
-        </div>
-      );
+      return <Spinner />;
     case "error":
       return <FormError message={submissionQuery.error.message} />;
     case "success":

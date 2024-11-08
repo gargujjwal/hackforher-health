@@ -1,14 +1,14 @@
-import { Spinner } from "@nextui-org/spinner";
-import { LuFolderPlus } from "react-icons/lu";
 import { BsThreeDots } from "react-icons/bs";
 import { FaUserClock } from "react-icons/fa";
 import { FaClipboardQuestion } from "react-icons/fa6";
 import { HiChatBubbleLeftRight } from "react-icons/hi2";
+import { LuFolderPlus } from "react-icons/lu";
 
-import { useUnresolvedMedicalCase } from "@/contexts/unresolved-medical-case";
 import ActionCard from "@/components/action-card";
-import DisabledOverlay from "@/components/ui/disabled-overlay";
 import MedicalCasesTable from "@/components/medical-case/medical-case-table";
+import DisabledOverlay from "@/components/ui/disabled-overlay";
+import Spinner from "@/components/ui/spinner";
+import { useUnresolvedMedicalCase } from "@/contexts/unresolved-medical-case";
 
 function MedicalCasePage() {
   const unresolvedMedicalCase = useUnresolvedMedicalCase();
@@ -21,9 +21,7 @@ function MedicalCasePage() {
       </p>
 
       {unresolvedMedicalCase.isLoading ? (
-        <div className="grid place-content-center">
-          <Spinner />
-        </div>
+        <Spinner />
       ) : (
         <ul className="grid grid-cols-2 gap-1.5 md:gap-3 lg:grid-cols-4 xl:gap-4">
           <li>

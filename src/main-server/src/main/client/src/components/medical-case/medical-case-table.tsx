@@ -1,5 +1,5 @@
 import { IoEyeOutline } from "react-icons/io5";
-import { Spinner } from "@nextui-org/spinner";
+import Spinner from "@/components/ui/spinner";
 import { FaUserClock } from "react-icons/fa";
 import { FaClipboardQuestion } from "react-icons/fa6";
 import { HiChatBubbleLeftRight } from "react-icons/hi2";
@@ -168,11 +168,7 @@ function MedicalCasesTable() {
 
   switch (medicalCases.status) {
     case "pending":
-      return (
-        <div className="grid place-content-center">
-          <Spinner />
-        </div>
-      );
+      return <Spinner />;
     case "error":
       return <FormError message="Failed to get medical case of the patient" />;
     case "success":

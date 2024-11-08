@@ -8,10 +8,10 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@nextui-org/modal";
-import { Spinner } from "@nextui-org/spinner";
 import { useMutation } from "@tanstack/react-query";
 import { Navigate } from "react-router-dom";
 
+import Spinner from "@/components/ui/spinner";
 import ModelPredictionCard from "@/components/questionnaire/model-prediction-card";
 import QuestionnaireForm from "@/components/questionnaire/questionnaire-form";
 import FormError from "@/components/ui/form-error";
@@ -38,11 +38,7 @@ function QuestionnairePatientPage() {
           }
         />
       )}
-      {status === "pending" && (
-        <div className="grid place-content-center">
-          <Spinner color="primary" />
-        </div>
-      )}
+      {status === "pending" && <Spinner />}
       {status === "error" && <Navigate to="/400" />}
     </div>
   );

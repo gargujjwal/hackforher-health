@@ -1,7 +1,6 @@
 import { Button } from "@nextui-org/button";
 import { Input } from "@nextui-org/input";
 import { Select, SelectItem } from "@nextui-org/select";
-import { Spinner } from "@nextui-org/spinner";
 import { useQuery } from "@tanstack/react-query";
 import { FormEvent } from "react";
 import { FaDownload } from "react-icons/fa6";
@@ -12,6 +11,7 @@ import FormError from "../ui/form-error";
 import ModelPredictionCard from "./model-prediction-card";
 import ReviewStatusCard from "./review-status-card";
 
+import Spinner from "@/components/ui/spinner";
 import { getQuestionnaireQuery } from "@/react-query/queries";
 import { QuestionnaireSubmissionResponseDto } from "@/types/backend-stubs";
 
@@ -47,11 +47,7 @@ function QuestionnaireForm(props: Props) {
 
   switch (questionsQuery.status) {
     case "pending":
-      return (
-        <div className="grid place-content-center">
-          <Spinner color="primary" />
-        </div>
-      );
+      return <Spinner />;
     case "error":
       return <FormError message={questionsQuery.error.message} />;
     case "success":

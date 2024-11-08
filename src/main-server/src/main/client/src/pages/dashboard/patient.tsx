@@ -1,4 +1,3 @@
-import { Spinner } from "@nextui-org/spinner";
 import { BsThreeDots } from "react-icons/bs";
 import {
   FaBriefcaseMedical,
@@ -8,9 +7,10 @@ import {
 import { HiChatBubbleLeftRight } from "react-icons/hi2";
 
 import ActionCard from "@/components/action-card";
+import DisabledOverlay from "@/components/ui/disabled-overlay";
+import Spinner from "@/components/ui/spinner";
 import { useAuth } from "@/contexts/auth-context";
 import { useUnresolvedMedicalCase } from "@/contexts/unresolved-medical-case";
-import DisabledOverlay from "@/components/ui/disabled-overlay";
 
 function PatientDashboard() {
   const auth = useAuth();
@@ -29,10 +29,8 @@ function PatientDashboard() {
         What what would you like to do today,
       </p>
 
-      {unresolvedMedicalCase.isLoading ? (
-        <div className="grid place-content-center">
-          <Spinner />
-        </div>
+      {unresolvedMedicalCase.status === "pending" ? (
+        <Spinner />
       ) : (
         <ul className="grid grid-cols-2 gap-1.5 md:gap-3 lg:grid-cols-4 xl:gap-4">
           <li>
