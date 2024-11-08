@@ -72,16 +72,16 @@ function QuestionnaireTable({
               </Chip>
               <Chip
                 color={
-                  quesstionaireSubmission.modelPrediction.accuracy > 80
+                  quesstionaireSubmission.modelPrediction.accuracy > 0.8
                     ? "success"
-                    : quesstionaireSubmission.modelPrediction.accuracy > 60
+                    : quesstionaireSubmission.modelPrediction.accuracy > 0.6
                       ? "warning"
                       : "danger"
                 }
                 size="sm"
                 variant="flat"
               >
-                {quesstionaireSubmission.modelPrediction.accuracy}%
+                {quesstionaireSubmission.modelPrediction.accuracy * 100}%
               </Chip>
             </>
           );
