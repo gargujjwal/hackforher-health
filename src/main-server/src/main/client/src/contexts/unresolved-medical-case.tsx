@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
-import { createContext, ReactNode, useContext } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { createContext, ReactNode, useContext, useEffect } from "react";
 
 import { getUnresolvedMedicalCaseByPatientId } from "@/react-query/queries";
 import { MedicalCaseResponseDto } from "@/types/backend-stubs";
@@ -28,6 +28,15 @@ export function UnResolvedMedicalCaseProvider({ patientId, children }: Props) {
     retry: false,
     throwOnError: false,
   });
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (status === "error" && medicalCase) {
+      queryClient.resetQueries({
+        queryKey: ["medicalCase", "unresolved", patientId],
+      });
+    }
+  }, [status, medicalCase]);
 
   return (
     <UnResolvedMedicalCaseContext.Provider
