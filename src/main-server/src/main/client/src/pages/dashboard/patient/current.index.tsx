@@ -13,6 +13,7 @@ import Link from "@/components/util/link";
 import DoctorChangeForm from "@/components/medical-case/doctor-change-form";
 import QuestionnaireTable from "@/components/questionnaire/questionnaire-table";
 import AppointmentTable from "@/components/appointment/appointment-table";
+import Chat from "@/components/chat/chat";
 
 function CurrentMedicalCasePage() {
   const { medicalCase, status, error } = useUnresolvedMedicalCase();
@@ -90,8 +91,8 @@ function CurrentMedicalCasePage() {
                   strategy="patient"
                 />
               </Tab>
-              <Tab key="changeDoctor" title="Change Doctor">
-                <DoctorChangeForm />
+              <Tab key="chat" title="Chat With Doctor">
+                <Chat />
               </Tab>
             </Tabs>
           </section>
