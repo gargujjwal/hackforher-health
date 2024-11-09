@@ -20,7 +20,7 @@ function MedicalCasePage() {
         You can create, view a medical case and much more...
       </p>
 
-      {unresolvedMedicalCase.isLoading ? (
+      {unresolvedMedicalCase.status === "pending" ? (
         <Spinner />
       ) : (
         <ul className="grid grid-cols-2 gap-1.5 md:gap-3 lg:grid-cols-4 xl:gap-4">

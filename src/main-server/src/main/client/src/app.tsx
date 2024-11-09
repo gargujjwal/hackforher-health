@@ -17,6 +17,7 @@ import QuestionnaireIndexPage from "./components/questionnaire";
 import QuestionnairePatientPage from "./pages/dashboard/patient/questionnaire/questionnaire-patient-page.index";
 import BadRequestPage from "./pages/bad-request";
 import QuestionnaireSubmissionViewPage from "./pages/dashboard/patient/questionnaire/submission/view.index";
+import CurrentMedicalCasePage from "./pages/dashboard/patient/medical-case/current.index";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -24,14 +25,6 @@ export default function App() {
       path: "/",
       element: <Root />,
       children: [
-        {
-          path: "",
-          element: (
-            <ProtectedRoute>
-              <IndexPage />
-            </ProtectedRoute>
-          ),
-        },
         {
           path: "auth",
           children: [
@@ -49,6 +42,7 @@ export default function App() {
           ),
           children: [
             { path: "patient", element: <PatientDashboard /> },
+            { path: "patient/current", element: <CurrentMedicalCasePage /> },
             { path: "patient/medical-case", element: <MedicalCasePage /> },
             {
               path: "patient/medical-case/:medicalCaseId",

@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import { Outlet, useNavigate } from "react-router-dom";
 
 import ErrorBoundary from "./ui/error-boundary";
+import HelpFloatingButton from "./help-floating-button";
 
 import {
   ApiErrorCls,
@@ -72,6 +73,7 @@ function Root() {
           <AuthProvider>
             <DefaultLayout>
               <Outlet />
+              <HelpFloatingButton />
             </DefaultLayout>
           </AuthProvider>
         </QueryClientProvider>
