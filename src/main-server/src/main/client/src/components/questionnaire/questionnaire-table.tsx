@@ -12,6 +12,7 @@ import {
 import { Tooltip } from "@nextui-org/tooltip";
 import { Key, useCallback } from "react";
 import { IoEyeOutline } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
 import {
   DateCell,
@@ -19,7 +20,6 @@ import {
   PatientCell,
 } from "../util/table-related";
 
-import Link from "@/components/util/link";
 import {
   MedicalCaseResponseDto,
   ModelPrediction,
@@ -177,12 +177,17 @@ function PatientActionsCell({
 }: {
   questionnaireSubmission: MedicalCaseResponseDto["doctorAssignments"][0]["questionnaireSubmissions"][0];
 }) {
+  const navigate = useNavigate();
+
   return (
     <Tooltip content="Details">
       <Button
         isIconOnly
-        as={Link}
-        href={`/dashboard/patient/questionnaire-submission/${questionnaireSubmission.id}`}
+        onClick={() =>
+          navigate(
+            `/dashboard/patient/questionnaire/submission/${questionnaireSubmission.id}`,
+          )
+        }
       >
         <IoEyeOutline />
       </Button>
@@ -195,13 +200,19 @@ function DoctorActionsCell({
 }: {
   questionnaireSubmission: MedicalCaseResponseDto["doctorAssignments"][0]["questionnaireSubmissions"][0];
 }) {
+  const navigate = useNavigate();
+
   return (
     <ButtonGroup size="md">
       <Tooltip content="Details">
         <Button
           isIconOnly
-          as={Link}
-          href={`/dashboard/doctor/questionnaire-submission/${questionnaireSubmission.id}`}
+          onClick={() =>
+            // FIXME: this link needs to be looked at again
+            navigate(
+              `/dashboard/doctor/questionnaire-submission/${questionnaireSubmission.id}`,
+            )
+          }
         >
           <IoEyeOutline />
         </Button>
@@ -216,9 +227,13 @@ function DoctorActionsCell({
       >
         <Button
           isIconOnly
-          as={Link}
           disabled={questionnaireSubmission.reviewStatus !== "PENDING"}
-          href={`/dashboard/doctor/questionnaire-submission/${questionnaireSubmission.id}`}
+          // FIXME: this link needs to be looked at again
+          onClick={() =>
+            navigate(
+              `/dashboard/doctor/questionnaire-submission/${questionnaireSubmission.id}`,
+            )
+          }
         >
           <MdOutlinePreview />
         </Button>

@@ -16,9 +16,9 @@ import { FaUser, FaUserClock } from "react-icons/fa";
 import { FaClipboardQuestion } from "react-icons/fa6";
 import { HiChatBubbleLeftRight } from "react-icons/hi2";
 import { IoEyeOutline } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
 import FormError from "../ui/form-error";
-import Link from "../util/link";
 import {
   DateCell,
   HandlingDoctorCell,
@@ -113,7 +113,7 @@ function MedicalCasesTable({ strategy }: Props) {
                   loop
                   showControls
                   showShadow
-                  className="text-textSecondary"
+                  className="text-textPrimary"
                   color="secondary"
                   page={page + 1}
                   total={medicalCaseQuery.data.totalPages}
@@ -212,19 +212,26 @@ function PatientActionsCell({
 }: {
   medicalCase: MedicalCaseResponseDto;
 }) {
+  const navigate = useNavigate();
+
   return (
     <ButtonGroup size="md">
-      <Tooltip content="Details">
+      <Tooltip content="View Case">
         <Button
           isIconOnly
-          as={Link}
-          href={`/dashboard/patient/medical-case/${medicalCase.id}`}
+          size="md"
+          onClick={() =>
+            navigate(`/dashboard/patient/medical-case/${medicalCase.id}`)
+          }
         >
           <IoEyeOutline />
         </Button>
       </Tooltip>
       <Tooltip content="Fill questionnaire">
-        <Button isIconOnly as={Link} href="/dashboard/patient/questionnaire/">
+        <Button
+          isIconOnly
+          onClick={() => navigate("/dashboard/patient/questionnaire/respond")}
+        >
           <FaClipboardQuestion />
         </Button>
       </Tooltip>
@@ -235,10 +242,13 @@ function PatientActionsCell({
       >
         <Button
           isIconOnly
-          as={Link}
           className="text-textPrimary"
           color="primary"
-          href="/dashboard/patient/appointment/"
+          onClick={() =>
+            navigate(
+              `/dashboard/patient/medical-case/${medicalCase.id}?entitiesTab=appointments#entities`,
+            )
+          }
         >
           <FaUserClock />
         </Button>
@@ -250,10 +260,13 @@ function PatientActionsCell({
       >
         <Button
           isIconOnly
-          as={Link}
           className="text-textPrimary"
           color="primary"
-          href="/dashboard/patient/chat/"
+          onClick={() =>
+            navigate(
+              `/dashboard/patient/medical-case/${medicalCase.id}?entitiesTab=chat#entities`,
+            )
+          }
         >
           <HiChatBubbleLeftRight />
         </Button>
@@ -267,13 +280,16 @@ function DoctorActionsCell({
 }: {
   medicalCase: MedicalCaseResponseDto;
 }) {
+  const navigate = useNavigate();
+
   return (
     <ButtonGroup size="md">
       <Tooltip content="View Case">
         <Button
           isIconOnly
-          as={Link}
-          href={`/dashboard/patient/medical-case/${medicalCase.id}`}
+          onClick={() =>
+            navigate(`/dashboard/doctor/medical-case/${medicalCase.id}`)
+          }
         >
           <IoEyeOutline />
         </Button>
@@ -281,14 +297,19 @@ function DoctorActionsCell({
       <Tooltip content="View Patient Profile">
         <Button
           isIconOnly
-          as={Link}
-          href={`/patient/${medicalCase.patient.id}`}
+          onClick={() => navigate(`/patient/${medicalCase.patient.id}`)}
         >
           <FaUser />
         </Button>
       </Tooltip>
       <Tooltip content="View Questionnaire Submissions">
-        <Button isIconOnly as={Link} href="/dashboard/patient/questionnaire/">
+        <Button
+          isIconOnly
+          onClick={() =>
+            // FIXME: this link needs to be looked at again
+            navigate(`/dashboard/doctor/questionnaire-submission/`)
+          }
+        >
           <FaClipboardQuestion />
         </Button>
       </Tooltip>
@@ -299,10 +320,10 @@ function DoctorActionsCell({
       >
         <Button
           isIconOnly
-          as={Link}
           className="text-textPrimary"
           color="primary"
-          href="/dashboard/patient/appointment/"
+          // FIXME: this link needs to be looked at again
+          onClick={() => navigate("/dashboard/doctor/appointment/")}
         >
           <FaUserClock />
         </Button>
@@ -314,10 +335,10 @@ function DoctorActionsCell({
       >
         <Button
           isIconOnly
-          as={Link}
           className="text-textPrimary"
           color="primary"
-          href="/dashboard/patient/chat/"
+          // FIXME: this link needs to be looked at again
+          onClick={() => navigate("/dashboard/patient/chat/")}
         >
           <HiChatBubbleLeftRight />
         </Button>

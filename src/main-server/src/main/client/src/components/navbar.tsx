@@ -30,14 +30,16 @@ const navbarItemsPreLogin = [
 
 const navbarItemsPostLoginForPatient = [
   { label: "Dashboard", href: "/dashboard/patient" },
-  { label: "My cases", href: "/dashboard/patient/medical-case" },
+  { label: "My cases", href: "/dashboard/patient" },
   {
     label: "Appointments",
-    href: "/dashboard/patient/medical-case/current/appointment",
+    href: "/dashboard/patient/medical-case/current?entitiesTab=appointments#entities",
   },
-  { label: "Chat", href: "/dashboard/patient/chat" },
-  { label: "Questionnaire", href: "/dashboard/patient/questionnaire" },
-  { label: "Sitemap", href: "/sitemap" },
+  {
+    label: "Chat",
+    href: "/dashboard/patient/medical-case/current?entitiesTab=chat#entities",
+  },
+  { label: "Questionnaire", href: "/dashboard/patient/questionnaire/respond" },
 ];
 
 const navbarItemsPostLoginForDoctor = [

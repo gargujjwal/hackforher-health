@@ -40,7 +40,10 @@ function App() {
           ),
           children: [
             { path: "patient", element: <PatientDashboard /> },
-            { path: "patient/current", element: <CurrentMedicalCasePage /> },
+            {
+              path: "patient/medical-case/current",
+              element: <CurrentMedicalCasePage />,
+            },
             {
               path: "patient/medical-case/:medicalCaseId",
               element: <MedicalCaseDetailPage />,
@@ -54,7 +57,7 @@ function App() {
               element: <QuestionnaireRespondPage />,
             },
             {
-              path: "patient/questionnaire-submission/:questionnaireSubmissionId",
+              path: "patient/questionnaire/submission/:questionnaireSubmissionId",
               element: <QuestionnaireSubmissionViewPage />,
             },
             { path: "doctor", element: <DoctorDashboard /> },
