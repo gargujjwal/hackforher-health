@@ -13,7 +13,7 @@ type Props = Readonly<{
   doctorAssignment: MedicalCaseResponseDto["doctorAssignments"][0];
 }>;
 
-function DoctorShowCard({ doctorAssignment }: Props) {
+function ShowDoctorCard({ doctorAssignment }: Props) {
   const { doctor, assignedAt, unassignedAt, appointments } = doctorAssignment;
 
   const age = calculateAge(doctor.dob);
@@ -80,4 +80,4 @@ function DoctorShowCard({ doctorAssignment }: Props) {
   );
 }
 
-export default DoctorShowCard;
+export default ShowDoctorCard;

@@ -10,12 +10,10 @@ import {
 import { useMutation } from "@tanstack/react-query";
 import { useEffect } from "react";
 
-import FormError from "../ui/form-error";
-import Link from "../util/link";
-
-import ModelPredictionCard from "./model-prediction-card";
-import QuestionnaireForm from "./questionnaire-form";
-
+import ModelPredictionCard from "@/components/questionnaire/model-prediction-card";
+import QuestionnaireForm from "@/components/questionnaire/questionnaire-form";
+import FormError from "@/components/ui/form-error";
+import Link from "@/components/util/link";
 import { useAuth } from "@/contexts/auth-context";
 import { predictQuestionnaireMut } from "@/react-query/mutations";
 import { ApiErrorCls } from "@/utils/error";

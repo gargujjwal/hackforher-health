@@ -1,30 +1,24 @@
 import { BsThreeDots } from "react-icons/bs";
-import {
-  FaBriefcaseMedical,
-  FaClipboardQuestion,
-  FaUserClock,
-} from "react-icons/fa6";
+import { FaUserClock } from "react-icons/fa";
+import { FaClipboardQuestion } from "react-icons/fa6";
 import { HiChatBubbleLeftRight } from "react-icons/hi2";
+import { LuFolderPlus } from "react-icons/lu";
 
 import ActionCard from "@/components/action-card";
+import MedicalCasesTable from "@/components/medical-case/medical-case-table";
 import DisabledOverlay from "@/components/ui/disabled-overlay";
 import Spinner from "@/components/ui/spinner";
-import { useAuth } from "@/contexts/auth-context";
 import { useUnresolvedMedicalCase } from "@/contexts/unresolved-medical-case";
+import H1 from "@/components/ui/h1";
+import { useAuthenticatedUser } from "@/contexts/auth-context";
 
 function PatientDashboard() {
-  const auth = useAuth();
   const unresolvedMedicalCase = useUnresolvedMedicalCase();
-
-  if (auth.status !== "authenticated") {
-    return null;
-  }
+  const { user } = useAuthenticatedUser();
 
   return (
     <div>
-      <h1 className="mb-6 text-2xl font-bold lg:text-3xl">
-        Welcome {auth.user.firstName},
-      </h1>
+      <H1>Welcome {user.firstName}</H1>
       <p className="mb-2 text-xs md:text-sm lg:text-base">
         What what would you like to do today,
       </p>
@@ -34,19 +28,31 @@ function PatientDashboard() {
       ) : (
         <ul className="grid grid-cols-2 gap-1.5 md:gap-3 lg:grid-cols-4 xl:gap-4">
           <li>
-            <ActionCard
-              footer={["View", "Create"]}
-              href="/dashboard/patient/medical-case"
-              icon={<FaBriefcaseMedical className="size-8 text-buttonText" />}
-              title="Medical Case"
-              variant={1}
-            />
+            {unresolvedMedicalCase.medicalCase ? (
+              <DisabledOverlay tooltipContent="You already have a medical case, please resolve it first">
+                <ActionCard
+                  footer="Create"
+                  href="/dashboard/patient/medical-case/create"
+                  icon={<LuFolderPlus className="size-8 text-buttonText" />}
+                  title="Medical Case"
+                  variant={1}
+                />
+              </DisabledOverlay>
+            ) : (
+              <ActionCard
+                footer="Create"
+                href="/dashboard/patient/medical-case/create"
+                icon={<LuFolderPlus className="size-8 text-buttonText" />}
+                title="Medical Case"
+                variant={1}
+              />
+            )}
           </li>
           <li>
             {unresolvedMedicalCase.medicalCase ? (
               <ActionCard
                 footer="Check for Cervical Cancer with AI"
-                href="/dashboard/patient/questionnaire"
+                href="/dashboard/patient/questionnaire/"
                 icon={<FaClipboardQuestion className="size-8 text-headline" />}
                 title="Questionnaire"
                 variant={2}
@@ -111,15 +117,11 @@ function PatientDashboard() {
           </li>
         </ul>
       )}
+
       <BsThreeDots className="mx-auto my-6 size-6" />
 
-      <h3 className="mb-3 text-xl font-bold">How it works</h3>
-      <ol className="list-inside list-decimal">
-        <li>
-          To consult with doctors available on the website, you have to create a
-          medical case
-        </li>
-      </ol>
+      <h3 className="mb-3 text-xl font-bold">All Your Medical Cases</h3>
+      <MedicalCasesTable strategy="patient" />
     </div>
   );
 }

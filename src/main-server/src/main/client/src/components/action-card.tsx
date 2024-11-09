@@ -1,7 +1,7 @@
 import { Card, CardBody, CardFooter, CardHeader } from "@nextui-org/card";
+import clsx from "clsx";
 import { ReactNode } from "react";
 import { LuDot } from "react-icons/lu";
-import clsx from "clsx";
 
 import Link from "@/components/util/link";
 

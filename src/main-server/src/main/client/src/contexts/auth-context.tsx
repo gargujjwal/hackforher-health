@@ -7,11 +7,11 @@ import {
 import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { loginUserMut, logoutUserMut } from "@/react-query/mutations";
+import { authenticatedUser } from "@/react-query/queries";
 import { ChildrenProps } from "@/types";
 import { LoginRequest, LoginResponse } from "@/types/backend-stubs";
 import { AccessToken } from "@/utils/api";
-import { authenticatedUser } from "@/react-query/queries";
-import { loginUserMut, logoutUserMut } from "@/react-query/mutations";
 import { BaseError } from "@/utils/error";
 
 type User = Omit<LoginResponse, "accessToken">;

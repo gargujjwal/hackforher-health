@@ -8,18 +8,18 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { Outlet, useNavigate } from "react-router-dom";
 
-import ErrorBoundary from "./ui/error-boundary";
 import HelpFloatingButton from "./help-floating-button";
+import ErrorBoundary from "./ui/error-boundary";
 
+import { AuthProvider } from "@/contexts/auth-context";
+import DefaultLayout from "@/layouts/default";
+import NextUiProvider from "@/providers/next-ui";
 import {
   ApiErrorCls,
   ensureError,
   RefreshAuthError,
   ValidationError,
 } from "@/utils/error";
-import NextUiProvider from "@/providers/next-ui";
-import DefaultLayout from "@/layouts/default";
-import { AuthProvider } from "@/contexts/auth-context";
 
 function Root() {
   const navigate = useNavigate();

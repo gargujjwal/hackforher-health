@@ -1,6 +1,7 @@
 import { FaBug } from "react-icons/fa";
 
 type Props = { message?: string };
+
 function FormError({ message }: Props) {
   return message ? (
     <div className="flex flex-col items-center gap-3 rounded-md border-2 border-red-600 p-4">

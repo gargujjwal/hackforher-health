@@ -3,9 +3,17 @@ import type { ChildrenProps } from "@/types";
 import { Link } from "@nextui-org/link";
 
 import Navbar from "@/components/navbar";
+import LoadingScreen from "@/components/ui/loading-screen";
 import { GithubIcon } from "@/components/util/icons";
+import { useAuth } from "@/contexts/auth-context";
 
 export default function DefaultLayout({ children }: ChildrenProps) {
+  const { status } = useAuth();
+
+  if (status === "loading") {
+    return <LoadingScreen />;
+  }
+
   return (
     <div className="relative flex h-screen flex-col">
       <Navbar />

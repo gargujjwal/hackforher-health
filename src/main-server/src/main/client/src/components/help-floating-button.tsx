@@ -1,45 +1,48 @@
+import { Button } from "@nextui-org/button";
+import { Card, CardBody } from "@nextui-org/card";
 import {
   Modal,
-  ModalContent,
-  ModalHeader,
   ModalBody,
+  ModalContent,
   ModalFooter,
+  ModalHeader,
   useDisclosure,
 } from "@nextui-org/modal";
-import { AiFillQuestionCircle } from "react-icons/ai";
-import { Button } from "@nextui-org/button";
 import { Tooltip } from "@nextui-org/tooltip";
+import { AiFillQuestionCircle } from "react-icons/ai";
 
 function HelpFloatingButton() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
     <>
-      <div className="absolute bottom-1/4 right-0 mr-12">
-        <Tooltip content="Help">
-          <Button
-            isIconOnly
-            className="md:hidden"
-            color="primary"
-            radius="full"
-            size="sm"
-            onPress={onOpen}
-          >
-            <AiFillQuestionCircle className="w-full text-accent" />
-          </Button>
-        </Tooltip>
-        <Tooltip content="Help">
-          <Button
-            isIconOnly
-            className="hidden md:flex"
-            color="primary"
-            radius="full"
-            onPress={onOpen}
-          >
-            <AiFillQuestionCircle className="w-full text-accent" size="lg" />
-          </Button>
-        </Tooltip>
-      </div>
+      <Card className="fixed bottom-[10%] right-0 mr-8" shadow="lg">
+        <CardBody>
+          <Tooltip content="Help">
+            <Button
+              isIconOnly
+              className="md:hidden"
+              color="primary"
+              radius="full"
+              size="sm"
+              onPress={onOpen}
+            >
+              <AiFillQuestionCircle className="w-full text-accent" />
+            </Button>
+          </Tooltip>
+          <Tooltip content="Help">
+            <Button
+              isIconOnly
+              className="hidden md:flex"
+              color="primary"
+              radius="full"
+              onPress={onOpen}
+            >
+              <AiFillQuestionCircle className="w-full text-accent" size="lg" />
+            </Button>
+          </Tooltip>
+        </CardBody>
+      </Card>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           {/* FIXME: Add real content here */}
@@ -72,7 +75,11 @@ function HelpFloatingButton() {
                 <Button color="danger" variant="light" onPress={onClose}>
                   Close
                 </Button>
-                <Button color="primary" onPress={onClose}>
+                <Button
+                  className="text-textPrimary"
+                  color="primary"
+                  onPress={onClose}
+                >
                   Action
                 </Button>
               </ModalFooter>

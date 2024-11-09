@@ -8,13 +8,13 @@ import { FaClipboardQuestion } from "react-icons/fa6";
 import { TiTick } from "react-icons/ti";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
-import AppointmentTable from "@/components/medical-case/appointment-table";
-import DoctorShowCard from "@/components/medical-case/doctor-show-card";
 import QuestionnaireTable from "@/components/questionnaire/questionnaire-table";
 import FormError from "@/components/ui/form-error";
 import Spinner from "@/components/ui/spinner";
 import { markMedicalCaseAsResolvedMut } from "@/react-query/mutations";
 import { getMedicalCaseById } from "@/react-query/queries";
+import AppointmentTable from "@/components/appointment/appointment-table";
+import ShowDoctorCard from "@/components/card/doctor-show-card";
 
 function MedicalCaseDetailPage() {
   const navigate = useNavigate();
@@ -55,7 +55,7 @@ function MedicalCaseDetailPage() {
           <ul className="mt-2 flex justify-start gap-4">
             {medicalCase.data.doctorAssignments.map(doctorAssignment => (
               <li key={doctorAssignment.id}>
-                <DoctorShowCard doctorAssignment={doctorAssignment} />
+                <ShowDoctorCard doctorAssignment={doctorAssignment} />
               </li>
             ))}
           </ul>

@@ -21,7 +21,7 @@ import { submitQuestionnaireResponseMut } from "@/react-query/mutations";
 import { ApiErrorCls } from "@/utils/error";
 import { getHandlingDoctorAssignment } from "@/utils/logic";
 
-function QuestionnairePatientPage() {
+function QuestionnaireRespondPage() {
   const { medicalCase, status } = useUnresolvedMedicalCase();
 
   return (
@@ -131,4 +131,4 @@ function QuestionnaireFormWrapper({
   );
 }
 
-export default QuestionnairePatientPage;
+export default QuestionnaireRespondPage;

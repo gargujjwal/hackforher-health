@@ -4,13 +4,15 @@ import { FaCircleCheck, FaCircleXmark } from "react-icons/fa6";
 import { QuestionnaireSubmissionResponseDto } from "@/types/backend-stubs";
 import { formatDistanceFromNow } from "@/utils/date";
 
+type Props = {
+  modelPrediction: QuestionnaireSubmissionResponseDto["modelPrediction"];
+  shadow?: CardProps["shadow"];
+};
+
 function ModelPredictionCard({
   modelPrediction: { hasCervicalCancer, accuracy, predictedAt },
   shadow,
-}: {
-  modelPrediction: QuestionnaireSubmissionResponseDto["modelPrediction"];
-  shadow?: CardProps["shadow"];
-}) {
+}: Props) {
   return (
     <Card className="mx-auto w-full max-w-md" shadow={shadow}>
       <CardHeader className="justify-center">

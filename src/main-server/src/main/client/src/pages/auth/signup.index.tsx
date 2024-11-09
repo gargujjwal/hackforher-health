@@ -1,24 +1,24 @@
-import { DateInput } from "@nextui-org/date-input";
-import { FaCalendarDays } from "react-icons/fa6";
 import { Button } from "@nextui-org/button";
-import { RadioGroup, Radio } from "@nextui-org/radio";
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
+import { DateInput } from "@nextui-org/date-input";
 import { Input } from "@nextui-org/input";
+import { Radio, RadioGroup } from "@nextui-org/radio";
+import { useMutation } from "@tanstack/react-query";
 import { Controller, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { FaLock } from "react-icons/fa";
+import { FaCalendarDays } from "react-icons/fa6";
 import { MdEmail } from "react-icons/md";
 import { Navigate, useNavigate } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
-import toast from "react-hot-toast";
 
+import FormError from "@/components/ui/form-error";
 import Link from "@/components/util/link";
 import { useAuth } from "@/contexts/auth-context";
+import { signupMut } from "@/react-query/mutations";
 import { LoginRequest, Role, SignupRequest } from "@/types/backend-stubs";
+import { calendarDateToJSDate, jsDateToCalendarDate } from "@/utils/date";
 import { ApiErrorCls, ValidationError } from "@/utils/error";
 import { capitalize } from "@/utils/string";
-import { calendarDateToJSDate, jsDateToCalendarDate } from "@/utils/date";
-import FormError from "@/components/ui/form-error";
-import { signupMut } from "@/react-query/mutations";
 
 function SignupPage() {
   const auth = useAuth();

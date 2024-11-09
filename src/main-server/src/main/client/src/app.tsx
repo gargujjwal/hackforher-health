@@ -4,22 +4,20 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ProtectedRoute from "./components/protected-route";
 import Root from "./components/root";
 import DashboardLayout from "./layouts/dashboard";
-import IndexPage from "./pages";
-import LoginPage from "./pages/auth/login";
-import SignupPage from "./pages/auth/signup";
+import LoginPage from "./pages/auth/login.index";
+import SignupPage from "./pages/auth/signup.index";
 import DoctorDashboard from "./pages/dashboard/doctor";
-import MedicalCasePage from "./pages/dashboard/patient/medical-case";
 import PatientDashboard from "./pages/dashboard/patient";
 import NotFoundPage from "./pages/not-found";
 import CreateMedicalCasePage from "./pages/dashboard/patient/medical-case/create.index";
-import MedicalCaseDetailPage from "./pages/dashboard/patient/medical-case/detail";
-import QuestionnaireIndexPage from "./components/questionnaire";
-import QuestionnairePatientPage from "./pages/dashboard/patient/questionnaire/questionnaire-patient-page.index";
+import MedicalCaseDetailPage from "./pages/dashboard/patient/medical-case/[medicalCaseId].index";
 import BadRequestPage from "./pages/bad-request";
-import QuestionnaireSubmissionViewPage from "./pages/dashboard/patient/questionnaire/submission/view.index";
-import CurrentMedicalCasePage from "./pages/dashboard/patient/medical-case/current.index";
+import CurrentMedicalCasePage from "./pages/dashboard/patient/current.index";
+import QuestionnaireIndexPage from "./pages/questionnaire.index";
+import QuestionnaireSubmissionViewPage from "./pages/dashboard/patient/questionnaire-submission/view.index";
+import QuestionnaireRespondPage from "./pages/dashboard/patient/questionnaire/respond.index";
 
-export default function App() {
+function App() {
   const router = createBrowserRouter([
     {
       path: "/",
@@ -43,7 +41,6 @@ export default function App() {
           children: [
             { path: "patient", element: <PatientDashboard /> },
             { path: "patient/current", element: <CurrentMedicalCasePage /> },
-            { path: "patient/medical-case", element: <MedicalCasePage /> },
             {
               path: "patient/medical-case/:medicalCaseId",
               element: <MedicalCaseDetailPage />,
@@ -53,8 +50,8 @@ export default function App() {
               element: <CreateMedicalCasePage />,
             },
             {
-              path: "patient/questionnaire",
-              element: <QuestionnairePatientPage />,
+              path: "patient/questionnaire/respond",
+              element: <QuestionnaireRespondPage />,
             },
             {
               path: "patient/questionnaire-submission/:questionnaireSubmissionId",
@@ -76,3 +73,5 @@ export default function App() {
     </>
   );
 }
+
+export default App;

@@ -6,13 +6,13 @@ import { FaLock } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { Navigate } from "react-router-dom";
 
-import Link from "@/components/util/link";
+import FormError from "@/components/ui/form-error";
 import LoadingScreen from "@/components/ui/loading-screen";
+import Link from "@/components/util/link";
 import { useAuth } from "@/contexts/auth-context";
 import { LoginRequest } from "@/types/backend-stubs";
 import { ApiErrorCls, ValidationError } from "@/utils/error";
 import { capitalize } from "@/utils/string";
-import FormError from "@/components/ui/form-error";
 
 function LoginPage() {
   const auth = useAuth();

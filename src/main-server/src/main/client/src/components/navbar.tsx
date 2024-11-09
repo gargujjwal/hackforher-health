@@ -1,3 +1,4 @@
+import { Button } from "@nextui-org/button";
 import { Image } from "@nextui-org/image";
 import {
   NavbarBrand,
@@ -11,7 +12,6 @@ import {
 import { link as linkStyles } from "@nextui-org/theme";
 import clsx from "clsx";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Button } from "@nextui-org/button";
 
 import { ThemeSwitch } from "./ui/theme-switch";
 
@@ -31,7 +31,10 @@ const navbarItemsPreLogin = [
 const navbarItemsPostLoginForPatient = [
   { label: "Dashboard", href: "/dashboard/patient" },
   { label: "My cases", href: "/dashboard/patient/medical-case" },
-  { label: "Appointments", href: "/dashboard/patient/appointments" },
+  {
+    label: "Appointments",
+    href: "/dashboard/patient/medical-case/current/appointment",
+  },
   { label: "Chat", href: "/dashboard/patient/chat" },
   { label: "Questionnaire", href: "/dashboard/patient/questionnaire" },
   { label: "Sitemap", href: "/sitemap" },

@@ -6,8 +6,8 @@ import { MedicalCaseResponseDto } from "@/types/backend-stubs";
 
 type UnResolvedMedicalCaseContextType = {
   medicalCase: MedicalCaseResponseDto | undefined;
-  isLoading: boolean;
   status: "success" | "error" | "pending";
+  error: Error | null;
 };
 
 const UnResolvedMedicalCaseContext =
@@ -21,8 +21,8 @@ type Props = Readonly<{
 export function UnResolvedMedicalCaseProvider({ patientId, children }: Props) {
   const {
     data: medicalCase,
-    isLoading,
     status,
+    error,
   } = useQuery({
     ...getUnresolvedMedicalCaseByPatientId(patientId),
     retry: false,
@@ -40,7 +40,7 @@ export function UnResolvedMedicalCaseProvider({ patientId, children }: Props) {
 
   return (
     <UnResolvedMedicalCaseContext.Provider
-      value={{ medicalCase, isLoading, status }}
+      value={{ medicalCase, status, error }}
     >
       {children}
     </UnResolvedMedicalCaseContext.Provider>

@@ -1,4 +1,3 @@
-import { TiTick } from "react-icons/ti";
 import { Button, ButtonGroup } from "@nextui-org/button";
 import { Chip, ChipProps } from "@nextui-org/chip";
 import {
@@ -12,7 +11,7 @@ import {
 import { Tooltip } from "@nextui-org/tooltip";
 import { Key, useCallback } from "react";
 import { FaEdit } from "react-icons/fa";
-import { TiCancel } from "react-icons/ti";
+import { TiCancel, TiTick } from "react-icons/ti";
 
 import {
   DateCell,

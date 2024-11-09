@@ -77,6 +77,10 @@ function QuestionnaireTable({ patient, doctorAssignments, strategy }: Props) {
     },
     [],
   );
+  const tableBodyEmptyMsg =
+    strategy === "patient"
+      ? "Seems like you haven't submitted questionnaire, so go ahead and submit one!"
+      : "No questionnaire submissions yet.";
 
   return (
     <Table>
@@ -87,7 +91,7 @@ function QuestionnaireTable({ patient, doctorAssignments, strategy }: Props) {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent="Seems like you haven't submitted questionnaire, so go ahead and submit one!">
+      <TableBody emptyContent={tableBodyEmptyMsg}>
         {doctorAssignments
           .map(({ doctor, questionnaireSubmissions }) => {
             return questionnaireSubmissions.map(submission => (

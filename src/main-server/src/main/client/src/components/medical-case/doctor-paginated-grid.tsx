@@ -3,8 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
 import FormError from "../ui/form-error";
-
-import DoctorCard from "./doctor-card";
+import SelectDoctorCard from "../card/doctor-card";
 
 import Spinner from "@/components/ui/spinner";
 import { getAllDoctors } from "@/react-query/queries";
@@ -30,7 +29,7 @@ function DoctorPaginatedGrid({ selectedId, onSelect }: Props) {
       {availableDoctors.isSuccess && (
         <div className="relative mb-8 grid grid-cols-1 justify-items-center gap-2 rounded-md p-1.5 pb-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {availableDoctors.data.content.map(doctorProfile => (
-            <DoctorCard
+            <SelectDoctorCard
               key={doctorProfile.doctor.id}
               doctorProfile={doctorProfile}
               isSelected={selectedId === doctorProfile.doctor.id}
