@@ -1,5 +1,5 @@
+import { FaUser } from "react-icons/fa";
 import { IoEyeOutline } from "react-icons/io5";
-import Spinner from "@/components/ui/spinner";
 import { FaUserClock } from "react-icons/fa";
 import { FaClipboardQuestion } from "react-icons/fa6";
 import { HiChatBubbleLeftRight } from "react-icons/hi2";
@@ -20,64 +20,49 @@ import { Button, ButtonGroup } from "@nextui-org/button";
 
 import FormError from "../ui/form-error";
 import Link from "../util/link";
+import {
+  DateCell,
+  HandlingDoctorCell,
+  PatientCell,
+} from "../util/table-related";
 
+import Spinner from "@/components/ui/spinner";
 import { useAuthenticatedUser } from "@/contexts/auth-context";
-import { getMedicalCasesByPatientId } from "@/react-query/queries";
+import {
+  getMedicalCasesByDoctorId,
+  getMedicalCasesByPatientId,
+} from "@/react-query/queries";
 import { MedicalCaseResponseDto } from "@/types/backend-stubs";
 import { getHandlingDoctorAssignment } from "@/utils/logic";
 
-const statusColorMap: Record<string, ChipProps["color"]> = {
-  resolved: "success",
-  unresolved: "warning",
-};
+type Props = { strategy: "patient" | "doctor" };
 
-const columns = [
-  { uid: "createdAt", name: "CREATED AT" },
-  { uid: "caseDescription", name: "DESCRIPTION" },
-  { uid: "handlingDoctor", name: "HANDLING DOCTOR" },
-  { uid: "isResolved", name: "STATUS" },
-  { uid: "actions", name: "ACTIONS" },
-];
-
-type CreatedAtCellProps = Readonly<{ createdAt: string }>;
-
-function CreatedAtCell({ createdAt }: CreatedAtCellProps) {
-  const formattedDate = new Date(createdAt).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-
-  return <div>{formattedDate}</div>;
-}
-
-type HandlingDoctorCellProps = Readonly<{
-  doctorAssignments: MedicalCaseResponseDto["doctorAssignments"];
-}>;
-
-function HandlingDoctorCell({ doctorAssignments }: HandlingDoctorCellProps) {
-  const handlingDoctor = getHandlingDoctorAssignment(doctorAssignments);
-
-  return (
-    <p>
-      Dr. {handlingDoctor.doctor.firstName} {handlingDoctor.doctor.lastName}
-    </p>
-  );
-}
-
-function MedicalCasesTable() {
+function MedicalCasesTable({ strategy }: Props) {
   const { user } = useAuthenticatedUser();
   const [page, setPage] = useState(0);
-  const medicalCases = useQuery({
+  const patientMedicalCaseQuery = useQuery({
     ...getMedicalCasesByPatientId(user.id, page, 10),
     staleTime: 1000 * 60 * 5,
+    enabled() {
+      return strategy === "patient";
+    },
   });
+  const doctorMedicalCaseQuery = useQuery({
+    ...getMedicalCasesByDoctorId(user.id, page),
+    staleTime: 1000 * 60 * 5,
+    enabled() {
+      return strategy === "doctor";
+    },
+  });
+  const medicalCaseQuery =
+    strategy === "patient" ? patientMedicalCaseQuery : doctorMedicalCaseQuery;
+  const columns = getColumnKeys(strategy);
 
   const renderCell = useCallback(
     (medicalCase: MedicalCaseResponseDto, columnKey: Key) => {
       switch (columnKey) {
         case "createdAt":
-          return <CreatedAtCell createdAt={medicalCase.createdAt} />;
+          return <DateCell date={medicalCase.createdAt} />;
         case "caseDescription":
           return (
             <p className="text-bold text-ellipsis text-sm capitalize">
@@ -90,83 +75,30 @@ function MedicalCasesTable() {
               doctorAssignments={medicalCase.doctorAssignments}
             />
           );
+        case "patient":
+          return <PatientCell patient={medicalCase.patient} />;
         case "isResolved":
           return (
-            <Chip
-              color={
-                statusColorMap[
-                  medicalCase.isResolved ? "resolved" : "unresolved"
-                ]
-              }
-              size="sm"
-              variant="flat"
-            >
-              {medicalCase.isResolved ? "RESOLVED" : "UNRESOLVED"}
-            </Chip>
+            <CaseStatusCell
+              loggedInDoctorId={user.id}
+              medicalCase={medicalCase}
+              strategy={strategy}
+            />
           );
         case "actions":
-          return (
-            <div className="relative flex items-center justify-center gap-2">
-              <ButtonGroup size="md">
-                <Tooltip content="Details">
-                  <Button
-                    isIconOnly
-                    as={Link}
-                    href={`/dashboard/patient/medical-case/${medicalCase.id}`}
-                  >
-                    <IoEyeOutline />
-                  </Button>
-                </Tooltip>
-                <Tooltip content="Fill questionnaire">
-                  <Button
-                    isIconOnly
-                    as={Link}
-                    href="/dashboard/patient/questionnaire/"
-                  >
-                    <FaClipboardQuestion />
-                  </Button>
-                </Tooltip>
-                <Tooltip
-                  className="text-textPrimary"
-                  color="primary"
-                  content="Appointments"
-                >
-                  <Button
-                    isIconOnly
-                    as={Link}
-                    className="text-textPrimary"
-                    color="primary"
-                    href="/dashboard/patient/appointment/"
-                  >
-                    <FaUserClock />
-                  </Button>
-                </Tooltip>
-                <Tooltip
-                  className="text-textPrimary"
-                  color="primary"
-                  content="Chat with Doctor"
-                >
-                  <Button
-                    isIconOnly
-                    as={Link}
-                    className="text-textPrimary"
-                    color="primary"
-                    href="/dashboard/patient/chat/"
-                  >
-                    <HiChatBubbleLeftRight />
-                  </Button>
-                </Tooltip>
-              </ButtonGroup>
-            </div>
+          return strategy === "patient" ? (
+            <PatientActionsCell medicalCase={medicalCase} />
+          ) : (
+            <DoctorActionsCell medicalCase={medicalCase} />
           );
         default:
-          return medicalCase.id;
+          return null;
       }
     },
     [],
   );
 
-  switch (medicalCases.status) {
+  switch (medicalCaseQuery.status) {
     case "pending":
       return <Spinner />;
     case "error":
@@ -174,9 +106,8 @@ function MedicalCasesTable() {
     case "success":
       return (
         <Table
-          aria-label="Example table with custom cells"
           bottomContent={
-            medicalCases.data.totalPages > 0 ? (
+            medicalCaseQuery.data.totalPages > 0 ? (
               <div className="flex w-full justify-center">
                 <Pagination
                   isCompact
@@ -186,7 +117,7 @@ function MedicalCasesTable() {
                   className="text-textSecondary"
                   color="secondary"
                   page={page + 1}
-                  total={medicalCases.data.totalPages}
+                  total={medicalCaseQuery.data.totalPages}
                   onChange={page => setPage(page - 1)}
                 />
               </div>
@@ -195,17 +126,14 @@ function MedicalCasesTable() {
         >
           <TableHeader columns={columns}>
             {column => (
-              <TableColumn
-                key={column.uid}
-                align={column.uid === "actions" ? "center" : "start"}
-              >
+              <TableColumn key={column.uid} align="center">
                 {column.name}
               </TableColumn>
             )}
           </TableHeader>
           <TableBody
             emptyContent="Seems like you haven't created any new medical case, so go ahead and create one!"
-            items={medicalCases.data.content}
+            items={medicalCaseQuery.data.content}
           >
             {item => (
               <TableRow key={item.id}>
@@ -218,6 +146,185 @@ function MedicalCasesTable() {
         </Table>
       );
   }
+}
+
+function getColumnKeys(strategy: Props["strategy"]) {
+  return strategy === "patient"
+    ? [
+        { uid: "createdAt", name: "CREATED AT" },
+        { uid: "caseDescription", name: "DESCRIPTION" },
+        { uid: "handlingDoctor", name: "HANDLING DOCTOR" },
+        { uid: "isResolved", name: "STATUS" },
+        { uid: "actions", name: "ACTIONS" },
+      ]
+    : [
+        { uid: "patient", name: "PATIENT" },
+        { uid: "caseDescription", name: "DESCRIPTION" },
+        { uid: "createdAt", name: "CREATED AT" },
+        { uid: "isResolved", name: "STATUS" },
+        { uid: "actions", name: "ACTIONS" },
+      ];
+}
+
+function CaseStatusCell({
+  medicalCase,
+  loggedInDoctorId,
+  strategy,
+}: {
+  medicalCase: MedicalCaseResponseDto;
+  loggedInDoctorId: number;
+  strategy: Props["strategy"];
+}) {
+  const statusColorMap: Record<string, ChipProps["color"]> = {
+    resolved: "success",
+    unresolved: "warning",
+  };
+  const currentDoctorAssignment = getHandlingDoctorAssignment(
+    medicalCase.doctorAssignments,
+  );
+  const doctorChanged = currentDoctorAssignment.doctor.id !== loggedInDoctorId;
+
+  return (
+    <div className={strategy === "doctor" ? "flex justify-center gap-1" : ""}>
+      <Chip
+        color={
+          statusColorMap[medicalCase.isResolved ? "resolved" : "unresolved"]
+        }
+        size="sm"
+        variant="flat"
+      >
+        {medicalCase.isResolved ? "RESOLVED" : "UNRESOLVED"}
+      </Chip>
+      {strategy === "doctor" && (
+        <Chip
+          color={doctorChanged ? "secondary" : "success"}
+          size="sm"
+          variant="flat"
+        >
+          {doctorChanged ? "DOCTOR CHANGED" : "ACTIVE"}
+        </Chip>
+      )}
+    </div>
+  );
+}
+
+function PatientActionsCell({
+  medicalCase,
+}: {
+  medicalCase: MedicalCaseResponseDto;
+}) {
+  return (
+    <ButtonGroup size="md">
+      <Tooltip content="Details">
+        <Button
+          isIconOnly
+          as={Link}
+          href={`/dashboard/patient/medical-case/${medicalCase.id}`}
+        >
+          <IoEyeOutline />
+        </Button>
+      </Tooltip>
+      <Tooltip content="Fill questionnaire">
+        <Button isIconOnly as={Link} href="/dashboard/patient/questionnaire/">
+          <FaClipboardQuestion />
+        </Button>
+      </Tooltip>
+      <Tooltip
+        className="text-textPrimary"
+        color="primary"
+        content="Appointments"
+      >
+        <Button
+          isIconOnly
+          as={Link}
+          className="text-textPrimary"
+          color="primary"
+          href="/dashboard/patient/appointment/"
+        >
+          <FaUserClock />
+        </Button>
+      </Tooltip>
+      <Tooltip
+        className="text-textPrimary"
+        color="primary"
+        content="Chat with Doctor"
+      >
+        <Button
+          isIconOnly
+          as={Link}
+          className="text-textPrimary"
+          color="primary"
+          href="/dashboard/patient/chat/"
+        >
+          <HiChatBubbleLeftRight />
+        </Button>
+      </Tooltip>
+    </ButtonGroup>
+  );
+}
+
+function DoctorActionsCell({
+  medicalCase,
+}: {
+  medicalCase: MedicalCaseResponseDto;
+}) {
+  return (
+    <ButtonGroup size="md">
+      <Tooltip content="View Case">
+        <Button
+          isIconOnly
+          as={Link}
+          href={`/dashboard/patient/medical-case/${medicalCase.id}`}
+        >
+          <IoEyeOutline />
+        </Button>
+      </Tooltip>
+      <Tooltip content="View Patient Profile">
+        <Button
+          isIconOnly
+          as={Link}
+          href={`/patient/${medicalCase.patient.id}`}
+        >
+          <FaUser />
+        </Button>
+      </Tooltip>
+      <Tooltip content="View Questionnaire Submissions">
+        <Button isIconOnly as={Link} href="/dashboard/patient/questionnaire/">
+          <FaClipboardQuestion />
+        </Button>
+      </Tooltip>
+      <Tooltip
+        className="text-textPrimary"
+        color="primary"
+        content="View Appointments"
+      >
+        <Button
+          isIconOnly
+          as={Link}
+          className="text-textPrimary"
+          color="primary"
+          href="/dashboard/patient/appointment/"
+        >
+          <FaUserClock />
+        </Button>
+      </Tooltip>
+      <Tooltip
+        className="text-textPrimary"
+        color="primary"
+        content="Chat with Patient"
+      >
+        <Button
+          isIconOnly
+          as={Link}
+          className="text-textPrimary"
+          color="primary"
+          href="/dashboard/patient/chat/"
+        >
+          <HiChatBubbleLeftRight />
+        </Button>
+      </Tooltip>
+    </ButtonGroup>
+  );
 }
 
 export default MedicalCasesTable;

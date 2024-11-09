@@ -10,7 +10,7 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 import AppointmentTable from "@/components/medical-case/appointment-table";
 import DoctorShowCard from "@/components/medical-case/doctor-show-card";
-import QuestionnaireTable from "@/components/medical-case/questionnaire-table";
+import QuestionnaireTable from "@/components/questionnaire/questionnaire-table";
 import FormError from "@/components/ui/form-error";
 import Spinner from "@/components/ui/spinner";
 import { markMedicalCaseAsResolvedMut } from "@/react-query/mutations";
@@ -119,6 +119,8 @@ function MedicalCaseDetailPage() {
               >
                 <QuestionnaireTable
                   doctorAssignments={medicalCase.data.doctorAssignments}
+                  patient={medicalCase.data.patient}
+                  strategy="patient"
                 />
               </Tab>
               <Tab
@@ -133,7 +135,8 @@ function MedicalCaseDetailPage() {
                 onClick={() => setSearchParams({ activeTab: "appointment" })}
               >
                 <AppointmentTable
-                  doctorAssignments={medicalCase.data.doctorAssignments}
+                  medicalCase={medicalCase.data}
+                  strategy="patient"
                 />
               </Tab>
             </Tabs>

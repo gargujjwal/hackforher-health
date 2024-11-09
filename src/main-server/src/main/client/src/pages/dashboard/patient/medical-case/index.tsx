@@ -118,7 +118,7 @@ function MedicalCasePage() {
       <BsThreeDots className="mx-auto my-6 size-6" />
 
       <h3 className="mb-3 text-xl font-bold">All Your Medical Cases</h3>
-      <MedicalCasesTable />
+      <MedicalCasesTable strategy="patient" />
     </div>
   );
 }
