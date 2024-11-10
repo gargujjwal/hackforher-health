@@ -85,8 +85,8 @@ export default function Navbar() {
       </NavbarBrand>
       <NavbarContent className="basis-1/5 sm:basis-full" justify="center">
         <div className="ml-2 hidden justify-start gap-4 lg:flex xl:gap-6">
-          {navbarItemsToRender.map(item => (
-            <NavbarItem key={item.href}>
+          {navbarItemsToRender.map((item, idx) => (
+            <NavbarItem key={`${item.label}-${idx}`}>
               <Link
                 className={clsx(
                   linkStyles({
@@ -160,7 +160,7 @@ export default function Navbar() {
       <NavbarMenu>
         <div className="mx-4 mt-2 flex flex-col gap-2">
           {navbarItemsToRender.map((item, index) => (
-            <NavbarMenuItem key={`${item}-${index}`}>
+            <NavbarMenuItem key={`${item.label}-${index}`}>
               <Link
                 className={clsx(
                   linkStyles({

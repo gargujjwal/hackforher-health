@@ -39,7 +39,7 @@ function App() {
             </ProtectedRoute>
           ),
           children: [
-            { path: "patient", element: <PatientDashboard /> },
+            { path: "patient/", element: <PatientDashboard /> },
             {
               path: "patient/medical-case/current",
               element: <CurrentMedicalCasePage />,

@@ -185,3 +185,12 @@ export const getQuestionnaireSubmissionById = (
         { method: "GET" },
       ),
   }) as const;
+
+export const getDoctorProfileById = (doctorId: number) =>
+  ({
+    queryKey: ["profile", "doctor", doctorId],
+    queryFn: () =>
+      fetchWithoutAuth<DoctorProfileDto>(`/profile/DOCTOR/${doctorId}`, {
+        method: "GET",
+      }),
+  }) as const;

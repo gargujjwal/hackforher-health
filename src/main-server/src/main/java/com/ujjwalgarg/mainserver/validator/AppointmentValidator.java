@@ -7,10 +7,13 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.sql.Time;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class AppointmentValidator implements ConstraintValidator<ValidAppointment, AppointmentDto> {
 
   @Override
@@ -23,6 +26,7 @@ public class AppointmentValidator implements ConstraintValidator<ValidAppointmen
 
     LocalDateTime startTime = appointmentDto.startTime();
     LocalDateTime endTime = appointmentDto.endTime();
+    log.info("Validating appointment: {}", appointmentDto);
 
     if (startTime == null || endTime == null) {
       context.buildConstraintViolationWithTemplate("Start and end time must be provided")

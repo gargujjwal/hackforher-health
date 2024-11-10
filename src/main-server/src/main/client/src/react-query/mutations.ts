@@ -1,5 +1,6 @@
 import {
   AppointmentDto,
+  AppointmentStatus,
   DoctorAssignmentCreationDto,
   LoginRequest,
   LoginResponse,
@@ -48,7 +49,7 @@ export const createAppointmentMut = (doctorAssignmentId: number) =>
         method: "POST",
         body: JSON.stringify(data),
       }),
-    invalidateKeys: ["appointments"],
+    invalidateKeys: ["medicalCase"],
   }) as const;
 
 export const updateAppointmentMut = (appointmentId: number) =>
@@ -59,18 +60,18 @@ export const updateAppointmentMut = (appointmentId: number) =>
         method: "POST",
         body: JSON.stringify(data),
       }),
-    invalidateKeys: ["appointments", "appointment", appointmentId],
+    invalidateKeys: ["medicalCase"],
   }) as const;
 
 export const changeAppointmentStatusMut = (appointmentId: number) =>
   ({
     mutationKey: ["appointments", "changeStatus", appointmentId],
-    mutationFn: (payload: { appointmentStatus: string }) =>
+    mutationFn: (payload: { appointmentStatus: AppointmentStatus }) =>
       fetchWithAuth<null>(`/appointment/change-status/${appointmentId}`, {
         method: "PATCH",
         body: JSON.stringify(payload),
       }),
-    invalidateKeys: ["appointments", "appointment", appointmentId],
+    invalidateKeys: ["medicalCase"],
   }) as const;
 
 export const createMedicalCaseMut = {

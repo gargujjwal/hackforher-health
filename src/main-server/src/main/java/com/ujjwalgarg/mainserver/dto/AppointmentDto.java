@@ -6,9 +6,7 @@ import com.ujjwalgarg.mainserver.entity.medicalcase.appointment.AppointmentType;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-/**
- * DTO for {@link com.ujjwalgarg.mainserver.entity.medicalcase.appointment.Appointment}
- */
+/** DTO for {@link com.ujjwalgarg.mainserver.entity.medicalcase.appointment.Appointment} */
 @ValidAppointment
 public record AppointmentDto(
     LocalDateTime startTime,

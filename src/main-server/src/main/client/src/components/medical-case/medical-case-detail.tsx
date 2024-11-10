@@ -1,4 +1,6 @@
 import { Tab, Tabs } from "@nextui-org/tabs";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@nextui-org/button";
 
 import AppointmentCreateUpdateForm from "@/components/appointment/appointment-create-update-form";
 import AppointmentTable from "@/components/appointment/appointment-table";
@@ -7,12 +9,17 @@ import DoctorAssignmentCarousel from "@/components/medical-case/doctor-assignmen
 import DoctorChangeForm from "@/components/medical-case/doctor-change-form";
 import ResolveMedicalCaseCard from "@/components/medical-case/resolve-medical-case-card";
 import QuestionnaireTable from "@/components/questionnaire/questionnaire-table";
-import Link from "@/components/util/link";
 import { MedicalCaseResponseDto } from "@/types/backend-stubs";
+import { getHandlingDoctorAssignment } from "@/utils/logic";
 
 type Props = { medicalCase: MedicalCaseResponseDto; activeEntityTab: string };
 
 function MedicalCaseDetail({ medicalCase, activeEntityTab }: Props) {
+  const navigate = useNavigate();
+  const doctorAssignment = getHandlingDoctorAssignment(
+    medicalCase.doctorAssignments,
+  );
+
   return (
     <>
       <div className="space-y-8 md:flex md:gap-8 md:space-y-0">
@@ -39,18 +46,29 @@ function MedicalCaseDetail({ medicalCase, activeEntityTab }: Props) {
       </div>
 
       <section id="actions">
-        <h3 className="mb-4 text-lg font-bold">
+        <h3 className="my-4 text-lg font-bold">
           Actions You Can Take On This Case
         </h3>
         <Tabs>
           <Tab title="Create Appointment">
-            <AppointmentCreateUpdateForm mode="create" />
+            <AppointmentCreateUpdateForm
+              doctorAssignment={doctorAssignment}
+              mode="create"
+              onAppointmentChange={() => {}}
+            />
           </Tab>
-          <Tab
-            as={Link}
-            href="/dashboard/patient/questionnaire"
-            title="Submit Questionnaire"
-          />
+          <Tab title="Submit Questionnaire">
+            <Button
+              className="text-textPrimary"
+              color="primary"
+              onClick={() =>
+                navigate("/dashboard/patient/questionnaire/respond")
+              }
+            >
+              Visit Questionnaire to Submit your Response
+            </Button>
+          </Tab>
+
           <Tab title="Change Doctor">
             <DoctorChangeForm />
           </Tab>

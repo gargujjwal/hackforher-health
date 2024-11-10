@@ -52,7 +52,7 @@ function PatientDashboard() {
             {unresolvedMedicalCase.medicalCase ? (
               <ActionCard
                 footer="Check for Cervical Cancer with AI"
-                href="/dashboard/patient/questionnaire/"
+                href="/dashboard/patient/questionnaire/respond"
                 icon={<FaClipboardQuestion className="size-8 text-headline" />}
                 title="Questionnaire"
                 variant={2}
@@ -61,7 +61,7 @@ function PatientDashboard() {
               <DisabledOverlay tooltipContent="Please create a medical case first">
                 <ActionCard
                   footer="Check for Cervical Cancer with AI"
-                  href="/dashboard/patient/questionnaire"
+                  href="/dashboard/patient/questionnaire/respond"
                   icon={
                     <FaClipboardQuestion className="size-8 text-headline" />
                   }
@@ -75,7 +75,7 @@ function PatientDashboard() {
             {unresolvedMedicalCase.medicalCase ? (
               <ActionCard
                 footer={["View", "Create", "Update", "Cancel"]}
-                href="/dashboard/patient/appointment"
+                href="/dashboard/patient/medical-case/current?entitiesTab=appointments#entities"
                 icon={<FaUserClock className="size-8 text-buttonText" />}
                 title="Appointment"
                 variant={3}
@@ -84,7 +84,7 @@ function PatientDashboard() {
               <DisabledOverlay tooltipContent="Please create a medical case first">
                 <ActionCard
                   footer={["View", "Create", "Update", "Cancel"]}
-                  href="/dashboard/patient/appointment"
+                  href="/dashboard/patient/medical-case/current?entitiesTab=appointments#entities"
                   icon={<FaUserClock className="size-8 text-buttonText" />}
                   title="Appointment"
                   variant={3}
@@ -96,7 +96,7 @@ function PatientDashboard() {
             {unresolvedMedicalCase.medicalCase ? (
               <ActionCard
                 footer="Chat with doctor handling your current case"
-                href="/dashboard/patient/chat"
+                href="/dashboard/patient/medical-case/current?entitiesTab=chat#entities"
                 icon={<HiChatBubbleLeftRight className="size-8 text-primary" />}
                 title="Chat with Doctor"
                 variant={4}
@@ -105,7 +105,7 @@ function PatientDashboard() {
               <DisabledOverlay tooltipContent="Please create a medical case first">
                 <ActionCard
                   footer="Chat with doctor handling your current case"
-                  href="/dashboard/patient/chat"
+                  href="/dashboard/patient/medical-case/current?entitiesTab=chat#entities"
                   icon={
                     <HiChatBubbleLeftRight className="size-8 text-primary" />
                   }

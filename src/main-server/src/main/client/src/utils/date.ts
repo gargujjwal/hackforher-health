@@ -1,4 +1,4 @@
-import { CalendarDate } from "@internationalized/date";
+import { CalendarDate, parseAbsoluteToLocal } from "@internationalized/date";
 
 export function calendarDateToJSDate(calendarDate: CalendarDate): Date {
   // Note: month in JavaScript Date is zero-based (0 for January, 11 for December)
@@ -53,4 +53,15 @@ export function calculateAge(dateString: string): number {
   }
 
   return age;
+}
+
+export function convertStartDateAndEndDate(
+  startDateISO: string,
+  endDateISO: string,
+) {
+  return {
+    date: parseAbsoluteToLocal(startDateISO + "Z"),
+    startTime: parseAbsoluteToLocal(startDateISO + "Z"),
+    endTime: parseAbsoluteToLocal(endDateISO + "Z"),
+  };
 }
