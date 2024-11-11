@@ -22,6 +22,7 @@ import {
 } from "react-icons/fa";
 
 import { PatientProfileDto } from "@/types/backend-stubs";
+import { getInitials } from "@/utils/string";
 
 type Props = {
   patientProfile: PatientProfileDto;
@@ -38,9 +39,13 @@ function PatientProfile({ patientProfile }: Props) {
           <CardBody className="p-4 sm:p-6">
             <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-6">
               <Avatar
-                alt={`${patient.firstName} ${patient.lastName}`}
+                showFallback
                 className="h-20 w-20 sm:h-24 sm:w-24"
-                src={`https://api.dicebear.com/7.x/initials/svg?seed=${patient.firstName} ${patient.lastName}`}
+                fallback={
+                  <span className="text-xl">
+                    {getInitials(patient.firstName, patient.lastName)}
+                  </span>
+                }
               />
               <div className="flex-1 text-center sm:text-left">
                 <div className="flex flex-col items-center gap-2 sm:flex-row sm:justify-between">

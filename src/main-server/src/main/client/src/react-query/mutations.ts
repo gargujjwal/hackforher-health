@@ -28,7 +28,11 @@ export const loginUserMut = {
 
 export const logoutUserMut = {
   mutationKey: ["auth", "logout"],
-  mutationFn: () => fetchWithoutAuth<null>("/auth/logout", { method: "POST" }),
+  mutationFn: () =>
+    fetchWithoutAuth<null>("/auth/logout", {
+      method: "POST",
+      credentials: "include",
+    }),
   invalidateKeys: ["auth", "user"],
 } as const;
 

@@ -78,17 +78,10 @@ export interface DoctorProfileDto {
   };
 }
 
-export interface MedicalQualification {
-  qualificationName: string;
-  institutionName: string;
-  year: number;
-  certificateUrl: string;
-}
-
 export interface MedicalPublication {
-  publicationName?: string;
-  publicationYear?: number;
-  publicationUrl?: string;
+  publicationName: string;
+  publicationYear: number;
+  publicationUrl: string;
 }
 
 export interface ConsultationTiming {
@@ -279,12 +272,6 @@ export interface Insurance {
   policyNumber: string;
   insuranceProvider: string;
   coverageDetail: string;
-}
-
-export interface MedicalPublication {
-  publicationName?: string;
-  publicationYear?: number;
-  publicationUrl?: string;
 }
 
 export interface MedicalQualification {

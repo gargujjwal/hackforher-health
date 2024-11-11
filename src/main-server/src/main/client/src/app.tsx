@@ -16,8 +16,11 @@ import CurrentMedicalCasePage from "./pages/dashboard/patient/current.index";
 import QuestionnaireIndexPage from "./pages/questionnaire.index";
 import QuestionnaireSubmissionViewPage from "./pages/dashboard/patient/questionnaire-submission/view.index";
 import QuestionnaireRespondPage from "./pages/dashboard/patient/questionnaire/respond.index";
-import AuthencticatedPatientProfilePage from "./pages/dashboard/patient/profile";
+import AuthenticatedPatientProfilePage from "./pages/dashboard/patient/profile";
 import PatientEditFormPage from "./pages/dashboard/patient/profile/edit.index";
+import DoctorProfilePage from "./pages/doctor/[doctorId].profile.index";
+import PatientProfilePage from "./pages/patient/[patientId].profile.index";
+import AuthenticatedDoctorProfilePage from "./pages/dashboard/doctor/profile.index";
 
 function App() {
   const router = createBrowserRouter([
@@ -33,6 +36,11 @@ function App() {
           ],
         },
         { path: "questionnaire", element: <QuestionnaireIndexPage /> },
+        { path: "doctor/:doctorId/profile", element: <DoctorProfilePage /> },
+        {
+          path: "patient/:patientId/profile",
+          element: <PatientProfilePage />,
+        },
         {
           path: "dashboard",
           element: (
@@ -44,7 +52,7 @@ function App() {
             { path: "patient", element: <PatientDashboard /> },
             {
               path: "patient/profile",
-              element: <AuthencticatedPatientProfilePage />,
+              element: <AuthenticatedPatientProfilePage />,
             },
             { path: "patient/profile/edit", element: <PatientEditFormPage /> },
             {
@@ -68,6 +76,10 @@ function App() {
               element: <QuestionnaireSubmissionViewPage />,
             },
             { path: "doctor", element: <DoctorDashboard /> },
+            {
+              path: "doctor/profile",
+              element: <AuthenticatedDoctorProfilePage />,
+            },
           ],
         },
         { path: "400", element: <BadRequestPage /> },

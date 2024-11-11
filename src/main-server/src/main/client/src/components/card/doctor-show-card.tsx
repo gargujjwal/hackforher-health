@@ -71,7 +71,7 @@ function ShowDoctorCard({ doctorAssignment }: Props) {
           as={Link}
           className="mx-auto mt-4 text-textPrimary"
           color="primary"
-          href={`/doctor-profile/${doctor.id}`}
+          href={`/doctor/${doctor.id}/profile`}
         >
           See Profile
         </Button>

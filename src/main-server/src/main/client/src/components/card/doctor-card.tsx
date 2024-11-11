@@ -120,7 +120,7 @@ function SelectDoctorCard({ doctorProfile, isSelected, onSelect }: Props) {
             as={Link}
             className="mt-4 text-textPrimary sm:hidden"
             color="primary"
-            href={`/doctor-profile/${doctorProfile.doctor.id}`}
+            href={`/doctor/profile/${doctorProfile.doctor.id}`}
             size="sm"
           >
             See Profile
@@ -129,7 +129,7 @@ function SelectDoctorCard({ doctorProfile, isSelected, onSelect }: Props) {
             as={Link}
             className="mt-4 hidden text-textPrimary sm:flex"
             color="primary"
-            href={`/doctor-profile/${doctorProfile.doctor.id}`}
+            href={`/doctor/${doctorProfile.doctor.id}/profile`}
           >
             See Profile
           </Button>
