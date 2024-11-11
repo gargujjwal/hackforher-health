@@ -145,10 +145,6 @@ public class MedicalCaseServiceImpl implements MedicalCaseService {
     log.info("Assigning new doctor ID {} to medical case ID {}", doctorId, medicalCaseId);
     MedicalCase medicalCase = medicalCaseRepository.findById(medicalCaseId)
         .orElseThrow(() -> new ResourceNotFoundException(MEDICAL_CASE_NOT_FOUND));
-    if (medicalCase.getDoctorAssignments().getFirst().getDoctor().getId().equals(doctorId)) {
-      log.warn("Doctor ID {} is already assigned to medical case ID {}", doctorId, medicalCaseId);
-      throw new ResourceConflictException("Doctor is already assigned to the medical case");
-    }
 
     DoctorAssignment doctorAssignment = medicalCase.getDoctorAssignments().stream()
         .filter(da -> da.getUnassignedAt() == null)

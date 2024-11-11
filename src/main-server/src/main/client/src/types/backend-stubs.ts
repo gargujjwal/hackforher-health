@@ -216,14 +216,15 @@ export interface PatientProfileDto {
   foodPreference?: string;
   familyMedicalHistory?: string;
   address?: string;
-  phoneNumber: Set<string>;
+  phoneNumber: string[];
   secondaryEmail?: string;
   emergencyContactName?: string;
   emergencyContactNumber?: string;
   emergencyContactEmail?: string;
-  insuranceDetails: Set<Insurance>;
-  currentMedications: Set<string>;
-  allergies: Set<string>;
+  insuranceDetails: Array<Insurance>;
+  currentMedications: Array<string>;
+  allergies: Array<string>;
+  patient: PatientDto;
 }
 
 export interface QuestionnaireReviewDto {

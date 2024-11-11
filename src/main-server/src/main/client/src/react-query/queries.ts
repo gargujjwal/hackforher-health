@@ -4,6 +4,7 @@ import {
   DoctorProfileDto,
   MedicalCaseResponseDto,
   PageResponse,
+  PatientProfileDto,
   QuestionnaireSubmissionResponseDto,
   SectionResponseDto,
 } from "@/types/backend-stubs";
@@ -186,11 +187,11 @@ export const getQuestionnaireSubmissionById = (
       ),
   }) as const;
 
-export const getDoctorProfileById = (doctorId: number) =>
+export const getPatientProfileById = (patientId: number) =>
   ({
-    queryKey: ["profile", "doctor", doctorId],
+    queryKey: ["profile", "patient", patientId],
     queryFn: () =>
-      fetchWithoutAuth<DoctorProfileDto>(`/profile/DOCTOR/${doctorId}`, {
+      fetchWithAuth<PatientProfileDto>(`/profile/PATIENT/${patientId}`, {
         method: "GET",
       }),
   }) as const;

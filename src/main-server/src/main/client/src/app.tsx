@@ -16,6 +16,8 @@ import CurrentMedicalCasePage from "./pages/dashboard/patient/current.index";
 import QuestionnaireIndexPage from "./pages/questionnaire.index";
 import QuestionnaireSubmissionViewPage from "./pages/dashboard/patient/questionnaire-submission/view.index";
 import QuestionnaireRespondPage from "./pages/dashboard/patient/questionnaire/respond.index";
+import AuthencticatedPatientProfilePage from "./pages/dashboard/patient/profile";
+import PatientEditFormPage from "./pages/dashboard/patient/profile/edit.index";
 
 function App() {
   const router = createBrowserRouter([
@@ -39,7 +41,12 @@ function App() {
             </ProtectedRoute>
           ),
           children: [
-            { path: "patient/", element: <PatientDashboard /> },
+            { path: "patient", element: <PatientDashboard /> },
+            {
+              path: "patient/profile",
+              element: <AuthencticatedPatientProfilePage />,
+            },
+            { path: "patient/profile/edit", element: <PatientEditFormPage /> },
             {
               path: "patient/medical-case/current",
               element: <CurrentMedicalCasePage />,

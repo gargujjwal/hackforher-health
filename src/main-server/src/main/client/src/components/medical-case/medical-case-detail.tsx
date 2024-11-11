@@ -16,7 +16,7 @@ type Props = { medicalCase: MedicalCaseResponseDto; activeEntityTab: string };
 
 function MedicalCaseDetail({ medicalCase, activeEntityTab }: Props) {
   const navigate = useNavigate();
-  const doctorAssignment = getHandlingDoctorAssignment(
+  const handlingDoctorAssignment = getHandlingDoctorAssignment(
     medicalCase.doctorAssignments,
   );
 
@@ -52,7 +52,7 @@ function MedicalCaseDetail({ medicalCase, activeEntityTab }: Props) {
         <Tabs>
           <Tab title="Create Appointment">
             <AppointmentCreateUpdateForm
-              doctorAssignment={doctorAssignment}
+              doctorAssignment={handlingDoctorAssignment}
               mode="create"
               onAppointmentChange={() => {}}
             />
@@ -70,7 +70,10 @@ function MedicalCaseDetail({ medicalCase, activeEntityTab }: Props) {
           </Tab>
 
           <Tab title="Change Doctor">
-            <DoctorChangeForm />
+            <DoctorChangeForm
+              handlingDoctorAssignment={handlingDoctorAssignment}
+              medicalCaseId={medicalCase.id}
+            />
           </Tab>
         </Tabs>
       </section>

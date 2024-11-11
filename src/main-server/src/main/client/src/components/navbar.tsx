@@ -1,4 +1,10 @@
 import { Button } from "@nextui-org/button";
+import {
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+} from "@nextui-org/dropdown";
 import { Image } from "@nextui-org/image";
 import {
   NavbarBrand,
@@ -12,6 +18,7 @@ import {
 import { link as linkStyles } from "@nextui-org/theme";
 import clsx from "clsx";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Avatar } from "@nextui-org/avatar";
 
 import { ThemeSwitch } from "./ui/theme-switch";
 
@@ -113,47 +120,109 @@ export default function Navbar() {
       >
         <NavbarItem className="hidden gap-4 lg:flex">
           <ThemeSwitch />
-          <Button
-            className="text-textPrimary"
-            color="primary"
-            isLoading={auth.status === "loading"}
-            onClick={
-              auth.status === "authenticated"
-                ? () => auth.logout.mutate()
-                : auth.status === "unauthenticated"
+          {auth.status !== "authenticated" && (
+            <Button
+              className="text-textPrimary"
+              color="primary"
+              isLoading={auth.status === "loading"}
+              onClick={
+                auth.status === "unauthenticated"
                   ? () => navigate("/auth/login")
                   : undefined
-            }
-          >
-            {auth.status === "authenticated"
-              ? "Logout"
-              : auth.status === "unauthenticated"
-                ? "Login"
-                : null}
-          </Button>
+              }
+            >
+              {auth.status === "unauthenticated" ? "Login" : null}
+            </Button>
+          )}
+          {auth.status === "authenticated" && (
+            <NavbarContent as="div" justify="end">
+              <Dropdown placement="bottom-end">
+                <DropdownTrigger>
+                  <Avatar
+                    isBordered
+                    classNames={{
+                      name: "text-textPrimary select-none",
+                    }}
+                    color="primary"
+                    name={`${auth.user.firstName[0]}${auth.user.lastName[0]}`}
+                  />
+                </DropdownTrigger>
+                <DropdownMenu aria-label="Profile Actions" variant="flat">
+                  <DropdownItem key="profile" className="h-14 gap-2">
+                    <p className="font-semibold">Signed in as</p>
+                    <p className="font-semibold">{auth.user.email}</p>
+                  </DropdownItem>
+                  <DropdownItem key="profile" href="/dashboard/patient/profile">
+                    My Profile
+                  </DropdownItem>
+                  <DropdownItem
+                    key="profile-edit"
+                    href="/dashboard/patient/profile/edit"
+                  >
+                    Edit Profile
+                  </DropdownItem>
+                  <DropdownItem
+                    key="logout"
+                    color="danger"
+                    onClick={() => auth.logout.mutate()}
+                  >
+                    Log Out
+                  </DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            </NavbarContent>
+          )}
         </NavbarItem>
       </NavbarContent>
 
       <NavbarContent className="basis-1 pl-4 lg:hidden" justify="end">
         <ThemeSwitch />
-        <Button
-          className="text-textPrimary"
-          color="primary"
-          isLoading={auth.status === "loading"}
-          onClick={
-            auth.status === "authenticated"
-              ? () => auth.logout.mutate()
-              : auth.status === "unauthenticated"
+        {auth.status !== "authenticated" && (
+          <Button
+            className="text-textPrimary"
+            color="primary"
+            isLoading={auth.status === "loading"}
+            onClick={
+              auth.status === "unauthenticated"
                 ? () => navigate("/auth/login")
                 : undefined
-          }
-        >
-          {auth.status === "authenticated"
-            ? "Logout"
-            : auth.status === "unauthenticated"
-              ? "Login"
-              : null}
-        </Button>
+            }
+          >
+            {auth.status === "unauthenticated" ? "Login" : null}
+          </Button>
+        )}
+        {auth.status === "authenticated" && (
+          <NavbarContent as="div" justify="end">
+            <Dropdown placement="bottom-end">
+              <DropdownTrigger>
+                <Avatar
+                  isBordered
+                  classNames={{
+                    name: "text-textPrimary select-none",
+                  }}
+                  color="primary"
+                  name={`${auth.user.firstName[0]}${auth.user.lastName[0]}`}
+                />
+              </DropdownTrigger>
+              <DropdownMenu aria-label="Profile Actions" variant="flat">
+                <DropdownItem key="profile" className="h-14 gap-2">
+                  <p className="font-semibold">Signed in as</p>
+                  <p className="font-semibold">{auth.user.email}</p>
+                </DropdownItem>
+                <DropdownItem key="settings" href="/dashboard/patient/profile">
+                  My Profile
+                </DropdownItem>
+                <DropdownItem
+                  key="logout"
+                  color="danger"
+                  onClick={() => auth.logout.mutate()}
+                >
+                  Log Out
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </NavbarContent>
+        )}
         <NavbarMenuToggle />
       </NavbarContent>
 

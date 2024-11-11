@@ -5,6 +5,7 @@ import {
   LoginRequest,
   LoginResponse,
   MedicalCaseCreationDto,
+  PatientProfileDto,
   QuestionnaireReviewDto,
   QuestionnaireSubmissionCreationDto,
   QuestionnaireSubmissionResponseDto,
@@ -51,6 +52,26 @@ export const createAppointmentMut = (doctorAssignmentId: number) =>
       }),
     invalidateKeys: ["medicalCase"],
   }) as const;
+
+export const updatePatientProfileMut = (patientId: number) => ({
+  mutationKey: ["profile", "patient", patientId],
+  mutationFn: (data: PatientProfileDto) =>
+    fetchWithAuth<null>(`/profile/PATIENT/${patientId}`, {
+      method: "PATCH",
+      body: JSON.stringify(data),
+    }),
+  invalidateKeys: ["profile", "patient", patientId],
+});
+
+export const updateDoctorProfileMut = (doctorId: number) => ({
+  mutationKey: ["profile", "doctor", doctorId],
+  mutationFn: (data: PatientProfileDto) =>
+    fetchWithAuth<null>(`/profile/DOCTOR/${doctorId}`, {
+      method: "POST",
+      body: JSON.stringify(data),
+    }),
+  invalidateKeys: ["profile", "doctor", doctorId],
+});
 
 export const updateAppointmentMut = (appointmentId: number) =>
   ({
@@ -102,7 +123,7 @@ export const assignDoctorToMedicalCaseMut = (medicalCaseId: number) =>
         method: "POST",
         body: JSON.stringify(data),
       }),
-    invalidateKeys: ["medicalCase", medicalCaseId],
+    invalidateKeys: ["medicalCase"],
   }) as const;
 
 export const createQuestionnaireMut = {

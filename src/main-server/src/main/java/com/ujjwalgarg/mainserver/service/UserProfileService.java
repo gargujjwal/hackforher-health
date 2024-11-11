@@ -5,9 +5,7 @@ import com.ujjwalgarg.mainserver.dto.PatientProfileDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
-/**
- * Service interface for handling user profile operations.
- */
+/** Service interface for handling user profile operations. */
 public interface UserProfileService {
 
   /**

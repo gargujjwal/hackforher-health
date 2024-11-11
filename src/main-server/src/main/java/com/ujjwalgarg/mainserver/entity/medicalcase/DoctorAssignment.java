@@ -11,9 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
+import lombok.ToString.Exclude;
 import org.hibernate.annotations.CreationTimestamp;
 
 @Getter
@@ -47,15 +50,15 @@ public class DoctorAssignment implements Serializable {
   @JoinColumn(name = "medical_case_id")
   private MedicalCase medicalCase;
 
-  @Builder.Default
+  @Default
   @OneToMany(mappedBy = "doctorAssignment", cascade = CascadeType.ALL)
   private List<Appointment> appointments = new ArrayList<>();
 
-  @Builder.Default
+  @Default
   @OneToMany(mappedBy = "doctorAssignment", cascade = CascadeType.ALL)
   private List<ChatMessage> chatMessages = new ArrayList<>();
 
-  @Builder.Default
+  @Default
   @OneToMany(mappedBy = "doctorAssignment", cascade = CascadeType.ALL)
   private List<QuestionnaireSubmission> questionnaireSubmissions = new ArrayList<>();
 }

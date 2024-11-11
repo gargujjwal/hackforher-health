@@ -21,13 +21,14 @@ function DoctorAssignmentCarousel({ doctorAssignments }: Props) {
   }
 
   return (
-    <div className="space-y-1">
+    <div className="max-w-[29rem] space-y-1">
       <Carousel
         autoPlay
         emulateTouch
         infiniteLoop
         swipeable
         selectedItem={currentSlide}
+        showArrows={false}
         showIndicators={false}
         showStatus={false}
         showThumbs={false}
