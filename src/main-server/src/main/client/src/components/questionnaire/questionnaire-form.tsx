@@ -29,7 +29,8 @@ function QuestionnaireForm(props: Props) {
     filename: "medical-questionnaire-response.pdf",
     page: { margin: Margin.MEDIUM },
   });
-  const handleQuestionnaireSubmit = (ev: FormEvent<HTMLFormElement>) => {
+
+  function handleQuestionnaireSubmit(ev: FormEvent<HTMLFormElement>) {
     ev.preventDefault();
     const formData = new FormData(ev.currentTarget);
     // Convert keys to numbers and set the type to Record<number, string>
@@ -43,7 +44,7 @@ function QuestionnaireForm(props: Props) {
     if (props.strategy === "create") {
       props.onSubmit(payload);
     }
-  };
+  }
 
   switch (questionsQuery.status) {
     case "pending":
@@ -68,7 +69,9 @@ function QuestionnaireForm(props: Props) {
               />
             </div>
           )}
-          <h2 className="text-xl font-semibold">Your Submission</h2>
+          {props.strategy === "show" && (
+            <h2 className="text-xl font-semibold">Your Submission</h2>
+          )}
           {questionsQuery.data.map(section => (
             <fieldset
               key={section.id}

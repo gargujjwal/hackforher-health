@@ -30,7 +30,7 @@ function CreateMedicalCasePage() {
         queryKey: createMedicalCaseMut.invalidateKeys,
       });
       toast.success("Medical case created successfully");
-      navigate("/dashboard/patient/medical-case");
+      navigate("/dashboard/patient/medical-case/current");
     },
     onError(error) {
       if (error instanceof ApiErrorCls) {

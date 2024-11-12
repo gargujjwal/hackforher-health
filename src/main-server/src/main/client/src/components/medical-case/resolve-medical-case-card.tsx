@@ -21,7 +21,7 @@ function ResolveMedicalCaseCard({
     onSuccess: () => {
       toast.success("Case resolved successfully");
       queryClient.invalidateQueries({ queryKey: mutationObj.invalidateKeys });
-      navigate("/dashboard/patient/medical-case");
+      navigate("/dashboard/patient");
     },
   });
 

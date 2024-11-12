@@ -6,6 +6,17 @@
   <component name="ChangeListManager">
     <list default="true" id="b0e88a3b-d564-4489-b061-280246b40130" name="Changes" comment="chore(setup): add enviornment.yml file&#10;&#10;Signed-off-by: Ujjwal Garg &lt;ujjwalgarg100204@gmail.com&gt;">
       <changelist_data name="Ujjwal Garg" email="ujjwalgarg100204@gmail.com" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/project-1.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/project-1.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main-server/src/main/client/src/components/medical-case/medical-case-table.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main-server/src/main/client/src/components/medical-case/medical-case-table.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main-server/src/main/client/src/components/medical-case/resolve-medical-case-card.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main-server/src/main/client/src/components/medical-case/resolve-medical-case-card.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main-server/src/main/client/src/components/navbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main-server/src/main/client/src/components/navbar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main-server/src/main/client/src/components/questionnaire/questionnaire-form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main-server/src/main/client/src/components/questionnaire/questionnaire-form.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main-server/src/main/client/src/pages/dashboard/doctor.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main-server/src/main/client/src/pages/dashboard/doctor.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main-server/src/main/client/src/pages/dashboard/patient/medical-case/create.index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main-server/src/main/client/src/pages/dashboard/patient/medical-case/create.index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main-server/src/main/java/com/ujjwalgarg/mainserver/service/impl/MedicalCaseServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main-server/src/main/java/com/ujjwalgarg/mainserver/service/impl/MedicalCaseServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model-microservice/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/model-microservice/app.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,18 +55,18 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="SIGN_OFF_COMMIT" value="true" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "ujjwalgarg100204"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;ujjwalgarg100204&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/ujjwalgarg100204/vit-project-1.git",
-    "accountId": "0bbcdcce-f5a3-4fcd-b8e4-61b943f882b3"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/ujjwalgarg100204/vit-project-1.git&quot;,
+    &quot;accountId&quot;: &quot;0bbcdcce-f5a3-4fcd-b8e4-61b943f882b3&quot;
   }
-}]]></component>
+}</component>
   <component name="OptimizeOnSaveOptions">
     <option name="myRunOnSave" value="true" />
   </component>
@@ -78,17 +89,22 @@
     "SONARLINT_PRECOMMIT_ANALYSIS": "true",
     "git-widget-placeholder": "micro-arch",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/ujjwalgarg/Development/web/python/project-1/src/main-server",
+    "last_opened_file_path": "/home/ujjwalgarg/Development/web/python/project-1/src/model-microservice",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "actions.on.save",
+    "settings.editor.selected.configurable": "editor.preferences.fonts.default",
     "ts.external.directory.path": "/home/ujjwalgarg/Development/web/python/project-1/client/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/model-microservice" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="project-1" type="Python.FlaskServer">
       <module name="project-1" />
@@ -111,8 +127,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23339.11" />
-        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23339.11" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-PY-242.23726.102" />
+        <option value="bundled-python-sdk-5e1850174b45-399fe30bd8c1-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-242.23726.102" />
       </set>
     </attachedChunks>
   </component>
@@ -126,6 +142,7 @@
       <updated>1725190242299</updated>
       <workItem from="1725190250646" duration="19973000" />
       <workItem from="1729839783328" duration="98000" />
+      <workItem from="1731318345576" duration="196000" />
     </task>
     <task id="LOCAL-00001" summary="setup(frontend): remove unnecessary files">
       <option name="closed" value="true" />

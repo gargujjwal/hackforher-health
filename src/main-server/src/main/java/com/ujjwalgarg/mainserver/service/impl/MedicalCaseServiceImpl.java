@@ -5,6 +5,7 @@ import com.ujjwalgarg.mainserver.dto.MedicalCaseResponseDto;
 import com.ujjwalgarg.mainserver.dto.QuestionnaireSubmissionResponseDto;
 import com.ujjwalgarg.mainserver.entity.medicalcase.DoctorAssignment;
 import com.ujjwalgarg.mainserver.entity.medicalcase.MedicalCase;
+import com.ujjwalgarg.mainserver.entity.medicalcase.appointment.AppointmentStatus;
 import com.ujjwalgarg.mainserver.entity.user.Doctor;
 import com.ujjwalgarg.mainserver.entity.user.Patient;
 import com.ujjwalgarg.mainserver.entity.user.Role;
@@ -49,24 +50,28 @@ public class MedicalCaseServiceImpl implements MedicalCaseService {
     Patient patient = userService.findPatientById(user.getId());
     log.info("Found patient: {}", patient.getId());
 
-    medicalCaseRepository.findByPatient_IdAndIsResolvedFalse(patient.getId())
-        .ifPresent(medicalCase -> {
-          log.warn("Patient {} already has an unresolved medical case", patient.getId());
-          throw new ResourceConflictException("Patient already has an unresolved medical case");
-        });
+    medicalCaseRepository
+        .findByPatient_IdAndIsResolvedFalse(patient.getId())
+        .ifPresent(
+            medicalCase -> {
+              log.warn("Patient {} already has an unresolved medical case", patient.getId());
+              throw new ResourceConflictException("Patient already has an unresolved medical case");
+            });
 
     MedicalCase medicalCase = medicalCaseMapper.toEntity(medicalCaseCreationDto);
     medicalCase.setIsResolved(false);
     medicalCase.setPatient(patient);
 
-    Doctor medicalCasedAssignedDoctor = userService.findDoctorById(
-        medicalCaseCreationDto.doctorAssignments().getFirst().doctor().id());
+    Doctor medicalCasedAssignedDoctor =
+        userService.findDoctorById(
+            medicalCaseCreationDto.doctorAssignments().getFirst().doctor().id());
     log.info("Assigning doctor {} to the new medical case", medicalCasedAssignedDoctor.getId());
 
-    DoctorAssignment doctorAssignment = DoctorAssignment.builder()
-        .doctor(medicalCasedAssignedDoctor)
-        .medicalCase(medicalCase)
-        .build();
+    DoctorAssignment doctorAssignment =
+        DoctorAssignment.builder()
+            .doctor(medicalCasedAssignedDoctor)
+            .medicalCase(medicalCase)
+            .build();
     medicalCase.setDoctorAssignments(List.of(doctorAssignment));
 
     medicalCaseRepository.save(medicalCase);
@@ -74,33 +79,43 @@ public class MedicalCaseServiceImpl implements MedicalCaseService {
   }
 
   @Override
-  @PreAuthorize("hasRole('ROLE_DOCTOR') or hasRole('ROLE_ADMIN') or (hasRole('ROLE_PATIENT') and #patientId == authentication.principal.id)")
+  @PreAuthorize(
+      "hasRole('ROLE_DOCTOR') or hasRole('ROLE_ADMIN') or (hasRole('ROLE_PATIENT') and #patientId"
+          + " == authentication.principal.id)")
   public MedicalCaseResponseDto getCurrentUnresolvedMedicalCaseByPatientId(Long patientId) {
     log.info("Fetching current unresolved medical case for patient ID: {}", patientId);
-    return medicalCaseMapper.toDto(medicalCaseRepository.findByIsResolvedIsFalse().orElseThrow(
-        () -> new ResourceNotFoundException("No unresolved medical case found for patient")));
+    return medicalCaseMapper.toDto(
+        medicalCaseRepository
+            .findByIsResolvedIsFalse()
+            .orElseThrow(
+                () ->
+                    new ResourceNotFoundException("No unresolved medical case found for patient")));
   }
 
   @Override
   public MedicalCaseResponseDto getMedicalCaseById(Long medicalCaseId) {
     log.info("Fetching medical case by ID: {}", medicalCaseId);
-    return medicalCaseMapper.toDto(medicalCaseRepository.findById(medicalCaseId)
-        .orElseThrow(() -> new ResourceNotFoundException(MEDICAL_CASE_NOT_FOUND)));
+    return medicalCaseMapper.toDto(
+        medicalCaseRepository
+            .findById(medicalCaseId)
+            .orElseThrow(() -> new ResourceNotFoundException(MEDICAL_CASE_NOT_FOUND)));
   }
 
   @Override
-  @PreAuthorize("hasRole('ROLE_DOCTOR') or (hasRole('ROLE_PATIENT') and #patientId == authentication.principal.id)")
-  public Page<MedicalCaseResponseDto> getAllMedicalCasesForPatient(Long patientId,
-      PageRequest pageRequest) {
+  @PreAuthorize(
+      "hasRole('ROLE_DOCTOR') or (hasRole('ROLE_PATIENT') and #patientId =="
+          + " authentication.principal.id)")
+  public Page<MedicalCaseResponseDto> getAllMedicalCasesForPatient(
+      Long patientId, PageRequest pageRequest) {
     log.info("Fetching all medical cases for patient ID: {}", patientId);
     User user = authService.getAuthenticatedUser();
     if (user.getRole().equals(Role.DOCTOR)) {
       Doctor doctor = userService.findDoctorById(user.getId());
-      boolean doctorHasTreatedPatientInPast = doctor.getDoctorAssignments()
-          .stream()
-          .map(DoctorAssignment::getMedicalCase)
-          .map(MedicalCase::getPatient)
-          .anyMatch(patient -> patient.getId().equals(patientId));
+      boolean doctorHasTreatedPatientInPast =
+          doctor.getDoctorAssignments().stream()
+              .map(DoctorAssignment::getMedicalCase)
+              .map(MedicalCase::getPatient)
+              .anyMatch(patient -> patient.getId().equals(patientId));
       if (!doctorHasTreatedPatientInPast) {
         log.warn("Doctor {} has not treated patient {} before", doctor.getId(), patientId);
         throw new DoctorForbiddenToAccessPatientRecordException(
@@ -115,8 +130,8 @@ public class MedicalCaseServiceImpl implements MedicalCaseService {
 
   @Override
   @PreAuthorize("hasRole('ROLE_DOCTOR') and #doctorId == authentication.principal.id")
-  public Page<MedicalCaseResponseDto> getAllMedicalCasesForDoctor(Long doctorId,
-      PageRequest pageRequest) {
+  public Page<MedicalCaseResponseDto> getAllMedicalCasesForDoctor(
+      Long doctorId, PageRequest pageRequest) {
     log.info("Fetching all medical cases for doctor ID: {}", doctorId);
     return medicalCaseRepository
         .findAllByDoctorAssignments_Doctor_IdOrderByCreatedAtDesc(doctorId, pageRequest)
@@ -124,11 +139,15 @@ public class MedicalCaseServiceImpl implements MedicalCaseService {
   }
 
   @Override
-  @PreAuthorize("hasRole('ROLE_PATIENT') and @medicalCaseServiceImpl.isPatientAuthorizedToEditMedicalCase(#medicalCaseId)")
+  @PreAuthorize(
+      "hasRole('ROLE_PATIENT') and"
+          + " @medicalCaseServiceImpl.isPatientAuthorizedToEditMedicalCase(#medicalCaseId)")
   public void markMedicalCaseAsResolved(Long medicalCaseId) {
     log.info("Marking medical case ID {} as resolved", medicalCaseId);
-    MedicalCase medicalCase = medicalCaseRepository.findById(medicalCaseId)
-        .orElseThrow(() -> new ResourceNotFoundException(MEDICAL_CASE_NOT_FOUND));
+    MedicalCase medicalCase =
+        medicalCaseRepository
+            .findById(medicalCaseId)
+            .orElseThrow(() -> new ResourceNotFoundException(MEDICAL_CASE_NOT_FOUND));
     medicalCase.setIsResolved(true);
 
     medicalCase.getDoctorAssignments().stream()
@@ -140,23 +159,39 @@ public class MedicalCaseServiceImpl implements MedicalCaseService {
   }
 
   @Override
-  @PreAuthorize("hasRole('ROLE_PATIENT') and @medicalCaseServiceImpl.isPatientAuthorizedToEditMedicalCase(#medicalCaseId)")
+  @PreAuthorize(
+      "hasRole('ROLE_PATIENT') and"
+          + " @medicalCaseServiceImpl.isPatientAuthorizedToEditMedicalCase(#medicalCaseId)")
   public void assignNewDoctorToMedicalCase(Long medicalCaseId, Long doctorId) {
     log.info("Assigning new doctor ID {} to medical case ID {}", doctorId, medicalCaseId);
-    MedicalCase medicalCase = medicalCaseRepository.findById(medicalCaseId)
-        .orElseThrow(() -> new ResourceNotFoundException(MEDICAL_CASE_NOT_FOUND));
+    MedicalCase medicalCase =
+        medicalCaseRepository
+            .findById(medicalCaseId)
+            .orElseThrow(() -> new ResourceNotFoundException(MEDICAL_CASE_NOT_FOUND));
 
-    DoctorAssignment doctorAssignment = medicalCase.getDoctorAssignments().stream()
-        .filter(da -> da.getUnassignedAt() == null)
-        .findFirst()
-        .orElseThrow(() -> new RuntimeException(
-            "Invalid Doctor assignment, no doctor found whose unassignedAt is null"));
+    DoctorAssignment doctorAssignment =
+        medicalCase.getDoctorAssignments().stream()
+            .filter(da -> da.getUnassignedAt() == null)
+            .findFirst()
+            .orElseThrow(
+                () ->
+                    new RuntimeException(
+                        "Invalid Doctor assignment, no doctor found whose unassignedAt is null"));
     doctorAssignment.setUnassignedAt(LocalDateTime.now());
 
-    DoctorAssignment newDoctorAssignment = DoctorAssignment.builder()
-        .doctor(userService.findDoctorById(doctorId))
-        .medicalCase(medicalCase)
-        .build();
+    // cancel all appointments of the doctor
+    doctorAssignment
+        .getAppointments()
+        .forEach(
+            appointment -> {
+              appointment.setAppointmentStatus(AppointmentStatus.CANCELLED);
+            });
+
+    DoctorAssignment newDoctorAssignment =
+        DoctorAssignment.builder()
+            .doctor(userService.findDoctorById(doctorId))
+            .medicalCase(medicalCase)
+            .build();
     medicalCase.getDoctorAssignments().add(newDoctorAssignment);
 
     medicalCaseRepository.save(medicalCase);
@@ -165,45 +200,58 @@ public class MedicalCaseServiceImpl implements MedicalCaseService {
 
   @Override
   @PreAuthorize("hasAnyRole('ROLE_DOCTOR', 'ROLE_PATIENT')")
-  public List<QuestionnaireSubmissionResponseDto> getAllQuestionnaireSubmissionOfMedicalCaseUnderDoctor(
-      Long medicalCaseId, Long doctorId) {
-    log.info("Fetching all questionnaire submissions for medical case ID {} under doctor ID {}",
-        medicalCaseId, doctorId);
+  public List<QuestionnaireSubmissionResponseDto>
+      getAllQuestionnaireSubmissionOfMedicalCaseUnderDoctor(Long medicalCaseId, Long doctorId) {
+    log.info(
+        "Fetching all questionnaire submissions for medical case ID {} under doctor ID {}",
+        medicalCaseId,
+        doctorId);
     User user = authService.getAuthenticatedUser();
-    MedicalCase medicalCase = medicalCaseRepository.findById(medicalCaseId)
-        .orElseThrow(() -> new ResourceNotFoundException(MEDICAL_CASE_NOT_FOUND));
-    if (user.getRole().equals(Role.PATIENT) && !medicalCase.getPatient().getId()
-        .equals(user.getId())) {
-      log.warn("Patient {} is not allowed to view questionnaire submissions for medical case ID {}",
-          user.getId(), medicalCaseId);
-      throw new AccessDeniedException(
-          "You are not allowed to view this questionnaire submission");
+    MedicalCase medicalCase =
+        medicalCaseRepository
+            .findById(medicalCaseId)
+            .orElseThrow(() -> new ResourceNotFoundException(MEDICAL_CASE_NOT_FOUND));
+    if (user.getRole().equals(Role.PATIENT)
+        && !medicalCase.getPatient().getId().equals(user.getId())) {
+      log.warn(
+          "Patient {} is not allowed to view questionnaire submissions for medical case ID {}",
+          user.getId(),
+          medicalCaseId);
+      throw new AccessDeniedException("You are not allowed to view this questionnaire submission");
     }
 
-    if (user.getRole().equals(Role.DOCTOR) && medicalCase.getDoctorAssignments().stream().noneMatch(
-        doctorAssignment -> doctorAssignment.getDoctor().getId().equals(user.getId()))) {
-      log.warn("Doctor {} is not allowed to view questionnaire submissions for medical case ID {}",
-          user.getId(), medicalCaseId);
-      throw new AccessDeniedException(
-          "You are not allowed to view this questionnaire submission");
+    if (user.getRole().equals(Role.DOCTOR)
+        && medicalCase.getDoctorAssignments().stream()
+            .noneMatch(
+                doctorAssignment -> doctorAssignment.getDoctor().getId().equals(user.getId()))) {
+      log.warn(
+          "Doctor {} is not allowed to view questionnaire submissions for medical case ID {}",
+          user.getId(),
+          medicalCaseId);
+      throw new AccessDeniedException("You are not allowed to view this questionnaire submission");
     }
 
     return medicalCase.getDoctorAssignments().stream()
         .filter(da -> da.getDoctor().getId().equals(doctorId))
         .findFirst()
         .orElseThrow(() -> new ResourceNotFoundException("Doctor not assigned to medical case"))
-        .getQuestionnaireSubmissions().stream()
+        .getQuestionnaireSubmissions()
+        .stream()
         .map(questionnaireSubmissionMapper::toDto)
         .toList();
   }
 
   public boolean isPatientAuthorizedToEditMedicalCase(Long medicalCaseId) {
     User user = authService.getAuthenticatedUser();
-    log.info("Checking if patient {} is authorized to edit medical case ID {}", user.getId(),
+    log.info(
+        "Checking if patient {} is authorized to edit medical case ID {}",
+        user.getId(),
         medicalCaseId);
     Patient patient = userService.findPatientById(user.getId());
-    MedicalCase medicalCase = medicalCaseRepository.findById(medicalCaseId)
-        .orElseThrow(() -> new ResourceNotFoundException(MEDICAL_CASE_NOT_FOUND));
+    MedicalCase medicalCase =
+        medicalCaseRepository
+            .findById(medicalCaseId)
+            .orElseThrow(() -> new ResourceNotFoundException(MEDICAL_CASE_NOT_FOUND));
     return medicalCase.getPatient().getId().equals(patient.getId());
   }
 }

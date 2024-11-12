@@ -37,21 +37,14 @@ import {
   AppointmentType,
   MedicalCaseResponseDto,
 } from "@/types/backend-stubs";
+import { useAuthenticatedUser } from "@/contexts/auth-context";
 
 type Props = {
   strategy: "patient" | "doctor";
   medicalCase: MedicalCaseResponseDto;
-  onAppointmentEditClick?: (
-    doctorAssignment: MedicalCaseResponseDto["doctorAssignments"][0],
-  ) => void;
-  onAppointmentCancelClick?: () => void;
 };
-function AppointmentTable({
-  medicalCase,
-  strategy,
-  onAppointmentCancelClick,
-  onAppointmentEditClick,
-}: Props) {
+function AppointmentTable({ medicalCase, strategy }: Props) {
+  const { user } = useAuthenticatedUser();
   const renderCell = useCallback(
     (
       doctor: MedicalCaseResponseDto["doctorAssignments"][0]["doctor"],
@@ -79,8 +72,6 @@ function AppointmentTable({
             <PatientActionsCell
               appointment={appointment}
               doctorAssignment={da}
-              onAppointmentCancelClick={onAppointmentCancelClick}
-              onAppointmentEditClick={onAppointmentEditClick}
             />
           ) : (
             <DoctorActionsCell appointment={appointment} />
@@ -92,6 +83,13 @@ function AppointmentTable({
     [],
   );
   const columns = getColumnKeys(strategy);
+
+  if (strategy === "doctor") {
+    // only show current doctors appointments
+    medicalCase.doctorAssignments = medicalCase.doctorAssignments.filter(
+      da => da.doctor.id === user.id,
+    );
+  }
 
   return (
     <Table>
@@ -180,7 +178,7 @@ function AppointmentTypeCell({
 function AppointmentStatusCell({ status }: { status: AppointmentStatus }) {
   const appointmentStatusColorMap = {
     PENDING: "warning",
-    ACCEPTED: "secondary",
+    ACCEPTED: "success",
     COMPLETED: "success",
     REJECTED: "danger",
     CANCELLED: "danger",
@@ -194,15 +192,11 @@ function AppointmentStatusCell({ status }: { status: AppointmentStatus }) {
 }
 
 function PatientActionsCell({
-  onAppointmentEditClick,
   appointment,
   doctorAssignment,
-  onAppointmentCancelClick,
 }: {
   doctorAssignment: MedicalCaseResponseDto["doctorAssignments"][0];
   appointment: MedicalCaseResponseDto["doctorAssignments"][0]["appointments"][0];
-  onAppointmentEditClick: Props["onAppointmentEditClick"];
-  onAppointmentCancelClick: Props["onAppointmentCancelClick"];
 }) {
   const queryClient = useQueryClient();
   const changeAppointmentStatusMutateObject = changeAppointmentStatusMut(
@@ -214,9 +208,6 @@ function PatientActionsCell({
       queryClient.invalidateQueries({
         queryKey: changeAppointmentStatusMutateObject.invalidateKeys,
       });
-      if (onAppointmentCancelClick) {
-        onAppointmentCancelClick();
-      }
     },
   });
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -248,8 +239,6 @@ function PatientActionsCell({
             isIconOnly
             onClick={() => {
               onOpen();
-              onAppointmentEditClick &&
-                onAppointmentEditClick(doctorAssignment);
             }}
           >
             <FaEdit />
@@ -300,6 +289,7 @@ function DoctorActionsCell({
           <Button
             isIconOnly
             color="success"
+            isDisabled={appointment.appointmentStatus === "CANCELLED"}
             isLoading={isPending}
             onClick={() => mutate({ appointmentStatus: "ACCEPTED" })}
           >
@@ -310,6 +300,11 @@ function DoctorActionsCell({
       <Tooltip content="Reject Appointment">
         <Button
           isIconOnly
+          isDisabled={
+            appointment.appointmentStatus === "CANCELLED" ||
+            appointment.appointmentStatus === "REJECTED" ||
+            appointment.appointmentStatus === "ACCEPTED"
+          }
           isLoading={isPending}
           onClick={() => mutate({ appointmentStatus: "REJECTED" })}
         >
@@ -319,6 +314,7 @@ function DoctorActionsCell({
       <Tooltip content="Cancel Appointment">
         <Button
           isIconOnly
+          isDisabled={appointment.appointmentStatus === "CANCELLED"}
           isLoading={isPending}
           onClick={() => mutate({ appointmentStatus: "CANCELLED" })}
         >

@@ -21,6 +21,8 @@ import PatientEditFormPage from "./pages/dashboard/patient/profile/edit.index";
 import DoctorProfilePage from "./pages/doctor/[doctorId].profile.index";
 import PatientProfilePage from "./pages/patient/[patientId].profile.index";
 import AuthenticatedDoctorProfilePage from "./pages/dashboard/doctor/profile.index";
+import QuestionnaireSubmissionReviewPage from "./pages/dashboard/doctor/questionnaire-submission/[questionnaireSubmissionId].review.index";
+import DoctorMedicalCaseDetailPage from "./pages/dashboard/doctor/medical-case/[medicalCaseId]";
 
 function App() {
   const router = createBrowserRouter([
@@ -79,6 +81,14 @@ function App() {
             {
               path: "doctor/profile",
               element: <AuthenticatedDoctorProfilePage />,
+            },
+            {
+              path: "doctor/questionnaire-submission/:questionnaireSubmissionId/review",
+              element: <QuestionnaireSubmissionReviewPage />,
+            },
+            {
+              path: "doctor/medical-case/:medicalCaseId",
+              element: <DoctorMedicalCaseDetailPage />,
             },
           ],
         },

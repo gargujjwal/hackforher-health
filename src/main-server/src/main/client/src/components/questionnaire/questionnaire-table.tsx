@@ -25,6 +25,7 @@ import {
   ModelPrediction,
   ReviewStatus,
 } from "@/types/backend-stubs";
+import { useAuthenticatedUser } from "@/contexts/auth-context";
 
 type Props = {
   patient: MedicalCaseResponseDto["patient"];
@@ -33,6 +34,7 @@ type Props = {
 };
 
 function QuestionnaireTable({ patient, doctorAssignments, strategy }: Props) {
+  const { user } = useAuthenticatedUser();
   const columns = getTableColumns(strategy);
   const renderCell = useCallback(
     (
@@ -81,6 +83,12 @@ function QuestionnaireTable({ patient, doctorAssignments, strategy }: Props) {
     strategy === "patient"
       ? "Seems like you haven't submitted questionnaire, so go ahead and submit one!"
       : "No questionnaire submissions yet.";
+
+  if (strategy === "doctor") {
+    doctorAssignments = doctorAssignments.filter(
+      da => da.doctor.id === user.id,
+    );
+  }
 
   return (
     <Table>
@@ -204,20 +212,6 @@ function DoctorActionsCell({
 
   return (
     <ButtonGroup size="md">
-      <Tooltip content="Details">
-        <Button
-          isIconOnly
-          onClick={() =>
-            // FIXME: this link needs to be looked at again
-            navigate(
-              `/dashboard/doctor/questionnaire-submission/${questionnaireSubmission.id}`,
-            )
-          }
-        >
-          <IoEyeOutline />
-        </Button>
-      </Tooltip>
-
       <Tooltip
         content={
           questionnaireSubmission.reviewStatus === "PENDING"
@@ -228,10 +222,9 @@ function DoctorActionsCell({
         <Button
           isIconOnly
           disabled={questionnaireSubmission.reviewStatus !== "PENDING"}
-          // FIXME: this link needs to be looked at again
           onClick={() =>
             navigate(
-              `/dashboard/doctor/questionnaire-submission/${questionnaireSubmission.id}`,
+              `/dashboard/doctor/questionnaire-submission/${questionnaireSubmission.id}/review`,
             )
           }
         >

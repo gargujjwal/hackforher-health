@@ -87,7 +87,7 @@ export default function Navbar() {
           src="/logo.webp"
         />
         <p className="font-bold leading-tight text-black dark:text-textPrimary">
-          Cervical <br /> Buddy
+          HackForHer <br /> Health
         </p>
       </NavbarBrand>
       <NavbarContent className="basis-1/5 sm:basis-full" justify="center">

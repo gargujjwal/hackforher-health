@@ -20,7 +20,7 @@ def predict_cancer_status():
         
         # TODO: call the model here and pass the input data to it
         # then convert the model's prediction into CancerStatus object
-        res = CancerStatus(False, 0.5)
+        res = CancerStatus(False, 0.972)
         logging.info(f"Response: {res}")
         return jsonify(res)
 

@@ -2,6 +2,7 @@ import { Button, ButtonGroup } from "@nextui-org/button";
 import { Chip, ChipProps } from "@nextui-org/chip";
 import { Pagination } from "@nextui-org/pagination";
 import {
+  Selection,
   Table,
   TableBody,
   TableCell,
@@ -34,28 +35,36 @@ import {
 import { MedicalCaseResponseDto } from "@/types/backend-stubs";
 import { getHandlingDoctorAssignment } from "@/utils/logic";
 
-type Props = { strategy: "patient" | "doctor" };
+type Props =
+  | { strategy: "patient" }
+  | {
+      strategy: "doctor";
+      selectedMedicalCaseId: number | null;
+      onSelectMedicalCase: (medicalCaseId: number) => void;
+    };
 
-function MedicalCasesTable({ strategy }: Props) {
+function MedicalCasesTable(props: Props) {
   const { user } = useAuthenticatedUser();
   const [page, setPage] = useState(0);
   const patientMedicalCaseQuery = useQuery({
     ...getMedicalCasesByPatientId(user.id, page, 10),
     staleTime: 1000 * 60 * 5,
     enabled() {
-      return strategy === "patient";
+      return props.strategy === "patient";
     },
   });
   const doctorMedicalCaseQuery = useQuery({
     ...getMedicalCasesByDoctorId(user.id, page),
     staleTime: 1000 * 60 * 5,
     enabled() {
-      return strategy === "doctor";
+      return props.strategy === "doctor";
     },
   });
   const medicalCaseQuery =
-    strategy === "patient" ? patientMedicalCaseQuery : doctorMedicalCaseQuery;
-  const columns = getColumnKeys(strategy);
+    props.strategy === "patient"
+      ? patientMedicalCaseQuery
+      : doctorMedicalCaseQuery;
+  const columns = getColumnKeys(props.strategy);
 
   const renderCell = useCallback(
     (medicalCase: MedicalCaseResponseDto, columnKey: Key) => {
@@ -81,11 +90,11 @@ function MedicalCasesTable({ strategy }: Props) {
             <CaseStatusCell
               loggedInDoctorId={user.id}
               medicalCase={medicalCase}
-              strategy={strategy}
+              strategy={props.strategy}
             />
           );
         case "actions":
-          return strategy === "patient" ? (
+          return props.strategy === "patient" ? (
             <PatientActionsCell medicalCase={medicalCase} />
           ) : (
             <DoctorActionsCell medicalCase={medicalCase} />
@@ -97,6 +106,14 @@ function MedicalCasesTable({ strategy }: Props) {
     [],
   );
 
+  const handleSelectionChange = (keys: Selection) => {
+    if (props.strategy === "doctor" && keys instanceof Set) {
+      const selectedId = +Array.from(keys)[0];
+
+      props.onSelectMedicalCase(selectedId);
+    }
+  };
+
   switch (medicalCaseQuery.status) {
     case "pending":
       return <Spinner />;
@@ -107,7 +124,7 @@ function MedicalCasesTable({ strategy }: Props) {
         <Table
           bottomContent={
             medicalCaseQuery.data.totalPages > 0 ? (
-              <div className="flex w-full justify-center">
+              <div className="mx-auto">
                 <Pagination
                   isCompact
                   loop
@@ -121,6 +138,16 @@ function MedicalCasesTable({ strategy }: Props) {
                 />
               </div>
             ) : null
+          }
+          color="primary"
+          selectedKeys={
+            props.strategy === "doctor"
+              ? new Set([props.selectedMedicalCaseId?.toString() ?? ""])
+              : undefined
+          }
+          selectionMode={props.strategy === "doctor" ? "single" : "none"}
+          onSelectionChange={
+            props.strategy === "doctor" ? handleSelectionChange : undefined
           }
         >
           <TableHeader columns={columns}>
@@ -297,35 +324,9 @@ function DoctorActionsCell({
       <Tooltip content="View Patient Profile">
         <Button
           isIconOnly
-          onClick={() => navigate(`/patient/${medicalCase.patient.id}`)}
+          onClick={() => navigate(`/patient/${medicalCase.patient.id}/profile`)}
         >
           <FaUser />
-        </Button>
-      </Tooltip>
-      <Tooltip content="View Questionnaire Submissions">
-        <Button
-          isIconOnly
-          onClick={() =>
-            // FIXME: this link needs to be looked at again
-            navigate(`/dashboard/doctor/questionnaire-submission/`)
-          }
-        >
-          <FaClipboardQuestion />
-        </Button>
-      </Tooltip>
-      <Tooltip
-        className="text-textPrimary"
-        color="primary"
-        content="View Appointments"
-      >
-        <Button
-          isIconOnly
-          className="text-textPrimary"
-          color="primary"
-          // FIXME: this link needs to be looked at again
-          onClick={() => navigate("/dashboard/doctor/appointment/")}
-        >
-          <FaUserClock />
         </Button>
       </Tooltip>
       <Tooltip
