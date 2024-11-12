@@ -1,6 +1,6 @@
 import { Tab, Tabs } from "@nextui-org/tabs";
 import { useQuery } from "@tanstack/react-query";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import AppointmentTable from "@/components/appointment/appointment-table";
 import PatientCard from "@/components/card/patient-card";
@@ -8,9 +8,9 @@ import Chat from "@/components/chat/chat";
 import DoctorAssignmentCarousel from "@/components/medical-case/doctor-assignment-carousel";
 import QuestionnaireTable from "@/components/questionnaire/questionnaire-table";
 import FormError from "@/components/ui/form-error";
+import H1 from "@/components/ui/h1";
 import Spinner from "@/components/ui/spinner";
 import { getMedicalCaseById } from "@/react-query/queries";
-import H1 from "@/components/ui/h1";
 
 function DoctorMedicalCaseDetailPage() {
   const { medicalCaseId } = useParams();

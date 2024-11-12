@@ -339,7 +339,9 @@ function DoctorActionsCell({
           className="text-textPrimary"
           color="primary"
           // FIXME: this link needs to be looked at again
-          onClick={() => navigate("/dashboard/patient/chat/")}
+          onClick={() =>
+            navigate(`/dashboard/doctor/medical-case/${medicalCase.id}`)
+          }
         >
           <HiChatBubbleLeftRight />
         </Button>

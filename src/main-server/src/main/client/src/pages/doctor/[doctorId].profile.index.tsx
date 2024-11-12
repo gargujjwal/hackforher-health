@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 
 import DoctorProfile from "@/components/doctor-profile";
 import FormError from "@/components/ui/form-error";
-import LoadingScreen from "@/components/ui/loading-screen";
+import Spinner from "@/components/ui/spinner";
 import { getDoctorProfileById } from "@/react-query/queries";
 
 function DoctorProfilePage() {
@@ -18,7 +18,7 @@ function DoctorProfilePage() {
 
   switch (status) {
     case "pending":
-      return <LoadingScreen />;
+      return <Spinner />;
     case "error":
       return <FormError message={error?.message} />;
     case "success":
