@@ -152,12 +152,15 @@ export default function Navbar() {
                     <p className="font-semibold">Signed in as</p>
                     <p className="font-semibold">{auth.user.email}</p>
                   </DropdownItem>
-                  <DropdownItem key="profile" href="/dashboard/patient/profile">
+                  <DropdownItem
+                    key="profile"
+                    href={`/dashboard/${auth.user.role.toLowerCase()}/profile`}
+                  >
                     My Profile
                   </DropdownItem>
                   <DropdownItem
                     key="profile-edit"
-                    href="/dashboard/patient/profile/edit"
+                    href={`/dashboard/${auth.user.role.toLowerCase()}/profile/edit`}
                   >
                     Edit Profile
                   </DropdownItem>
@@ -209,8 +212,17 @@ export default function Navbar() {
                   <p className="font-semibold">Signed in as</p>
                   <p className="font-semibold">{auth.user.email}</p>
                 </DropdownItem>
-                <DropdownItem key="settings" href="/dashboard/patient/profile">
+                <DropdownItem
+                  key="settings"
+                  href={`/dashboard/${auth.user.role.toLowerCase()}/profile`}
+                >
                   My Profile
+                </DropdownItem>
+                <DropdownItem
+                  key="profile-edit"
+                  href={`/dashboard/${auth.user.role.toLowerCase()}/profile/edit`}
+                >
+                  Edit Profile
                 </DropdownItem>
                 <DropdownItem
                   key="logout"

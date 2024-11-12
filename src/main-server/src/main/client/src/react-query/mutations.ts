@@ -2,6 +2,7 @@ import {
   AppointmentDto,
   AppointmentStatus,
   DoctorAssignmentCreationDto,
+  DoctorProfileDto,
   LoginRequest,
   LoginResponse,
   MedicalCaseCreationDto,
@@ -69,9 +70,9 @@ export const updatePatientProfileMut = (patientId: number) => ({
 
 export const updateDoctorProfileMut = (doctorId: number) => ({
   mutationKey: ["profile", "doctor", doctorId],
-  mutationFn: (data: PatientProfileDto) =>
+  mutationFn: (data: DoctorProfileDto) =>
     fetchWithAuth<null>(`/profile/DOCTOR/${doctorId}`, {
-      method: "POST",
+      method: "PATCH",
       body: JSON.stringify(data),
     }),
   invalidateKeys: ["profile", "doctor", doctorId],

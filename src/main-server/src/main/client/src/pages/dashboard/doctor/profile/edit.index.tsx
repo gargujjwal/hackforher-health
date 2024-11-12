@@ -1,19 +1,19 @@
 import { useQuery } from "@tanstack/react-query";
 
-import PatientProfileEditForm from "@/components/patient-profile-edit-form";
+import DoctorProfileEditForm from "@/components/doctor-profile-edit-form";
 import FormError from "@/components/ui/form-error";
 import Spinner from "@/components/ui/spinner";
 import { useAuthenticatedUser } from "@/contexts/auth-context";
-import { getPatientProfileById } from "@/react-query/queries";
+import { getDoctorProfileById } from "@/react-query/queries";
 
-function PatientProfileEditPage() {
+function DoctorProfileEditPage() {
   const { user } = useAuthenticatedUser();
   const {
-    data: patientProfile,
-    error,
+    data: doctorProfile,
     status,
+    error,
   } = useQuery({
-    ...getPatientProfileById(user.id),
+    ...getDoctorProfileById(user.id),
   });
 
   switch (status) {
@@ -22,8 +22,8 @@ function PatientProfileEditPage() {
     case "error":
       return <FormError message={error.message} />;
     case "success":
-      return <PatientProfileEditForm profile={patientProfile} />;
+      return <DoctorProfileEditForm profile={doctorProfile} />;
   }
 }
 
-export default PatientProfileEditPage;
+export default DoctorProfileEditPage;

@@ -17,12 +17,13 @@ import QuestionnaireIndexPage from "./pages/questionnaire.index";
 import QuestionnaireSubmissionViewPage from "./pages/dashboard/patient/questionnaire-submission/view.index";
 import QuestionnaireRespondPage from "./pages/dashboard/patient/questionnaire/respond.index";
 import AuthenticatedPatientProfilePage from "./pages/dashboard/patient/profile";
-import PatientEditFormPage from "./pages/dashboard/patient/profile/edit.index";
+import PatientProfileEditPage from "./pages/dashboard/patient/profile/edit.index";
 import DoctorProfilePage from "./pages/doctor/[doctorId].profile.index";
 import PatientProfilePage from "./pages/patient/[patientId].profile.index";
-import AuthenticatedDoctorProfilePage from "./pages/dashboard/doctor/profile.index";
+import AuthenticatedDoctorProfilePage from "./pages/dashboard/doctor/profile";
 import QuestionnaireSubmissionReviewPage from "./pages/dashboard/doctor/questionnaire-submission/[questionnaireSubmissionId].review.index";
 import DoctorMedicalCaseDetailPage from "./pages/dashboard/doctor/medical-case/[medicalCaseId]";
+import DoctorProfileEditPage from "./pages/dashboard/doctor/profile/edit.index";
 
 function App() {
   const router = createBrowserRouter([
@@ -56,7 +57,10 @@ function App() {
               path: "patient/profile",
               element: <AuthenticatedPatientProfilePage />,
             },
-            { path: "patient/profile/edit", element: <PatientEditFormPage /> },
+            {
+              path: "patient/profile/edit",
+              element: <PatientProfileEditPage />,
+            },
             {
               path: "patient/medical-case/current",
               element: <CurrentMedicalCasePage />,
@@ -82,6 +86,7 @@ function App() {
               path: "doctor/profile",
               element: <AuthenticatedDoctorProfilePage />,
             },
+            { path: "doctor/profile/edit", element: <DoctorProfileEditPage /> },
             {
               path: "doctor/questionnaire-submission/:questionnaireSubmissionId/review",
               element: <QuestionnaireSubmissionReviewPage />,
