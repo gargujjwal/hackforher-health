@@ -6,24 +6,26 @@ import Root from "./components/root";
 import DashboardLayout from "./layouts/dashboard";
 import LoginPage from "./pages/auth/login.index";
 import SignupPage from "./pages/auth/signup.index";
-import DoctorDashboard from "./pages/dashboard/doctor";
-import PatientDashboard from "./pages/dashboard/patient";
-import NotFoundPage from "./pages/not-found";
-import CreateMedicalCasePage from "./pages/dashboard/patient/medical-case/create.index";
-import MedicalCaseDetailPage from "./pages/dashboard/patient/medical-case/[medicalCaseId].index";
 import BadRequestPage from "./pages/bad-request";
+import DoctorDashboard from "./pages/dashboard/doctor";
+import DoctorMedicalCaseDetailPage from "./pages/dashboard/doctor/medical-case/[medicalCaseId]";
+import AuthenticatedDoctorProfilePage from "./pages/dashboard/doctor/profile";
+import DoctorProfileEditPage from "./pages/dashboard/doctor/profile/edit.index";
+import QuestionnaireSubmissionReviewPage from "./pages/dashboard/doctor/questionnaire-submission/[questionnaireSubmissionId].review.index";
+import PatientDashboard from "./pages/dashboard/patient";
 import CurrentMedicalCasePage from "./pages/dashboard/patient/current.index";
-import QuestionnaireIndexPage from "./pages/questionnaire.index";
-import QuestionnaireSubmissionViewPage from "./pages/dashboard/patient/questionnaire-submission/view.index";
-import QuestionnaireRespondPage from "./pages/dashboard/patient/questionnaire/respond.index";
+import MedicalCaseDetailPage from "./pages/dashboard/patient/medical-case/[medicalCaseId].index";
+import CreateMedicalCasePage from "./pages/dashboard/patient/medical-case/create.index";
 import AuthenticatedPatientProfilePage from "./pages/dashboard/patient/profile";
 import PatientProfileEditPage from "./pages/dashboard/patient/profile/edit.index";
+import QuestionnaireSubmissionViewPage from "./pages/dashboard/patient/questionnaire-submission/view.index";
+import QuestionnaireRespondPage from "./pages/dashboard/patient/questionnaire/respond.index";
 import DoctorProfilePage from "./pages/doctor/[doctorId].profile.index";
+import NotFoundPage from "./pages/not-found";
 import PatientProfilePage from "./pages/patient/[patientId].profile.index";
-import AuthenticatedDoctorProfilePage from "./pages/dashboard/doctor/profile";
-import QuestionnaireSubmissionReviewPage from "./pages/dashboard/doctor/questionnaire-submission/[questionnaireSubmissionId].review.index";
-import DoctorMedicalCaseDetailPage from "./pages/dashboard/doctor/medical-case/[medicalCaseId]";
-import DoctorProfileEditPage from "./pages/dashboard/doctor/profile/edit.index";
+import QuestionnaireIndexPage from "./pages/questionnaire.index";
+import SurvivorStoryPage from "./pages/survivor-story";
+import SurvivorStoryDetailPage from "./pages/survivor-story/[id].index";
 
 function App() {
   const router = createBrowserRouter([
@@ -38,6 +40,8 @@ function App() {
             { path: "signup", element: <SignupPage /> },
           ],
         },
+        { path: "survivor-story", element: <SurvivorStoryPage /> },
+        { path: "survivor-story/:id", element: <SurvivorStoryDetailPage /> },
         { path: "questionnaire", element: <QuestionnaireIndexPage /> },
         { path: "doctor/:doctorId/profile", element: <DoctorProfilePage /> },
         {

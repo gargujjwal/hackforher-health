@@ -27,12 +27,11 @@ import { useAuth } from "@/contexts/auth-context";
 
 const navbarItemsPreLogin = [
   { label: "Home", href: "/" },
-  { label: "Survivor Stories", href: "/survivor-stories" },
+  { label: "Survivor Stories", href: "/survivor-story" },
   { label: "Support Groups", href: "/support-groups" },
   { label: "Awareness & Prevention", href: "/awareness-prevention" },
   { label: "Myth Busters", href: "/myth-busters" },
   { label: "FAQ", href: "/faq" },
-  { label: "Sitemap", href: "/sitemap" },
 ];
 
 const navbarItemsPostLoginForPatient = [
@@ -51,12 +50,11 @@ const navbarItemsPostLoginForPatient = [
 
 const navbarItemsPostLoginForDoctor = [
   { label: "Dashboard", href: "/dashboard/doctor" },
-  { label: "Survivor Stories", href: "/survivor-stories" },
+  { label: "Survivor Stories", href: "/survivor-story" },
   { label: "Support Groups", href: "/support-groups" },
   { label: "Awareness & Prevention", href: "/awareness-prevention" },
   { label: "Myth Busters", href: "/myth-busters" },
   { label: "FAQ", href: "/faq" },
-  { label: "Sitemap", href: "/sitemap" },
 ];
 
 export default function Navbar() {
