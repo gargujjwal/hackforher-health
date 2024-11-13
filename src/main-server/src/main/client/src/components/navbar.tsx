@@ -163,6 +163,24 @@ export default function Navbar() {
                   >
                     Edit Profile
                   </DropdownItem>
+                  <DropdownItem key="home" href="/">
+                    Home
+                  </DropdownItem>
+                  <DropdownItem key="survivor-story" href="/survivor-story">
+                    Survivor Stories
+                  </DropdownItem>
+                  <DropdownItem key="support-group" href="/support-groups">
+                    Support Groups
+                  </DropdownItem>
+                  <DropdownItem key="awareness" href="/awareness-prevention">
+                    Awareness & Prevention
+                  </DropdownItem>
+                  <DropdownItem key="myth" href="/myth-busters">
+                    Myth Busters
+                  </DropdownItem>
+                  <DropdownItem key="faq" href="/faq">
+                    FAQ
+                  </DropdownItem>
                   <DropdownItem
                     key="logout"
                     color="danger"
@@ -222,6 +240,24 @@ export default function Navbar() {
                   href={`/dashboard/${auth.user.role.toLowerCase()}/profile/edit`}
                 >
                   Edit Profile
+                </DropdownItem>
+                <DropdownItem key="home" href="/">
+                  Home
+                </DropdownItem>
+                <DropdownItem key="survivor-story" href="/survivor-story">
+                  Survivor Stories
+                </DropdownItem>
+                <DropdownItem key="support-group" href="/support-groups">
+                  Support Groups
+                </DropdownItem>
+                <DropdownItem key="awareness" href="/awareness-prevention">
+                  Awareness & Prevention
+                </DropdownItem>
+                <DropdownItem key="myth" href="/myth-busters">
+                  Myth Busters
+                </DropdownItem>
+                <DropdownItem key="faq" href="/faq">
+                  FAQ
                 </DropdownItem>
                 <DropdownItem
                   key="logout"

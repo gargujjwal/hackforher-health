@@ -30,6 +30,7 @@ import SupportGroupIndexPage from "./pages/support-group";
 import FAQIndexPage from "./pages/faq";
 import MythBustersIndexPage from "./pages/myth-busters";
 import LandingPage from "./pages";
+import AwarenessPreventionIndexPage from "./pages/awareness-prevention";
 
 function App() {
   const router = createBrowserRouter([
@@ -51,6 +52,10 @@ function App() {
         { path: "faq", element: <FAQIndexPage /> },
         { path: "myth-busters", element: <MythBustersIndexPage /> },
         { path: "questionnaire", element: <QuestionnaireIndexPage /> },
+        {
+          path: "awareness-prevention",
+          element: <AwarenessPreventionIndexPage />,
+        },
         { path: "doctor/:doctorId/profile", element: <DoctorProfilePage /> },
         {
           path: "patient/:patientId/profile",
