@@ -28,6 +28,7 @@ import SurvivorStoryPage from "./pages/survivor-story";
 import SurvivorStoryDetailPage from "./pages/survivor-story/[id].index";
 import SupportGroupIndexPage from "./pages/support-group";
 import FAQIndexPage from "./pages/faq";
+import MythBustersIndexPage from "./pages/myth-busters";
 
 function App() {
   const router = createBrowserRouter([
@@ -46,6 +47,7 @@ function App() {
         { path: "survivor-story/:id", element: <SurvivorStoryDetailPage /> },
         { path: "support-groups", element: <SupportGroupIndexPage /> },
         { path: "faq", element: <FAQIndexPage /> },
+        { path: "myth-busters", element: <MythBustersIndexPage /> },
         { path: "questionnaire", element: <QuestionnaireIndexPage /> },
         { path: "doctor/:doctorId/profile", element: <DoctorProfilePage /> },
         {
