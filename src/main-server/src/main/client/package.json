@@ -12,6 +12,7 @@
   "dependencies": {
     "@internationalized/date": "^3.5.6",
     "@lottiefiles/dotlottie-react": "^0.9.2",
+    "@nextui-org/accordion": "^2.0.40",
     "@nextui-org/avatar": "^2.0.33",
     "@nextui-org/badge": "^2.0.32",
     "@nextui-org/button": "2.0.37",

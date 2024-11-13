@@ -26,6 +26,7 @@ import PatientProfilePage from "./pages/patient/[patientId].profile.index";
 import QuestionnaireIndexPage from "./pages/questionnaire.index";
 import SurvivorStoryPage from "./pages/survivor-story";
 import SurvivorStoryDetailPage from "./pages/survivor-story/[id].index";
+import SupportGroupIndexPage from "./pages/support-group";
 
 function App() {
   const router = createBrowserRouter([
@@ -42,6 +43,7 @@ function App() {
         },
         { path: "survivor-story", element: <SurvivorStoryPage /> },
         { path: "survivor-story/:id", element: <SurvivorStoryDetailPage /> },
+        { path: "support-groups", element: <SupportGroupIndexPage /> },
         { path: "questionnaire", element: <QuestionnaireIndexPage /> },
         { path: "doctor/:doctorId/profile", element: <DoctorProfilePage /> },
         {
