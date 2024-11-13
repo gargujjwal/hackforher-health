@@ -16,7 +16,9 @@ const FACTS = [
 ] as const;
 
 function LoadingScreen() {
-  const [factIndex, setFactIndex] = useState(0);
+  const [factIndex, setFactIndex] = useState(
+    Math.floor(Math.random() * FACTS.length),
+  );
 
   useEffect(() => {
     const interval = setInterval(() => {
