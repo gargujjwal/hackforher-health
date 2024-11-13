@@ -27,6 +27,7 @@ import { useAuth } from "@/contexts/auth-context";
 
 const navbarItemsPreLogin = [
   { label: "Home", href: "/" },
+  { label: "Cancer Prediction", href: "/questionnaire" },
   { label: "Survivor Stories", href: "/survivor-story" },
   { label: "Support Groups", href: "/support-groups" },
   { label: "Awareness & Prevention", href: "/awareness-prevention" },

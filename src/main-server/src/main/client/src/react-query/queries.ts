@@ -15,6 +15,7 @@ export const authenticatedUser = {
   queryFn: () =>
     fetchWithAuth<AuthenticatedUserResponse>("/auth/me", { method: "GET" }),
   retry: 1,
+  refetchOnWindowFocus: false,
 } as const;
 
 export const getAllDoctors = (page: number = 0, size: number = 10) => ({

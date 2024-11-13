@@ -29,6 +29,7 @@ import SurvivorStoryDetailPage from "./pages/survivor-story/[id].index";
 import SupportGroupIndexPage from "./pages/support-group";
 import FAQIndexPage from "./pages/faq";
 import MythBustersIndexPage from "./pages/myth-busters";
+import LandingPage from "./pages";
 
 function App() {
   const router = createBrowserRouter([
@@ -36,6 +37,7 @@ function App() {
       path: "/",
       element: <Root />,
       children: [
+        { path: "", element: <LandingPage /> },
         {
           path: "auth",
           children: [
