@@ -1,5 +1,11 @@
 from dataclasses import dataclass
-from typing import Dict, Any
+from typing import Any
+
+
+@dataclass
+class CancerStatus:
+  hasCervicalCancer: bool
+  accuracy: float
 
 
 @dataclass
@@ -42,7 +48,7 @@ class UserInformation:
   biopsy: int
 
   @classmethod
-  def from_dict(cls, data: Dict[str, Any]) -> 'UserInformation':
+  def from_dict(cls, data: dict[str, Any]) -> 'UserInformation':
     # Convert string attributes to integers
     return cls(
         age=int(data.get('age', 0)),
