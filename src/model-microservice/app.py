@@ -2,11 +2,15 @@ import logging
 
 from flask import Flask, jsonify
 from flask import request as req
+from flask_cors import CORS
 
 from dto import UserInformation, CancerStatus
 from model import CervicalCancerPredictionModel
 
 app = Flask(__name__)
+
+# cors configuration
+CORS(app)
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
