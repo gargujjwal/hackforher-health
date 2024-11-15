@@ -1,4 +1,4 @@
-import {Card, CardBody, CardHeader} from "@nextui-org/card";
+import { Card, CardBody, CardHeader } from "@nextui-org/card";
 
 const treatmentSections = [
   {
@@ -30,31 +30,31 @@ const treatmentSections = [
 
 function TreatmentTab() {
   return (
-      <Card>
-        <CardHeader>
-          <h3 className="mb-4 text-2xl font-bold text-[#921A40]">
-            Treatment Options for Cervical Cancer
-          </h3>
-        </CardHeader>
-        <CardBody className="flex flex-col gap-4">
-          {treatmentSections.map((section, index) => (
-              <Card key={index}>
-                <CardHeader>
-                  <h3 className="font-semibold text-textSecondary">
-                    {section.title}
-                  </h3>
-                </CardHeader>
-                <CardBody as="ul" className="list-inside list-disc">
-                  {section.content.map((item, itemIndex) => (
-                      <li key={itemIndex} className="mb-5 text-textSecondary">
-                        {item}
-                      </li>
-                  ))}
-                </CardBody>
-              </Card>
-          ))}
-        </CardBody>
-      </Card>
+    <Card>
+      <CardHeader>
+        <h3 className="mb-4 text-2xl font-bold text-[#921A40]">
+          Treatment Options for Cervical Cancer
+        </h3>
+      </CardHeader>
+      <CardBody className="flex flex-col gap-4">
+        {treatmentSections.map((section, index) => (
+          <Card key={index}>
+            <CardHeader>
+              <h3 className="font-semibold text-textSecondary">
+                {section.title}
+              </h3>
+            </CardHeader>
+            <CardBody as="ul" className="list-inside list-disc">
+              {section.content.map((item, itemIndex) => (
+                <li key={itemIndex} className="mb-5 text-textSecondary">
+                  {item}
+                </li>
+              ))}
+            </CardBody>
+          </Card>
+        ))}
+      </CardBody>
+    </Card>
   );
 }
 

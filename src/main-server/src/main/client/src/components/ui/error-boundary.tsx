@@ -1,4 +1,4 @@
-import React, {Component, ReactNode} from "react";
+import React, { Component, ReactNode } from "react";
 
 import ErrorPage from "@/pages/error";
 
@@ -13,12 +13,12 @@ interface ErrorBoundaryState {
 class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   constructor(props: ErrorBoundaryProps) {
     super(props);
-    this.state = {hasError: false};
+    this.state = { hasError: false };
   }
 
   static getDerivedStateFromError(): ErrorBoundaryState {
     // Update state to display the fallback UI
-    return {hasError: true};
+    return { hasError: true };
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
@@ -29,7 +29,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   render() {
     if (this.state.hasError) {
       // Render the ErrorPage component as a fallback UI
-      return <ErrorPage/>;
+      return <ErrorPage />;
     }
 
     return this.props.children;

@@ -1,6 +1,6 @@
-import {ChildrenProps} from "@/types";
+import { ChildrenProps } from "@/types";
 
-function H1({children}: ChildrenProps) {
+function H1({ children }: ChildrenProps) {
   return <h1 className="mb-4 text-2xl font-bold lg:text-3xl">{children}</h1>;
 }
 

@@ -1,7 +1,7 @@
-import {MedicalCaseResponseDto} from "@/types/backend-stubs";
+import { MedicalCaseResponseDto } from "@/types/backend-stubs";
 
 export function getHandlingDoctorAssignment(
-    doctorAssignments: MedicalCaseResponseDto["doctorAssignments"],
+  doctorAssignments: MedicalCaseResponseDto["doctorAssignments"],
 ): MedicalCaseResponseDto["doctorAssignments"][0] {
   const sortedDoctorAssignment = [...doctorAssignments].sort((a, b) => {
     return new Date(b.assignedAt).getTime() - new Date(a.assignedAt).getTime();

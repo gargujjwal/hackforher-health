@@ -1,9 +1,9 @@
 import { SwitchProps, useSwitch } from "@nextui-org/switch";
-import {VisuallyHidden} from "@react-aria/visually-hidden";
+import { VisuallyHidden } from "@react-aria/visually-hidden";
 import clsx from "clsx";
-import {FC, useEffect, useState} from "react";
+import { FC, useEffect, useState } from "react";
 
-import {MoonFilledIcon, SunFilledIcon} from "@/components/util/icons";
+import { MoonFilledIcon, SunFilledIcon } from "@/components/util/icons";
 import { useTheme } from "@/hooks/use-theme";
 
 export interface ThemeSwitchProps {
@@ -35,7 +35,7 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({
   }, [isMounted]);
 
   // Prevent Hydration Mismatch
-  if (!isMounted) return <div className="h-6 w-6"/>;
+  if (!isMounted) return <div className="h-6 w-6" />;
 
   return (
     <Component

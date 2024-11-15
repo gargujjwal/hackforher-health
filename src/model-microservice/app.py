@@ -16,13 +16,13 @@ CORS(app)
 logging.basicConfig(level=logging.INFO)
 
 # Configure Model
-model = CervicalCancerPredictionModel()
-try:
-  model.load_model()
-except FileNotFoundError:
-  logging.error("Model pickle file not found, training the model")
-  model.train_model()
-
+# model = CervicalCancerPredictionModel()
+# try:
+#   model.load_model()
+# except FileNotFoundError:
+#   logging.error("Model pickle file not found, training the model")
+#   model.train_model()
+#
 
 @app.route('/predict', methods=['POST'])
 def predict_cancer_status():

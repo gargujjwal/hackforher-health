@@ -1,4 +1,4 @@
-import {SurvivorStory} from "@/types/survivor-story";
+import { SurvivorStory } from "@/types/survivor-story";
 
 export const survivorStories = [
   {
@@ -13,9 +13,9 @@ export const survivorStories = [
       stage: "3C",
     },
     symptoms: [
-      {description: "Intermittent spotting during or after sex"},
-      {description: "Unpredictable menstrual cycle"},
-      {description: "Abdominal pain, particularly under the rib cage"},
+      { description: "Intermittent spotting during or after sex" },
+      { description: "Unpredictable menstrual cycle" },
+      { description: "Abdominal pain, particularly under the rib cage" },
     ],
     treatments: [
       {
@@ -41,9 +41,9 @@ export const survivorStories = [
       "Kate reflected on the mental toll of her diagnosis and treatment, emphasizing the importance of allowing oneself to feel all emotions and seeking support. She stressed the importance of listening to one’s body and seeking medical attention for abnormal symptoms. Despite the daunting challenges, Kate remained determined to continue living a fulfilling life with her husband and daughters.",
     ],
     previewText:
-        "Kate began experiencing symptoms, such as random spotting during or after sex and abdominal pain, years before seeking medical attention...",
+      "Kate began experiencing symptoms, such as random spotting during or after sex and abdominal pain, years before seeking medical attention...",
     disclaimer:
-        "This interview has been edited for clarity. This is not medical advice. Please consult with your healthcare provider for treatment decisions.",
+      "This interview has been edited for clarity. This is not medical advice. Please consult with your healthcare provider for treatment decisions.",
     source: {
       name: "Cancer Support Community",
       url: "https://www.cancersupportcommunity.org",
@@ -92,15 +92,15 @@ export const survivorStories = [
       "Looking back, it’s hard to believe how much my life has changed in such a short time. I’ve learned to appreciate the small moments—spending time with my family, enjoying simple pleasures like a walk in the park, or even just sitting quietly and reflecting. I still have my bad days, and I don’t always feel strong, but I’ve come to accept that this journey is part of my story. My advice to others facing a similar battle is to seek help, not just from doctors, but from your loved ones. Cancer can make you feel like you're on an island, but you're not alone. There are people who care, and there is always hope, even on the hardest days. Cancer may have changed my life, but it hasn’t defined who I am.",
     ],
     impact:
-        "This diagnosis has changed my life drastically. I’ve had to pause my career and rethink my future plans.",
+      "This diagnosis has changed my life drastically. I’ve had to pause my career and rethink my future plans.",
     advice:
-        "Don’t wait. Get checked and seek a second opinion if necessary. Early detection is key.",
+      "Don’t wait. Get checked and seek a second opinion if necessary. Early detection is key.",
     currentLife:
-        "I’m focusing on treatment and spending time with my family. I’m also working on spreading awareness about cervical cancer.",
+      "I’m focusing on treatment and spending time with my family. I’m also working on spreading awareness about cervical cancer.",
     disclaimer:
-        "This story is shared to help others, but each cancer journey is different.",
+      "This story is shared to help others, but each cancer journey is different.",
     previewText:
-        "Brittany W. shares her story about battling stage 4B cervical cancer and the challenges she faced along the way.",
+      "Brittany W. shares her story about battling stage 4B cervical cancer and the challenges she faced along the way.",
     source: {
       name: "The Patient Story",
       url: "https://thepatientstory.com/patient-stories/cervical-cancer/squamous/brittany-w/",
@@ -120,13 +120,13 @@ export const survivorStories = [
       date: "2010",
     },
     symptoms: [
-      {description: "Twinge-like cramp in lower right abdomen"},
+      { description: "Twinge-like cramp in lower right abdomen" },
       {
         description:
-            "Severe pain that couldn't be controlled by over-the-counter medications",
+          "Severe pain that couldn't be controlled by over-the-counter medications",
       },
-      {description: "Pain and limp during a 5K run"},
-      {description: "Excruciating pain and bleeding during intimacy"},
+      { description: "Pain and limp during a 5K run" },
+      { description: "Excruciating pain and bleeding during intimacy" },
     ],
     treatments: [
       {
@@ -150,15 +150,15 @@ export const survivorStories = [
       "Today, Rose is not just a survivor but an advocate. She works to raise awareness about cervical cancer, HPV, and the emotional struggles that accompany a diagnosis. Through her volunteer work and online support groups, she helps other women who are facing similar battles. She continues to share her story in the hope that others will find strength and hope in her journey.",
     ],
     impact:
-        "Rose has turned her battle with cervical cancer into a mission to educate others. She actively volunteers with organizations, leads support groups, and helps women deal with the emotional and physical toll of cancer treatment. Her story is a beacon of hope for many women facing the same diagnosis.",
+      "Rose has turned her battle with cervical cancer into a mission to educate others. She actively volunteers with organizations, leads support groups, and helps women deal with the emotional and physical toll of cancer treatment. Her story is a beacon of hope for many women facing the same diagnosis.",
     advice:
-        "Never ignore symptoms, especially when they are persistent. Cervical cancer is often preventable with regular screenings, so it's important to get checked and ask your doctor about any unusual symptoms. No matter how difficult the journey, keep fighting and hold on to hope.",
+      "Never ignore symptoms, especially when they are persistent. Cervical cancer is often preventable with regular screenings, so it's important to get checked and ask your doctor about any unusual symptoms. No matter how difficult the journey, keep fighting and hold on to hope.",
     currentLife:
-        "Rose now lives a fulfilling life with her family. She continues to work in cancer advocacy and shares her story to inspire others. Though the journey was long and painful, she is living proof that with determination and support, survival is possible.",
+      "Rose now lives a fulfilling life with her family. She continues to work in cancer advocacy and shares her story to inspire others. Though the journey was long and painful, she is living proof that with determination and support, survival is possible.",
     disclaimer:
-        "This survivor story is based on Rose's personal experience and may not reflect the experiences of all individuals with cervical cancer.",
+      "This survivor story is based on Rose's personal experience and may not reflect the experiences of all individuals with cervical cancer.",
     previewText:
-        "Rose's journey through cervical cancer was filled with hardships, but she never gave up. From being diagnosed with terminal cancer to surviving multiple treatments and surgeries, Rose's story is a testament to perseverance and hope.",
+      "Rose's journey through cervical cancer was filled with hardships, but she never gave up. From being diagnosed with terminal cancer to surviving multiple treatments and surgeries, Rose's story is a testament to perseverance and hope.",
     source: {
       name: "Centers for Disease Control and Prevention",
       url: "https://www.cdc.gov/cervical-cancer/stories/rose.html",
@@ -211,13 +211,13 @@ export const survivorStories = [
       "I urge everyone, especially young women, to get vaccinated and to prioritize regular check-ups. Early detection is key to successful treatment. Don't let fear or complacency hold you back. Your health is worth it.",
     ],
     impact:
-        "The experience significantly impacted Kristina's personal and professional life. It strengthened her advocacy for HPV vaccination and prevention.",
+      "The experience significantly impacted Kristina's personal and professional life. It strengthened her advocacy for HPV vaccination and prevention.",
     advice:
-        "Vaccinate yourself and your children. HPV is preventable, and cervical cancer is a vaccine-preventable disease. Don't miss the chance to protect yourself.",
+      "Vaccinate yourself and your children. HPV is preventable, and cervical cancer is a vaccine-preventable disease. Don't miss the chance to protect yourself.",
     currentLife:
-        "Kristina is now an active public health advocate, sharing her story with young women and parents about the importance of the HPV vaccine.",
+      "Kristina is now an active public health advocate, sharing her story with young women and parents about the importance of the HPV vaccine.",
     previewText:
-        "Kristina shares her journey of surviving cervical cancer and how vaccination could have prevented it. She advocates for HPV vaccination to prevent future cases.",
+      "Kristina shares her journey of surviving cervical cancer and how vaccination could have prevented it. She advocates for HPV vaccination to prevent future cases.",
     source: {
       name: "CDC",
       url: "https://www.cdc.gov/cervical-cancer/stories/kristina.html",
@@ -253,11 +253,11 @@ export const survivorStories = [
       "Despite being initially scared and angry, Janna chose to face the diagnosis head on. She emphasizes the importance of regular OB/GYN appointments and taking care of oneself to prevent cervical cancer.",
     ],
     advice:
-        "Take your regular OB/GYN appointments seriously. Cervical cancer is slow-growing, but once it spreads beyond the cervix, survival rates drop rapidly.",
+      "Take your regular OB/GYN appointments seriously. Cervical cancer is slow-growing, but once it spreads beyond the cervix, survival rates drop rapidly.",
     currentLife:
-        "Janna has fully recovered from surgery, though she continues to live with the fear that the cancer might return. She advises women to take proactive measures for their health.",
+      "Janna has fully recovered from surgery, though she continues to live with the fear that the cancer might return. She advises women to take proactive measures for their health.",
     previewText:
-        "Janna's diagnosis with stage 1B cervical cancer led to a radical hysterectomy, and she now advocates for regular health checkups.",
+      "Janna's diagnosis with stage 1B cervical cancer led to a radical hysterectomy, and she now advocates for regular health checkups.",
     source: {
       name: "CDC",
       url: "https://www.cdc.gov/cervical-cancer/stories/janna.html",
@@ -306,13 +306,13 @@ export const survivorStories = [
       "To those facing similar challenges, I offer this message: hope endures. There is life after cancer, a life that can be even more beautiful than before. Don’t be afraid to seek support, to share your experiences, and to find strength in the power of human connection.",
     ],
     impact:
-        "My videos have helped countless people, and my story is even used in university lectures to better train doctors in understanding the emotional aspects of cancer.",
+      "My videos have helped countless people, and my story is even used in university lectures to better train doctors in understanding the emotional aspects of cancer.",
     advice:
-        "There is life after cancer—and often, a better life. Don't let cancer define you. Seek support, and use your experience to help others.",
+      "There is life after cancer—and often, a better life. Don't let cancer define you. Seek support, and use your experience to help others.",
     currentLife:
-        "I live a fulfilling life, continuing my vlogging journey, and I've even fallen in love again. None of this would have been possible without my cancer experience.",
+      "I live a fulfilling life, continuing my vlogging journey, and I've even fallen in love again. None of this would have been possible without my cancer experience.",
     previewText:
-        "There is life after cancer, and for me, it's been a better one. I created a vlog to document my journey and provide hope and support for others facing similar struggles.",
+      "There is life after cancer, and for me, it's been a better one. I created a vlog to document my journey and provide hope and support for others facing similar struggles.",
     source: {
       name: "Cervivor",
       url: "https://cervivor.org/stories/rebecca/",
@@ -348,13 +348,13 @@ export const survivorStories = [
       "So, I urge you: don't take your health for granted. Listen to your body, trust your instincts, and don't hesitate to ask questions. Remember, knowledge is power. By taking control of your health, you're taking control of your future.",
     ],
     impact:
-        "As a public figure, I used my platform to raise awareness about early cervical cancer detection and the importance of regular screenings.",
+      "As a public figure, I used my platform to raise awareness about early cervical cancer detection and the importance of regular screenings.",
     advice:
-        "Appointments can change your life. If you have questions, ask them, and trust your intuition. Don't wait—prioritize your health.",
+      "Appointments can change your life. If you have questions, ask them, and trust your intuition. Don't wait—prioritize your health.",
     currentLife:
-        "I am now an advocate for health and wellness, encouraging women to stay on top of their health screenings.",
+      "I am now an advocate for health and wellness, encouraging women to stay on top of their health screenings.",
     previewText:
-        "I was shocked to learn I had precancerous cells during a routine screening, but the experience taught me the power of early detection and self-advocacy.",
+      "I was shocked to learn I had precancerous cells during a routine screening, but the experience taught me the power of early detection and self-advocacy.",
     source: {
       name: "CDC",
       url: "https://www.cdc.gov/cervical-cancer/stories/cindy.html",
@@ -394,13 +394,13 @@ export const survivorStories = [
       "I encourage everyone to prioritize their well-being. Don't skip those check-ups, and listen to your body. By sharing my story, I hope to inspire others to take control of their health and live their best lives.",
     ],
     impact:
-        "I now feel empowered by the ability to make choices about my health, and I advocate for others to take charge of their health by getting regular screenings.",
+      "I now feel empowered by the ability to make choices about my health, and I advocate for others to take charge of their health by getting regular screenings.",
     advice:
-        "Don't put off screenings—get caught up, take one step at a time, and remember that cervical cancer is preventable.",
+      "Don't put off screenings—get caught up, take one step at a time, and remember that cervical cancer is preventable.",
     currentLife:
-        "I am now a mother and advocate for women's health, encouraging others to stay on top of their health care.",
+      "I am now a mother and advocate for women's health, encouraging others to stay on top of their health care.",
     previewText:
-        "Jasmine’s story highlights the importance of regular screenings and how early detection can protect your future, from preventing cancer to preserving fertility.",
+      "Jasmine’s story highlights the importance of regular screenings and how early detection can protect your future, from preventing cancer to preserving fertility.",
     source: {
       name: "CDC",
       url: "https://www.cdc.gov/cervical-cancer/stories/jasmine.html",
@@ -460,13 +460,13 @@ export const survivorStories = [
       "Don’t let fear or complacency hold you back. Remember, health is wealth. Invest in yourself, and you’ll reap the rewards.",
     ],
     impact:
-        "My experience has made me passionate about advocating for cervical cancer prevention, especially among Hispanic women. I now work as a wellness coach and fitness instructor, focusing on cancer recovery fitness.",
+      "My experience has made me passionate about advocating for cervical cancer prevention, especially among Hispanic women. I now work as a wellness coach and fitness instructor, focusing on cancer recovery fitness.",
     advice:
-        "To women: we need to prioritize our health. Without health, nothing else matters. We have the tools to prevent cervical cancer: screening, education, and vaccination.",
+      "To women: we need to prioritize our health. Without health, nothing else matters. We have the tools to prevent cervical cancer: screening, education, and vaccination.",
     currentLife:
-        "I am a certified wellness coach, personal trainer, and group fitness instructor specializing in cancer recovery fitness. I continue to advocate for women's health.",
+      "I am a certified wellness coach, personal trainer, and group fitness instructor specializing in cancer recovery fitness. I continue to advocate for women's health.",
     previewText:
-        "Patti’s story emphasizes the importance of prioritizing our health and how cervical cancer can be prevented through screenings, education, and vaccination. Her journey from cancer survivor to wellness coach is an inspiration.",
+      "Patti’s story emphasizes the importance of prioritizing our health and how cervical cancer can be prevented through screenings, education, and vaccination. Her journey from cancer survivor to wellness coach is an inspiration.",
     source: {
       name: "CDC",
       url: "https://www.cdc.gov/cervical-cancer/stories/patti.html",
@@ -508,13 +508,13 @@ export const survivorStories = [
       "I’m grateful for the healthcare providers who have supported me throughout my journey. I urge everyone to take advantage of available resources, especially those with limited access to healthcare. Remember, your health is your most valuable asset.",
     ],
     impact:
-        "This experience has inspired me to become an advocate for regular screenings and to help others improve their overall health and wellness. I now work as a health coach, emphasizing the importance of listening to your body and taking care of yourself.",
+      "This experience has inspired me to become an advocate for regular screenings and to help others improve their overall health and wellness. I now work as a health coach, emphasizing the importance of listening to your body and taking care of yourself.",
     advice:
-        "Please, take care of yourself. You might convince yourself that you don’t have the time or money for regular exams, but you need to put your health first. How can you be good for anyone else if you are sick? Listen to your body and talk to your doctor about the right cancer screening tests for you.",
+      "Please, take care of yourself. You might convince yourself that you don’t have the time or money for regular exams, but you need to put your health first. How can you be good for anyone else if you are sick? Listen to your body and talk to your doctor about the right cancer screening tests for you.",
     currentLife:
-        "I am now a health coach, helping clients improve their nutrition, manage stress, and stay physically active. I am also an advocate for cancer screenings, especially for those with limited resources, and I support institutions providing low-cost screenings.",
+      "I am now a health coach, helping clients improve their nutrition, manage stress, and stay physically active. I am also an advocate for cancer screenings, especially for those with limited resources, and I support institutions providing low-cost screenings.",
     previewText:
-        "McKerrin’s story emphasizes the importance of regular checkups and early detection of cervical cancer. Her advocacy for health screenings and taking care of your body is a message to all women.",
+      "McKerrin’s story emphasizes the importance of regular checkups and early detection of cervical cancer. Her advocacy for health screenings and taking care of your body is a message to all women.",
     source: {
       name: "CDC",
       url: "https://www.cdc.gov/cervical-cancer/stories/mckerrin.html",
@@ -538,7 +538,7 @@ export const survivorStories = [
     symptoms: [
       {
         description:
-            "Significant vaginal bleeding for about a week, followed by no period the next month.",
+          "Significant vaginal bleeding for about a week, followed by no period the next month.",
         duration: "Approximately 1 week",
       },
     ],
@@ -566,13 +566,13 @@ export const survivorStories = [
       "I encourage everyone, especially women, to prioritize their health. Don’t let fear or complacency hold you back. Remember, your health is your most valuable asset.",
     ],
     impact:
-        "Amy’s story has had a lasting impact on cervical cancer awareness. She uses her experience to raise awareness about the importance of early detection and screening for cervical cancer.",
+      "Amy’s story has had a lasting impact on cervical cancer awareness. She uses her experience to raise awareness about the importance of early detection and screening for cervical cancer.",
     advice:
-        "Do not let insurance or money be a barrier to getting checked if something feels off. There are resources available to help pay for gynecological services. Always listen to your body and get checked out. Have regular Pap tests and consider HPV tests to detect cervical cancer early.",
+      "Do not let insurance or money be a barrier to getting checked if something feels off. There are resources available to help pay for gynecological services. Always listen to your body and get checked out. Have regular Pap tests and consider HPV tests to detect cervical cancer early.",
     currentLife:
-        "Amy is living well, surrounded by family and friends. She continues her advocacy work with the National Cervical Cancer Coalition and is committed to helping end cervical cancer through awareness and early detection.",
+      "Amy is living well, surrounded by family and friends. She continues her advocacy work with the National Cervical Cancer Coalition and is committed to helping end cervical cancer through awareness and early detection.",
     previewText:
-        "Amy’s powerful story encourages women to trust their instincts and get regular screenings for cervical cancer. She emphasizes the importance of early detection and the role of advocacy in spreading awareness.",
+      "Amy’s powerful story encourages women to trust their instincts and get regular screenings for cervical cancer. She emphasizes the importance of early detection and the role of advocacy in spreading awareness.",
     source: {
       name: "CDC",
       url: "https://www.cdc.gov/cervical-cancer/stories/amy.html",
@@ -596,7 +596,7 @@ export const survivorStories = [
     symptoms: [
       {
         description:
-            "No abnormal symptoms, routine Pap test revealed abnormal results.",
+          "No abnormal symptoms, routine Pap test revealed abnormal results.",
       },
     ],
     treatments: [
@@ -616,13 +616,13 @@ export const survivorStories = [
       "Don’t let fear or complacency hold you back. Regular check-ups, including Pap smears, can save lives. Remember, your health is your most valuable asset.",
     ],
     impact:
-        "Jen’s story highlights the importance of routine Pap tests and how early detection can save lives. She actively shares her experience to encourage others to prioritize their gynecological health.",
+      "Jen’s story highlights the importance of routine Pap tests and how early detection can save lives. She actively shares her experience to encourage others to prioritize their gynecological health.",
     advice:
-        "Get your Pap test regularly. It’s worth the small discomfort for the peace of mind and the possibility of early detection. Don't wait for symptoms to show up.",
+      "Get your Pap test regularly. It’s worth the small discomfort for the peace of mind and the possibility of early detection. Don't wait for symptoms to show up.",
     currentLife:
-        "Jen continues to live a full life with her family, now more aware of her body and health. She encourages other women to stay proactive about their health, especially regarding cervical cancer.",
+      "Jen continues to live a full life with her family, now more aware of her body and health. She encourages other women to stay proactive about their health, especially regarding cervical cancer.",
     previewText:
-        "Jen’s story teaches the importance of early detection through regular Pap tests and how cervical cancer can be prevented with proactive healthcare.",
+      "Jen’s story teaches the importance of early detection through regular Pap tests and how cervical cancer can be prevented with proactive healthcare.",
     source: {
       name: "CDC",
       url: "https://www.cdc.gov/cervical-cancer/stories/jen.html",
@@ -646,7 +646,7 @@ export const survivorStories = [
     symptoms: [
       {
         description:
-            "Symptoms included abnormal bleeding and pain before diagnosis.",
+          "Symptoms included abnormal bleeding and pain before diagnosis.",
       },
     ],
     treatments: [
@@ -663,13 +663,13 @@ export const survivorStories = [
       "Don’t let fear or complacency hold you back. Regular check-ups, including Pap smears, can save lives. Remember, your health is your most valuable asset.",
     ],
     impact:
-        "Janna’s story underscores the importance of paying attention to one's health and seeking medical help when symptoms appear, even if they seem minor. She encourages women to advocate for themselves and get checked regularly.",
+      "Janna’s story underscores the importance of paying attention to one's health and seeking medical help when symptoms appear, even if they seem minor. She encourages women to advocate for themselves and get checked regularly.",
     advice:
-        "If you notice any changes in your body, especially abnormal bleeding or pain, don’t ignore it. Get checked and take control of your health.",
+      "If you notice any changes in your body, especially abnormal bleeding or pain, don’t ignore it. Get checked and take control of your health.",
     currentLife:
-        "Janna continues to advocate for women’s health and is now focused on raising awareness about cervical cancer prevention and the importance of early detection.",
+      "Janna continues to advocate for women’s health and is now focused on raising awareness about cervical cancer prevention and the importance of early detection.",
     previewText:
-        "Janna’s story serves as a powerful reminder of the importance of seeking medical help when experiencing symptoms like abnormal bleeding and pain, as early detection is key to overcoming cervical cancer.",
+      "Janna’s story serves as a powerful reminder of the importance of seeking medical help when experiencing symptoms like abnormal bleeding and pain, as early detection is key to overcoming cervical cancer.",
     source: {
       name: "CDC",
       url: "https://www.cdc.gov/cervical-cancer/stories/janna.html",

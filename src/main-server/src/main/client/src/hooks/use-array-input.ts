@@ -1,4 +1,4 @@
-import {useState} from "react";
+import { useState } from "react";
 
 interface UseArrayInputOptions<T> {
   initialValues?: T[];
@@ -13,8 +13,8 @@ interface UseArrayInputReturn<T> {
 }
 
 function useArrayInput<T>({
-                            initialValues = [],
-                          }: UseArrayInputOptions<T> = {}): UseArrayInputReturn<T> {
+  initialValues = [],
+}: UseArrayInputOptions<T> = {}): UseArrayInputReturn<T> {
   const [fields, setFields] = useState<T[]>(initialValues);
 
   const append = (value: T) => {
@@ -27,7 +27,7 @@ function useArrayInput<T>({
 
   const update = (index: number, value: T) => {
     setFields(prevFields =>
-        prevFields.map((item, i) => (i === index ? value : item)),
+      prevFields.map((item, i) => (i === index ? value : item)),
     );
   };
 
@@ -35,7 +35,7 @@ function useArrayInput<T>({
     setFields(newArray);
   };
 
-  return {fields, append, remove, update, replace};
+  return { fields, append, remove, update, replace };
 }
 
 export default useArrayInput;

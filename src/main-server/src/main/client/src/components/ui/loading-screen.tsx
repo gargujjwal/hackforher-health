@@ -1,6 +1,6 @@
-import {DotLottieReact} from "@lottiefiles/dotlottie-react";
-import {AnimatePresence, motion} from "framer-motion";
-import {useEffect, useState} from "react";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 const FACTS = [
   "Cervical cancer is the fourth most common cancer in women worldwide.",
@@ -17,7 +17,7 @@ const FACTS = [
 
 function LoadingScreen() {
   const [factIndex, setFactIndex] = useState(
-      Math.floor(Math.random() * FACTS.length),
+    Math.floor(Math.random() * FACTS.length),
   );
 
   useEffect(() => {
@@ -29,31 +29,31 @@ function LoadingScreen() {
   }, []);
 
   return (
-      <div className="flex h-screen items-center justify-center">
-        <div className="space-y-8 text-center">
-          <AnimatePresence mode="wait">
-            <motion.div
-                key={factIndex}
-                animate={{opacity: 1, y: 0}}
-                className="px-4 text-xl font-medium"
-                exit={{opacity: 0, y: -10}}
-                initial={{opacity: 0, y: 10}}
-                transition={{duration: 0.8}}
-            >
-              {FACTS[factIndex]}
-            </motion.div>
-          </AnimatePresence>
+    <div className="flex h-screen items-center justify-center">
+      <div className="space-y-8 text-center">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={factIndex}
+            animate={{ opacity: 1, y: 0 }}
+            className="px-4 text-xl font-medium"
+            exit={{ opacity: 0, y: -10 }}
+            initial={{ opacity: 0, y: 10 }}
+            transition={{ duration: 0.8 }}
+          >
+            {FACTS[factIndex]}
+          </motion.div>
+        </AnimatePresence>
 
-          <div className="mt-6 grid place-content-center">
-            <DotLottieReact
-                autoplay
-                loop
-                className="size-24"
-                src="/lottie-animations/loading-screen-animation.lottie"
-            />
-          </div>
+        <div className="mt-6 grid place-content-center">
+          <DotLottieReact
+            autoplay
+            loop
+            className="size-24"
+            src="/lottie-animations/loading-screen-animation.lottie"
+          />
         </div>
       </div>
+    </div>
   );
 }
 

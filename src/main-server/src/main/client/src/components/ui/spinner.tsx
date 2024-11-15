@@ -1,10 +1,10 @@
-import {Spinner as NextUiSpinner} from "@nextui-org/spinner";
+import { Spinner as NextUiSpinner } from "@nextui-org/spinner";
 
 function Spinner() {
   return (
-      <div className="grid place-content-center">
-        <NextUiSpinner color="primary" size="lg"/>
-      </div>
+    <div className="grid place-content-center">
+      <NextUiSpinner color="primary" size="lg" />
+    </div>
   );
 }
 

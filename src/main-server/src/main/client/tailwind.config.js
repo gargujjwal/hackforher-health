@@ -1,4 +1,4 @@
-import {nextui} from "@nextui-org/theme";
+import { nextui } from "@nextui-org/theme";
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -7,7 +7,7 @@ module.exports = {
     "./src/layouts/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./node_modules/@nextui-org/theme/dist/components/(accordion|avatar|badge|button|card|checkbox|chip|code|date-input|date-picker|dropdown|image|input|kbd|link|modal|navbar|pagination|radio|select|snippet|toggle|table|tabs|popover|divider|ripple|spinner|calendar|menu|listbox|scroll-shadow|spacer).js"
+    "./node_modules/@nextui-org/theme/dist/components/(accordion|avatar|badge|button|card|checkbox|chip|code|date-input|date-picker|dropdown|image|input|kbd|link|modal|navbar|pagination|radio|select|snippet|toggle|table|tabs|popover|divider|ripple|spinner|calendar|menu|listbox|scroll-shadow|spacer).js",
   ],
   theme: {
     extend: {},

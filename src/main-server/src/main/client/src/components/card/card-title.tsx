@@ -1,6 +1,6 @@
-import {ChildrenProps} from "@/types";
+import { ChildrenProps } from "@/types";
 
-function CardTitle({children}: ChildrenProps) {
+function CardTitle({ children }: ChildrenProps) {
   return <h2 className="text-lg font-semibold sm:text-xl">{children}</h2>;
 }
 

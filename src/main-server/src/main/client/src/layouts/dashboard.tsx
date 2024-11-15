@@ -1,7 +1,7 @@
-import {Outlet} from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
-import {useAuth} from "@/contexts/auth-context";
-import {UnResolvedMedicalCaseProvider} from "@/contexts/unresolved-medical-case";
+import { useAuth } from "@/contexts/auth-context";
+import { UnResolvedMedicalCaseProvider } from "@/contexts/unresolved-medical-case";
 
 function DashboardLayout() {
   const auth = useAuth();
@@ -12,13 +12,13 @@ function DashboardLayout() {
 
   if (auth.user.role === "PATIENT") {
     return (
-        <UnResolvedMedicalCaseProvider patientId={auth.user.id}>
-          <Outlet/>
-        </UnResolvedMedicalCaseProvider>
+      <UnResolvedMedicalCaseProvider patientId={auth.user.id}>
+        <Outlet />
+      </UnResolvedMedicalCaseProvider>
     );
   }
 
-  return <Outlet/>;
+  return <Outlet />;
 }
 
 export default DashboardLayout;

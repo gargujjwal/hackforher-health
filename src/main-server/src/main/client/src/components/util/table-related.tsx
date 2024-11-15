@@ -1,7 +1,7 @@
-import {MedicalCaseResponseDto} from "@/types/backend-stubs";
-import {getHandlingDoctorAssignment} from "@/utils/logic";
+import { MedicalCaseResponseDto } from "@/types/backend-stubs";
+import { getHandlingDoctorAssignment } from "@/utils/logic";
 
-export function DateCell({date}: { date: string }) {
+export function DateCell({ date }: { date: string }) {
   const formattedDate = new Date(date).toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
@@ -12,30 +12,30 @@ export function DateCell({date}: { date: string }) {
 }
 
 type HandlingDoctorCellProps =
-    | { doctor: { firstName: string; lastName: string } }
-    | { doctorAssignments: MedicalCaseResponseDto["doctorAssignments"] };
+  | { doctor: { firstName: string; lastName: string } }
+  | { doctorAssignments: MedicalCaseResponseDto["doctorAssignments"] };
 
 export function HandlingDoctorCell(props: HandlingDoctorCellProps) {
   const doctor =
-      "doctor" in props
-          ? props.doctor
-          : getHandlingDoctorAssignment(props.doctorAssignments).doctor;
+    "doctor" in props
+      ? props.doctor
+      : getHandlingDoctorAssignment(props.doctorAssignments).doctor;
 
   return (
-      <p className="font-bold">
-        Dr. {doctor.firstName} {doctor.lastName}
-      </p>
+    <p className="font-bold">
+      Dr. {doctor.firstName} {doctor.lastName}
+    </p>
   );
 }
 
 export function PatientCell({
-                              patient,
-                            }: {
+  patient,
+}: {
   patient: MedicalCaseResponseDto["patient"];
 }) {
   return (
-      <p className="text-bold text-ellipsis text-sm capitalize">
-        {patient.firstName} {patient.lastName}
-      </p>
+    <p className="text-bold text-ellipsis text-sm capitalize">
+      {patient.firstName} {patient.lastName}
+    </p>
   );
 }
