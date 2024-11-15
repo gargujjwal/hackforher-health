@@ -2,6 +2,7 @@ package com.ujjwalgarg.mainserver.entity.medicalcase;
 
 import com.ujjwalgarg.mainserver.entity.user.Role;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -10,6 +11,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 // ChatMessage.java
 @Entity
@@ -28,13 +30,16 @@ public class ChatMessage implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(name = "sender_role")
+  @NotNull
+  @Column(name = "sender_role", nullable = false)
   @Enumerated(EnumType.STRING)
   private Role senderRole;
 
-  @Column(name = "message")
+  @NotBlank
+  @Column(name = "message", nullable = false)
   private String message;
 
+  @CreationTimestamp
   @Column(name = "sent_at")
   private LocalDateTime sentAt;
 

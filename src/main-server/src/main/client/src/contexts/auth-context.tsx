@@ -4,39 +4,39 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import {createContext, useContext, useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import { createContext, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-import {loginUserMut, logoutUserMut} from "@/react-query/mutations";
-import {authenticatedUser} from "@/react-query/queries";
-import {ChildrenProps} from "@/types";
-import {LoginRequest, LoginResponse} from "@/types/backend-stubs";
-import {AccessToken} from "@/utils/api";
-import {BaseError} from "@/utils/error";
+import { loginUserMut, logoutUserMut } from "@/react-query/mutations";
+import { authenticatedUser } from "@/react-query/queries";
+import { ChildrenProps } from "@/types";
+import { LoginRequest, LoginResponse } from "@/types/backend-stubs";
+import { AccessToken } from "@/utils/api";
+import { BaseError } from "@/utils/error";
 
 type User = Omit<LoginResponse, "accessToken">;
 
 type AuthContextType =
-    | { status: "loading" }
-    | {
-  status: "authenticated";
-  user: User;
-  logout: UseMutationResult<null, Error, void, unknown>;
-}
-    | {
-  status: "unauthenticated";
-  login: UseMutationResult<LoginResponse, Error, LoginRequest, unknown>;
-};
+  | { status: "loading" }
+  | {
+      status: "authenticated";
+      user: User;
+      logout: UseMutationResult<null, Error, void, unknown>;
+    }
+  | {
+      status: "unauthenticated";
+      login: UseMutationResult<LoginResponse, Error, LoginRequest, unknown>;
+    };
 
-const AuthContext = createContext<AuthContextType>({status: "loading"});
+const AuthContext = createContext<AuthContextType>({ status: "loading" });
 
-export function AuthProvider({children}: Readonly<ChildrenProps>) {
+export function AuthProvider({ children }: Readonly<ChildrenProps>) {
   const [authState, setAuthState] = useState<AuthContextType>({
     status: "loading",
   });
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const authenticatedUserQuery = useQuery({...authenticatedUser});
+  const authenticatedUserQuery = useQuery({ ...authenticatedUser });
   const loginUserMutation = useMutation({
     ...loginUserMut,
     onSuccess(res) {
@@ -46,7 +46,7 @@ export function AuthProvider({children}: Readonly<ChildrenProps>) {
         logout: logoutUserMutation,
       });
       AccessToken.setAccessToken(res.accessToken);
-      queryClient.invalidateQueries({queryKey: loginUserMut.invalidateKeys});
+      queryClient.invalidateQueries({ queryKey: loginUserMut.invalidateKeys });
       navigate(`/dashboard/${res.role.toLowerCase()}`);
     },
   });
@@ -58,7 +58,7 @@ export function AuthProvider({children}: Readonly<ChildrenProps>) {
         login: loginUserMutation,
       });
       AccessToken.clearAccessToken();
-      queryClient.invalidateQueries({queryKey: logoutUserMut.invalidateKeys});
+      queryClient.invalidateQueries({ queryKey: logoutUserMut.invalidateKeys });
       navigate("/");
     },
   });
@@ -81,7 +81,7 @@ export function AuthProvider({children}: Readonly<ChildrenProps>) {
   }, [authenticatedUserQuery.status]);
 
   return (
-      <AuthContext.Provider value={authState}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={authState}>{children}</AuthContext.Provider>
   );
 }
 
