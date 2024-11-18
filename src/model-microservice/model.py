@@ -1,141 +1,85 @@
 import pickle
-from abc import ABC, abstractmethod
 
+import lightgbm as lgb
 import numpy as np
 import pandas as pd
-from sklearn.ensemble import RandomForestClassifier
+from pandas.core.interchange.dataframe_protocol import DataFrame
 from sklearn.impute import SimpleImputer
+from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import MinMaxScaler
+
+from dto import CancerStatus, QuestionnaireSubmission
 
 
-class Model(ABC):
-  """Abstract interface for prediction models"""
-
-  @abstractmethod
-  def train_model(self, data_path: str) -> None:
-    """Train the model and save it to a pickle file
-
-    Args:
-        data_path: Path to the training data CSV file
-    """
-    pass
-
-  @abstractmethod
-  def predict(self, input_data: pd.DataFrame) -> np.ndarray:
-    """Make predictions using the trained model
-
-    Args:
-        input_data: DataFrame containing features for prediction
-
-    Returns:
-        Array of predictions
-    """
-    pass
-
-  @abstractmethod
-  def load_model(self, model_path: str) -> None:
-    """Load a trained model from a pickle file
-
-    Args:
-        model_path: Path to the saved model pickle file
-    """
-    pass
-
-
-class CervicalCancerPredictionModel(Model):
+class CervicalCancerPredictionModel:
   """Implementation of cervical cancer prediction model"""
 
+  dataset: DataFrame
+  dataset_path = "dataset/cleaned-dataset.csv"
+  model_path = "cervical_cancer_model.pkl"
+
   def __init__(self):
+    self.dataset = pd.read_csv(self.dataset_path)
     self.model = None
-    self.scaler = MinMaxScaler()
-    self.imputer = SimpleImputer(strategy='mean')
 
-  def _preprocess_data(self, data: pd.DataFrame) -> pd.DataFrame:
-    """Preprocess the input data
+  def __clean_dataset(self):
+    # Define the target variable (y) and features (X)
+    target = 'Biopsy'
+    X = self.dataset.drop(columns=[target])
+    y = self.dataset[target]
 
-    Args:
-        data: Raw input DataFrame
+    # Impute missing values
+    imputer = SimpleImputer(strategy='mean')
+    x_imputed = pd.DataFrame(imputer.fit_transform(X), columns=X.columns)
 
-    Returns:
-        Preprocessed DataFrame
-    """
-    # Replace "?" with NaN
-    data = data.replace("?", np.nan)
+    noise_factor = 0.1  # Adjust this value to control the amount of noise
+    x_noisy = x_imputed + noise_factor * np.random.normal(size=x_imputed.shape)
 
-    # Convert columns to numeric
-    data = data.apply(pd.to_numeric, errors='coerce')
+    # Split the data into training and testing sets (60% train, 40% test) with a new random seed
+    x_train, x_test, y_train, y_test = train_test_split(x_noisy, y,
+                                                        test_size=0.4,
+                                                        random_state=45)
 
-    # List of categorical columns
-    categorical_columns = ['Smokes', 'Hormonal Contraceptives', 'IUD', 'STDs',
-                           'Dx:Cancer', 'Dx:CIN', 'Dx:HPV', 'Dx',
-                           'Hinselmann', 'Cytology', 'Schiller']
+    # Create default numeric feature names
+    def rename_features(df):
+      df.columns = [f'feature_{i}' for i in range(df.shape[1])]
+      return df
 
-    # Get existing categorical columns
-    existing_columns = [col for col in categorical_columns if
-                        col in data.columns]
+    # Rename features in training and test data
+    x_train = rename_features(x_train)
+    x_test = rename_features(x_test)
 
-    # Apply one-hot encoding
-    data = pd.get_dummies(data=data, columns=existing_columns)
+    return x_train, x_test, y_train, y_test
 
-    return data
-
-  def train_model(self, data_path: str = "dataset.csv") -> None:
+  def train_model(self) -> None:
     """Train the model and save it to a pickle file"""
-    # Load data
-    data = pd.read_csv(data_path)
 
-    # Preprocess data
-    processed_data = self._preprocess_data(data)
+    x_train, x_test, y_train, y_test = self.__clean_dataset()
 
-    # Split features and target
-    X = processed_data.iloc[:, :46]
-    y = processed_data.iloc[:, 46]
+    print(f"{x_test.iloc[0] = }")
 
-    # Split into train and test sets
-    X_train, _, y_train, _ = train_test_split(X, y, test_size=0.4,
-                                              random_state=45)
-
-    # Fit and transform with imputer
-    X_train = self.imputer.fit_transform(X_train)
-
-    # Scale features
-    X_train = self.scaler.fit_transform(X_train)
-
-    # Initialize and train model
-    self.model = RandomForestClassifier()
-    self.model.fit(X_train, y_train)
+    # Initialize and train the LightGBM model
+    self.model = lgb.LGBMClassifier()
+    self.model.fit(x_train, y_train)
 
     # Save model
-    with open('cervical_cancer_model.pkl', 'wb') as f:
-      pickle.dump({
-        'model': self.model,
-        'scaler': self.scaler,
-        'imputer': self.imputer
-      }, f)
+    with open(self.model_path, 'wb') as f:
+      pickle.dump(self.model, f)
 
-  def predict(self, input_data: pd.DataFrame) -> np.ndarray:
+  # FIXME: make this function work
+  def predict(self, input_data: QuestionnaireSubmission) -> CancerStatus:
     """Make predictions using the trained model"""
     if self.model is None:
       raise ValueError("Model not loaded. Call load_model() first.")
 
-    # Preprocess input data
-    processed_data = self._preprocess_data(input_data)
-
-    # Impute missing values
-    processed_data = self.imputer.transform(processed_data)
-
-    # Scale features
-    processed_data = self.scaler.transform(processed_data)
+    _, _, _, y_test = self.__clean_dataset()
 
     # Make prediction
-    predictions = self.model.predict(processed_data)
-    return predictions
+    y_pred = self.model.predict(input_data)
+    accuracy_lgb = accuracy_score(y_test, y_pred)
+    return CancerStatus(y_pred, accuracy_lgb)
 
-  def load_model(self, model_path: str = 'cervical_cancer_model.pkl') -> None:
+  def load_model(self) -> None:
     """Load a trained model from a pickle file"""
-    with open(model_path, 'rb') as f:
-      model_data = pickle.load(f)
-      self.model = model_data['model']
-      self.scaler = model_data['scaler']
-      self.imputer = model_data['imputer']
+    with open(self.model_path, 'rb') as f:
+      self.model = pickle.load(f)

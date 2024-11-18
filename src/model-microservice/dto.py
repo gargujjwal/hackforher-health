@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from typing import Any
 
+import pandas as pd
+
 
 @dataclass
 class CancerStatus:
@@ -9,7 +11,7 @@ class CancerStatus:
 
 
 @dataclass
-class UserInformation:
+class QuestionnaireSubmission:
   age: int
   sexual_partners: int
   first_intercourse: int
@@ -48,7 +50,7 @@ class UserInformation:
   biopsy: int
 
   @classmethod
-  def from_dict(cls, data: dict[str, Any]) -> 'UserInformation':
+  def from_dict(cls, data: dict[str, Any]) -> 'QuestionnaireSubmission':
     # Convert string attributes to integers
     return cls(
         age=int(data.get('age', 0)),
@@ -95,3 +97,6 @@ class UserInformation:
         citology=int(data.get('citology', 0)),
         biopsy=int(data.get('biopsy', 0)),
     )
+
+  def to_df(self):
+    pd.DataFrame(self.data)

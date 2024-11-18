@@ -4,7 +4,7 @@ from flask import Flask, jsonify
 from flask import request as req
 from flask_cors import CORS
 
-from dto import UserInformation, CancerStatus
+from dto import QuestionnaireSubmission
 from model import CervicalCancerPredictionModel
 
 app = Flask(__name__)
@@ -16,24 +16,22 @@ CORS(app)
 logging.basicConfig(level=logging.INFO)
 
 # Configure Model
-# model = CervicalCancerPredictionModel()
-# try:
-#   model.load_model()
-# except FileNotFoundError:
-#   logging.error("Model pickle file not found, training the model")
-#   model.train_model()
-#
+model = CervicalCancerPredictionModel()
+try:
+  model.load_model()
+except FileNotFoundError:
+  logging.error("Model pickle file not found, training the model")
+  model.train_model()
+
 
 @app.route('/predict', methods=['POST'])
 def predict_cancer_status():
   if req.is_json:
     # get the input data from the request
-    input_data = UserInformation.from_dict(req.get_json())
+    input_data = QuestionnaireSubmission.from_dict(req.get_json())
     logging.info(f"Received input data: {input_data}")
 
-    # TODO: call the model here and pass the input data to it
-    # then convert the model's prediction into CancerStatus object
-    res = CancerStatus(False, 0.972)
+    res = model.predict(input_data)
     logging.info(f"Response: {res}")
     return jsonify(res)
 
