@@ -1,8 +1,6 @@
 from dataclasses import dataclass
 from typing import Any
 
-import pandas as pd
-
 
 @dataclass
 class CancerStatus:
@@ -97,6 +95,3 @@ class QuestionnaireSubmission:
         citology=int(data.get('citology', 0)),
         biopsy=int(data.get('biopsy', 0)),
     )
-
-  def to_df(self):
-    pd.DataFrame(self.data)
