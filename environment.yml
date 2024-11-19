@@ -1,6 +1,0 @@
-name: project-1
-channels:
-  - defaults
-dependencies:
-  - python==3.12.4
-  - flask

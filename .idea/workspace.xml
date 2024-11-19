@@ -4,12 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b0e88a3b-d564-4489-b061-280246b40130" name="Changes" comment="chore(setup): add enviornment.yml file&#10;&#10;Signed-off-by: Ujjwal Garg &lt;ujjwalgarg100204@gmail.com&gt;">
-      <changelist_data name="Ujjwal Garg" email="ujjwalgarg100204@gmail.com" />
+    <list default="true" id="b0e88a3b-d564-4489-b061-280246b40130" name="Changes" comment="refactor(setup): reintegrating model with flask pending&#10;&#10;Signed-off-by: Ujjwal Garg &lt;ujjwalgarg100204@gmail.com&gt;">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/pages/cancer-status.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/cancer-status.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/pages/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model-microservice/dto.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/model-microservice/dto.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model-microservice/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/model-microservice/model.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,6 +46,18 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="SIGN_OFF_COMMIT" value="true" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;ujjwalgarg100204&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/ujjwalgarg100204/vit-project-1.git&quot;,
+    &quot;accountId&quot;: &quot;8f8a6f1b-cb44-4200-a95d-01938e3d6d1c&quot;
+  }
+}</component>
   <component name="OptimizeOnSaveOptions">
     <option name="myRunOnSave" value="true" />
   </component>
@@ -62,34 +72,69 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Flask server.project-1.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "SONARLINT_PRECOMMIT_ANALYSIS": "true",
-    "git-widget-placeholder": "main",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "actions.on.save",
-    "ts.external.directory.path": "/home/ujjwalgarg/Development/web/python/project-1/client/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Flask server.project-1.executor&quot;: &quot;Run&quot;,
+    &quot;Python.model.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;SONARLINT_PRECOMMIT_ANALYSIS&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;dev&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/ujjwalgarg/Development/web/python/project-1/src/model-microservice&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.fonts.default&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/home/ujjwalgarg/Development/web/python/project-1/src/main-server/src/main/client/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
-  <component name="RunManager">
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/model-microservice" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/model-microservice/dataset" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Flask server.project-1">
+    <configuration name="model" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="project-1" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/model-microservice" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/model-microservice/model.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="project-1" type="Python.FlaskServer">
       <module name="project-1" />
-      <option name="target" value="$PROJECT_DIR$/app.py" />
+      <option name="target" value="$PROJECT_DIR$/src/model-microservice/app.py" />
       <option name="targetType" value="PATH" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <option name="SDK_HOME" value="" />
       <option name="SDK_NAME" value="project-1" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/model-microservice" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
@@ -97,12 +142,17 @@
       <option name="launchJavascriptDebuger" value="false" />
       <method v="2" />
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.model" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-7c0b70fcd90d-JavaScript-PY-242.21829.153" />
-        <option value="bundled-python-sdk-464836ebc622-b74155a9e76b-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-242.21829.153" />
+        <option value="bundled-js-predefined-d6986cc7102b-e768b9ed790e-JavaScript-PY-243.21565.199" />
+        <option value="bundled-python-sdk-cab1f2013843-4ae2d6a61b08-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-243.21565.199" />
       </set>
     </attachedChunks>
   </component>
@@ -115,6 +165,18 @@
       <option name="presentableId" value="Default" />
       <updated>1725190242299</updated>
       <workItem from="1725190250646" duration="19973000" />
+      <workItem from="1729839783328" duration="98000" />
+      <workItem from="1731318345576" duration="196000" />
+      <workItem from="1731557696713" duration="588000" />
+      <workItem from="1731558327756" duration="16000" />
+      <workItem from="1731558423017" duration="173000" />
+      <workItem from="1731559803665" duration="1488000" />
+      <workItem from="1731664470665" duration="1736000" />
+      <workItem from="1731669913058" duration="2175000" />
+      <workItem from="1731939747841" duration="3434000" />
+      <workItem from="1731943717007" duration="658000" />
+      <workItem from="1732019378346" duration="3618000" />
+      <workItem from="1732027002204" duration="453000" />
     </task>
     <task id="LOCAL-00001" summary="setup(frontend): remove unnecessary files">
       <option name="closed" value="true" />
@@ -180,7 +242,31 @@
       <option name="project" value="LOCAL" />
       <updated>1725210123930</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="chore(setup): merging">
+      <option name="closed" value="true" />
+      <created>1731561710040</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1731561710040</updated>
+    </task>
+    <task id="LOCAL-00010" summary="chore(setup): configure cors in model service">
+      <option name="closed" value="true" />
+      <created>1731561837405</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1731561837405</updated>
+    </task>
+    <task id="LOCAL-00011" summary="refactor(setup): reintegrating model with flask pending">
+      <option name="closed" value="true" />
+      <created>1731943167310</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1731943167310</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -195,12 +281,17 @@
     <MESSAGE value="chore(setup): add enviornment.yml file" />
     <MESSAGE value="chore(setup): add environment.yml file" />
     <MESSAGE value="chore(setup): add enviornment.yml file&#10;&#10;Signed-off-by: Ujjwal Garg &lt;ujjwalgarg100204@gmail.com&gt;" />
-    <option name="LAST_COMMIT_MESSAGE" value="chore(setup): add enviornment.yml file&#10;&#10;Signed-off-by: Ujjwal Garg &lt;ujjwalgarg100204@gmail.com&gt;" />
+    <MESSAGE value="feat: add jupyter notebook, dataset and related classes" />
+    <MESSAGE value="chore(setup): merging" />
+    <MESSAGE value="chore(setup): configure cors in model service" />
+    <MESSAGE value="refactor(setup): reintegrating model with flask pending" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor(setup): reintegrating model with flask pending" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/project_1$project_1.coverage" NAME="project-1 Coverage Results" MODIFIED="1725213394991" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/project_1$model.coverage" NAME="model Coverage Results" MODIFIED="1732021651465" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/model-microservice" />
+    <SUITE FILE_PATH="coverage/project_1$project_1.coverage" NAME="project-1 Coverage Results" MODIFIED="1731561192686" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/model-microservice" />
   </component>
 </project>
