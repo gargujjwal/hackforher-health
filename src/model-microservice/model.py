@@ -76,7 +76,7 @@ class CervicalCancerPredictionModel:
 
     # Make prediction
     y_pred = self.model.predict(x_test)
-    accuracy_lgb = accuracy_score(y_test, y_pred)
+    accuracy_score(y_test, y_pred)
 
     submission_str = str(input_data)
     submission_hash = hashlib.md5(submission_str.encode()).hexdigest()
