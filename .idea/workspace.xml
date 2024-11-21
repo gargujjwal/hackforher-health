@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="b0e88a3b-d564-4489-b061-280246b40130" name="Changes" comment="chore: integrate model">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model-microservice/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/model-microservice/model.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -177,7 +176,7 @@
       <workItem from="1732019378346" duration="3618000" />
       <workItem from="1732027002204" duration="453000" />
       <workItem from="1732032840748" duration="245000" />
-      <workItem from="1732080834654" duration="205000" />
+      <workItem from="1732080834654" duration="1286000" />
     </task>
     <task id="LOCAL-00001" summary="setup(frontend): remove unnecessary files">
       <option name="closed" value="true" />
