@@ -177,7 +177,7 @@ function LandingPage() {
             showAnchorIcon
             className="font-medium"
             color="primary"
-            href="https://github.com/ujjwalgarg100204"
+            href="https://github.com/gargujjwal"
           >
             Ujjwal Garg
           </Link>

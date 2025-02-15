@@ -11,7 +11,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/ujjwalgarg100204/HackForHer-Health">
+  <a href="https://github.com/gargujjwal/HackForHer-Health">
     <img src="./readme-assets/logo.webp" alt="Logo" width="80" height="80">
   </a>
 
@@ -20,7 +20,7 @@
   <p align="center">
     An All-in-One Platform for Cervical Cancer Awareness and Support
     <br />
-    <a href="https://github.com/ujjwalgarg100204/hackforher-health"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/gargujjwal/hackforher-health"><strong>Explore the docs »</strong></a>
   </p>
 </div>
 
@@ -75,7 +75,7 @@ Before setting up the project, ensure you have the following installed:
 1. Clone the repository
 
    ```sh
-   git clone https://github.com/ujjwalgarg100204/hackforher-health.git
+   git clone https://github.com/gargujjwal/hackforher-health.git
    ```
 
 2. Create sensitive.properties
@@ -170,16 +170,16 @@ For any queries about the project, please reach out to the core contributors:
 
 ---
 
-[contributors-shield]: https://img.shields.io/github/contributors/ujjwalgarg100204/hackforher-health.svg?style=for-the-badge
-[contributors-url]: https://github.com/ujjwalgarg100204/hackforher-health/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/ujjwalgarg100204/hackforher-health.svg?style=for-the-badge
-[forks-url]: https://github.com/ujjwalgarg100204/hackforher-health/network/members
-[stars-shield]: https://img.shields.io/github/stars/ujjwalgarg100204/hackforher-health.svg?style=for-the-badge
-[stars-url]: https://github.com/ujjwalgarg100204/hackforher-health/stargazers
-[issues-shield]: https://img.shields.io/github/issues/ujjwalgarg100204/hackforher-health.svg?style=for-the-badge
-[issues-url]: https://github.com/ujjwalgarg100204/hackforher-health/issues
-[license-shield]: https://img.shields.io/github/license/ujjwalgarg100204/hackforher-health.svg?style=for-the-badge
-[license-url]: https://github.com/ujjwalgarg100204/hackforher-health/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/gargujjwal/hackforher-health.svg?style=for-the-badge
+[contributors-url]: https://github.com/gargujjwal/hackforher-health/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/gargujjwal/hackforher-health.svg?style=for-the-badge
+[forks-url]: https://github.com/gargujjwal/hackforher-health/network/members
+[stars-shield]: https://img.shields.io/github/stars/gargujjwal/hackforher-health.svg?style=for-the-badge
+[stars-url]: https://github.com/gargujjwal/hackforher-health/stargazers
+[issues-shield]: https://img.shields.io/github/issues/gargujjwal/hackforher-health.svg?style=for-the-badge
+[issues-url]: https://github.com/gargujjwal/hackforher-health/issues
+[license-shield]: https://img.shields.io/github/license/gargujjwal/hackforher-health.svg?style=for-the-badge
+[license-url]: https://github.com/gargujjwal/hackforher-health/blob/master/LICENSE.txt
 [Spring-Boot]: https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white
 [Spring-Boot-url]: https://spring.io/projects/spring-boot
 [PostgreSQL]: https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white

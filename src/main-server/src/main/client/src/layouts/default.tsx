@@ -21,7 +21,7 @@ export default function DefaultLayout({ children }: ChildrenProps) {
       <footer className="flex w-full items-center justify-center gap-1 py-3 text-current">
         <Link
           isExternal
-          href="https://github.com/ujjwalgarg100204/vit-project-1"
+          href="https://github.com/gargujjwal/vit-project-1"
         >
           <GithubIcon className="text-default-500" />
         </Link>
