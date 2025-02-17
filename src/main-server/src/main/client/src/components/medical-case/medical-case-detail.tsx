@@ -1,6 +1,6 @@
-import { Tab, Tabs } from "@nextui-org/tabs";
+import { Tab, Tabs } from "@heroui/tabs";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@nextui-org/button";
+import { Button } from "@heroui/button";
 
 import AppointmentCreateUpdateForm from "@/components/appointment/appointment-create-update-form";
 import AppointmentTable from "@/components/appointment/appointment-table";

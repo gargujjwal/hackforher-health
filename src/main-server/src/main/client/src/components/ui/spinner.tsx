@@ -1,4 +1,4 @@
-import { Spinner as NextUiSpinner } from "@nextui-org/spinner";
+import { Spinner as NextUiSpinner } from "@heroui/spinner";
 
 function Spinner() {
   return (

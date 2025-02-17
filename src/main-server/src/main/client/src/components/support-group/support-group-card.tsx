@@ -1,5 +1,5 @@
-import { Card, CardBody } from "@nextui-org/card";
-import { Chip } from "@nextui-org/chip";
+import { Card, CardBody } from "@heroui/card";
+import { Chip } from "@heroui/chip";
 
 import Link from "@/components/util/link";
 import { SupportGroup } from "@/types/support-group";

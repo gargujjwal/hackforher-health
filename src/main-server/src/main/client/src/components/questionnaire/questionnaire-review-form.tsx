@@ -1,7 +1,7 @@
-import { Button } from "@nextui-org/button";
-import { Card, CardBody, CardFooter, CardHeader } from "@nextui-org/card";
-import { Textarea } from "@nextui-org/input";
-import { Radio, RadioGroup } from "@nextui-org/radio";
+import { Button } from "@heroui/button";
+import { Card, CardBody, CardFooter, CardHeader } from "@heroui/card";
+import { Textarea } from "@heroui/input";
+import { Radio, RadioGroup } from "@heroui/radio";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";

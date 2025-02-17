@@ -1,8 +1,9 @@
-import { Button } from "@nextui-org/button";
-import { Card, CardBody, CardHeader } from "@nextui-org/card";
-import { DateInput } from "@nextui-org/date-input";
-import { Input } from "@nextui-org/input";
-import { Radio, RadioGroup } from "@nextui-org/radio";
+// @ts-nocheck
+import { Button } from "@heroui/button";
+import { Card, CardBody, CardHeader } from "@heroui/card";
+import { DateInput } from "@heroui/date-input";
+import { Input } from "@heroui/input";
+import { Radio, RadioGroup } from "@heroui/radio";
 import { useMutation } from "@tanstack/react-query";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";

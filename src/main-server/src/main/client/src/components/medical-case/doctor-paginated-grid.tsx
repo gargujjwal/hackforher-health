@@ -1,4 +1,4 @@
-import { Pagination } from "@nextui-org/pagination";
+import { Pagination } from "@heroui/pagination";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 

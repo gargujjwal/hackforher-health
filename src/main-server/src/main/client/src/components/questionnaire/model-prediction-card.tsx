@@ -1,4 +1,4 @@
-import { Card, CardBody, CardHeader, CardProps } from "@nextui-org/card";
+import { Card, CardBody, CardHeader, CardProps } from "@heroui/card";
 import { FaCircleCheck, FaCircleXmark } from "react-icons/fa6";
 
 import { QuestionnaireSubmissionResponseDto } from "@/types/backend-stubs";

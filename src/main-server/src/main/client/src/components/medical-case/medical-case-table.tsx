@@ -1,6 +1,6 @@
-import { Button, ButtonGroup } from "@nextui-org/button";
-import { Chip, ChipProps } from "@nextui-org/chip";
-import { Pagination } from "@nextui-org/pagination";
+import { Button, ButtonGroup } from "@heroui/button";
+import { Chip, ChipProps } from "@heroui/chip";
+import { Pagination } from "@heroui/pagination";
 import {
   Selection,
   Table,
@@ -9,8 +9,8 @@ import {
   TableColumn,
   TableHeader,
   TableRow,
-} from "@nextui-org/table";
-import { Tooltip } from "@nextui-org/tooltip";
+} from "@heroui/table";
+import { Tooltip } from "@heroui/tooltip";
 import { useQuery } from "@tanstack/react-query";
 import { Key, useCallback, useState } from "react";
 import { FaUser, FaUserClock } from "react-icons/fa";

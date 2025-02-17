@@ -1,7 +1,7 @@
-import { Image } from "@nextui-org/image";
+import { Image } from "@heroui/image";
 import { motion } from "framer-motion";
 import { FaChartLine, FaUserCircle, FaUserMd } from "react-icons/fa";
-import { Button } from "@nextui-org/button";
+import { Button } from "@heroui/button";
 
 import Link from "@/components/util/link";
 

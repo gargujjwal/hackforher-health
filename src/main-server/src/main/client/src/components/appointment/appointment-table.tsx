@@ -1,12 +1,12 @@
-import { Button, ButtonGroup } from "@nextui-org/button";
-import { Chip, ChipProps } from "@nextui-org/chip";
+import { Button, ButtonGroup } from "@heroui/button";
+import { Chip, ChipProps } from "@heroui/chip";
 import {
   Modal,
   ModalBody,
   ModalContent,
   ModalHeader,
   useDisclosure,
-} from "@nextui-org/modal";
+} from "@heroui/modal";
 import {
   Table,
   TableBody,
@@ -14,8 +14,8 @@ import {
   TableColumn,
   TableHeader,
   TableRow,
-} from "@nextui-org/table";
-import { Tooltip } from "@nextui-org/tooltip";
+} from "@heroui/table";
+import { Tooltip } from "@heroui/tooltip";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Key, useCallback } from "react";
 import { FaCross, FaEdit } from "react-icons/fa";

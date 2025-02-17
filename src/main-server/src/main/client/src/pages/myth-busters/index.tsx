@@ -1,4 +1,4 @@
-import { Card, CardBody, CardHeader } from "@nextui-org/card";
+import { Card, CardBody, CardHeader } from "@heroui/card";
 import { IoAlertCircle } from "react-icons/io5";
 
 import { myths } from "@/components/myth/data";

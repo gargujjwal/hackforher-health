@@ -1,6 +1,6 @@
-import { Button } from "@nextui-org/button";
-import { Card, CardBody, CardHeader } from "@nextui-org/card";
-import { Input } from "@nextui-org/input";
+import { Button } from "@heroui/button";
+import { Card, CardBody, CardHeader } from "@heroui/card";
+import { Input } from "@heroui/input";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { FaLock } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";

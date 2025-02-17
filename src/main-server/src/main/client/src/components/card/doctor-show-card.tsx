@@ -1,8 +1,8 @@
-import { Divider } from "@nextui-org/divider";
-import { Avatar } from "@nextui-org/avatar";
-import { Badge } from "@nextui-org/badge";
-import { Button } from "@nextui-org/button";
-import { Card, CardBody, CardHeader } from "@nextui-org/card";
+import { Divider } from "@heroui/divider";
+import { Avatar } from "@heroui/avatar";
+import { Badge } from "@heroui/badge";
+import { Button } from "@heroui/button";
+import { Card, CardBody, CardHeader } from "@heroui/card";
 import { FaStar } from "react-icons/fa";
 
 import { calculateAge, formatDistanceFromNow } from "@/utils/date";

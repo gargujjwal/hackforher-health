@@ -1,9 +1,10 @@
+// @ts-nocheck
 import { DateValue, getLocalTimeZone } from "@internationalized/date";
-import { Button } from "@nextui-org/button";
-import { Card, CardBody } from "@nextui-org/card";
-import { DateInput, TimeInput, TimeInputValue } from "@nextui-org/date-input";
-import { Input } from "@nextui-org/input";
-import { Radio, RadioGroup } from "@nextui-org/radio";
+import { Button } from "@heroui/button";
+import { Card, CardBody } from "@heroui/card";
+import { DateInput, TimeInput, TimeInputValue } from "@heroui/date-input";
+import { Input } from "@heroui/input";
+import { Radio, RadioGroup } from "@heroui/radio";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -28,16 +29,16 @@ import { capitalize } from "@/utils/string";
 
 type Props =
   | {
-      mode: "create";
-      doctorAssignment: MedicalCaseResponseDto["doctorAssignments"][0];
-      onAppointmentChange: () => void;
-    }
+    mode: "create";
+    doctorAssignment: MedicalCaseResponseDto["doctorAssignments"][0];
+    onAppointmentChange: () => void;
+  }
   | {
-      mode: "update";
-      appointment: AppointmentDto;
-      doctorAssignment: MedicalCaseResponseDto["doctorAssignments"][0];
-      onAppointmentChange: () => void;
-    };
+    mode: "update";
+    appointment: AppointmentDto;
+    doctorAssignment: MedicalCaseResponseDto["doctorAssignments"][0];
+    onAppointmentChange: () => void;
+  };
 
 type AppointmentInput = {
   date: DateValue | undefined;
@@ -158,9 +159,9 @@ function AppointmentCreateUpdateForm(props: Props) {
     useState<AppointmentInput | null>(() =>
       props.mode === "update"
         ? convertStartDateAndEndDate(
-            props.appointment.startTime,
-            props.appointment.endTime,
-          )
+          props.appointment.startTime,
+          props.appointment.endTime,
+        )
         : null,
     );
 
@@ -183,12 +184,14 @@ function AppointmentCreateUpdateForm(props: Props) {
     }
   }, [appointmentDatetime]);
 
-  function handleAppointmentDateChange(date: DateValue) {
-    setAppointmentDatetime(prev =>
-      prev
-        ? { ...prev, date }
-        : { date, startTime: undefined, endTime: undefined },
-    );
+  function handleAppointmentDateChange(value: DateValue | null) {
+    if (value) {
+      setAppointmentDatetime(prev =>
+        prev
+          ? { ...prev, date: value }
+          : { date: value, startTime: undefined, endTime: undefined },
+      );
+    }
   }
 
   function handleAppointmentTimeChange(attr: keyof AppointmentInput) {

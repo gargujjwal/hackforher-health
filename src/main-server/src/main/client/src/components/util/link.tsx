@@ -1,4 +1,4 @@
-import { LinkProps, Link as NextUiLink } from "@nextui-org/link";
+import { LinkProps, Link as NextUiLink } from "@heroui/link";
 import { Link as RouterLink } from "react-router-dom";
 
 function Link({ href, ...props }: LinkProps) {

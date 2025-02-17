@@ -1,5 +1,5 @@
-import { Button } from "@nextui-org/button";
-import { Textarea } from "@nextui-org/input";
+import { Button } from "@heroui/button";
+import { Textarea } from "@heroui/input";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";

@@ -1,6 +1,6 @@
 import { IoMdHelpCircle } from "react-icons/io";
-import { Button } from "@nextui-org/button";
-import { Card, CardBody } from "@nextui-org/card";
+import { Button } from "@heroui/button";
+import { Card, CardBody } from "@heroui/card";
 import {
   Modal,
   ModalBody,
@@ -8,9 +8,9 @@ import {
   ModalFooter,
   ModalHeader,
   useDisclosure,
-} from "@nextui-org/modal";
-import { Tab, Tabs } from "@nextui-org/tabs";
-import { Tooltip } from "@nextui-org/tooltip";
+} from "@heroui/modal";
+import { Tab, Tabs } from "@heroui/tabs";
+import { Tooltip } from "@heroui/tooltip";
 import React from "react";
 import { AiFillQuestionCircle } from "react-icons/ai";
 import {

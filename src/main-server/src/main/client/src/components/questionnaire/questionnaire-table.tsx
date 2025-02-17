@@ -1,6 +1,6 @@
 import { MdOutlinePreview } from "react-icons/md";
-import { Button, ButtonGroup } from "@nextui-org/button";
-import { Chip, ChipProps } from "@nextui-org/chip";
+import { Button, ButtonGroup } from "@heroui/button";
+import { Chip, ChipProps } from "@heroui/chip";
 import {
   Table,
   TableBody,
@@ -8,8 +8,8 @@ import {
   TableColumn,
   TableHeader,
   TableRow,
-} from "@nextui-org/table";
-import { Tooltip } from "@nextui-org/tooltip";
+} from "@heroui/table";
+import { Tooltip } from "@heroui/tooltip";
 import { Key, useCallback } from "react";
 import { IoEyeOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";

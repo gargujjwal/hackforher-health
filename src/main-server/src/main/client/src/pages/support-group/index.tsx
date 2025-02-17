@@ -1,5 +1,5 @@
-import { Accordion, AccordionItem } from "@nextui-org/accordion";
-import { Card, CardBody, CardHeader } from "@nextui-org/card";
+import { Accordion, AccordionItem } from "@heroui/accordion";
+import { Card, CardBody, CardHeader } from "@heroui/card";
 
 import { benefits, supportGroups } from "@/components/support-group/data";
 import BenefitCard from "@/components/support-group/benefit-card";

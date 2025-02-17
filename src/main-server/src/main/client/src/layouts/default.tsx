@@ -1,6 +1,6 @@
 import type { ChildrenProps } from "@/types";
 
-import { Link } from "@nextui-org/link";
+import { Link } from "@heroui/link";
 
 import Navbar from "@/components/navbar";
 import LoadingScreen from "@/components/ui/loading-screen";

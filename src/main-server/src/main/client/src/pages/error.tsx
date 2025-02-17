@@ -1,5 +1,5 @@
 import { FaArrowLeft } from "react-icons/fa";
-import { Button } from "@nextui-org/button";
+import { Button } from "@heroui/button";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 

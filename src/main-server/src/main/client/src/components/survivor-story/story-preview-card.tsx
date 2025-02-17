@@ -1,5 +1,5 @@
-import { Button } from "@nextui-org/button";
-import { Card, CardBody, CardFooter, CardHeader } from "@nextui-org/card";
+import { Button } from "@heroui/button";
+import { Card, CardBody, CardFooter, CardHeader } from "@heroui/card";
 import { Link } from "react-router-dom";
 
 import SourceAttribution from "./source-attribution";

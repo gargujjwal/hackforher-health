@@ -1,5 +1,5 @@
-import { Image } from "@nextui-org/image";
-import { Tab, Tabs } from "@nextui-org/tabs";
+import { Image } from "@heroui/image";
+import { Tab, Tabs } from "@heroui/tabs";
 import { motion } from "framer-motion";
 
 import DetectionStagingTab from "@/components/awareness-prevention/detection-staging-tab";

@@ -1,5 +1,5 @@
-import { Badge } from "@nextui-org/badge";
-import { Button } from "@nextui-org/button";
+import { Badge } from "@heroui/badge";
+import { Button } from "@heroui/button";
 import {
   Modal,
   ModalBody,
@@ -7,7 +7,7 @@ import {
   ModalFooter,
   ModalHeader,
   useDisclosure,
-} from "@nextui-org/modal";
+} from "@heroui/modal";
 import { useMutation } from "@tanstack/react-query";
 import { Navigate } from "react-router-dom";
 
