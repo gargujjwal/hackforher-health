@@ -65,10 +65,8 @@ HackForHer Health is a comprehensive platform dedicated to cervical cancer aware
 
 Before setting up the project, ensure you have the following installed:
 
-- Maven
-- PostgreSQL Database
-- Anaconda Environment
-- Node.JS 20
+- Docker
+- Docker Compose
 
 ### Installation
 
@@ -78,19 +76,7 @@ Before setting up the project, ensure you have the following installed:
    git clone https://github.com/gargujjwal/hackforher-health.git
    ```
 
-2. Create sensitive.properties
-   Navigate to `src/main-server/src/main/resources/` and create `sensitive.properties`:
-
-   ```properties
-   # DB configuration
-   spring.datasource.url=jdbc:postgresql://localhost:5432/<db_name>?useSSL=false
-   spring.datasource.username=<postgresql-username>
-   spring.datasource.password=<postgresql-password>
-   # Security configuration
-   my.jwt.secret.key=<secret-key>
-   ```
-
-3. Create .env files
+2. Create .env files
 
    - In `src/main-server/src/main/client/`, create `.env.development`:
 
@@ -104,27 +90,20 @@ Before setting up the project, ensure you have the following installed:
      VITE_API_BASE_URL=/api
      ```
 
-4. Install dependencies
+3. Start the application
 
    ```sh
-   # Install backend dependencies
-   mvn clean install
-
-   # Install frontend dependencies
-   cd src/main-server/src/main/client
-   pnpm install
+   docker-compose up --build
    ```
 
-5. Start the application
+## Architecture Overview
 
-   ```sh
-   # Start backend
-   mvn spring-boot:run
+The application uses a microservices architecture with:
 
-   # Start model micro-service arch
-   cd src/model-microservice/
-   flask run
-   ```
+- Spring Boot backend (port 8080)
+- PostgreSQL database
+- Flask-based prediction service (port 5000)
+- React frontend served through Spring Boot
 
 ## Core Contributors
 
@@ -145,7 +124,9 @@ A special thank you to the core developers who made this project possible:
 
 ## Project Completion
 
-This project represents a comprehensive solution for cervical cancer awareness and support. While no further development is planned, the existing codebase provides a robust platform for:
+This project represents a comprehensive solution for cervical cancer awareness
+and support. While no further development is planned, the existing codebase
+provides a robust platform for:
 
 - Cancer risk assessment
 - Patient-doctor communication
