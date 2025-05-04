@@ -1,42 +1,55 @@
 services:
+  # Main Spring Boot application
   - type: web
     name: springboot-app
     env: docker
-    region: oregon
-    dockerContext: ./src/main-server
-    plan: free
+    repo: https://github.com/gargujjwal/hackforher-health
+    branch: main # Assuming the main branch, adjust if needed
+    dockerfilePath: ./src/main-server/Dockerfile
+    healthCheckPath: /actuator/health # Adjust if your endpoint differs
     envVars:
       - key: SPRING_DATASOURCE_URL
-        value: jdbc:postgresql://postgres:5432/mydb
+        fromService:
+          type: postgres
+          name: postgres-db
+          property: connectionString
       - key: SPRING_DATASOURCE_USERNAME
-        value: myuser
+        fromService:
+          type: postgres
+          name: postgres-db
+          property: user
       - key: SPRING_DATASOURCE_PASSWORD
-        value: mypassword
+        fromService:
+          type: postgres
+          name: postgres-db
+          property: password
       - key: MY_JWT_SECRET_KEY
         value: 7IIG2SJu8YGiDNPnZ4WQgfhCvI1xh1Kmwy6BVyJ7wd8=
+        # For production, consider:
+        # sync: false
       - key: MY_QUESTIONNAIRE_MODELPREDICTION_URL
-        value: http://model-service:5000/predict
+        fromService:
+          name: model-service
+          type: web
+          property: url
+        suffix: /predict
 
-  - type: private-service
+  # ML Model microservice
+  - type: web
     name: model-service
     env: docker
-    region: oregon
-    dockerContext: ./src/model-microservice
-    plan: free
+    repo: https://github.com/gargujjwal/hackforher-health
+    branch: main # Assuming the main branch, adjust if needed
+    dockerfilePath: ./src/model-microservice/Dockerfile
+    plan: free # Adjust to your needs (free, starter, etc.)
+    healthCheckPath: /health # Adjust if you have a different health check endpoint
 
-  - type: pserv
-    name: postgres
-    env: docker
-    image: postgres:13
-    plan: free
-    envVars:
-      - key: POSTGRES_DB
-        value: mydb
-      - key: POSTGRES_USER
-        value: myuser
-      - key: POSTGRES_PASSWORD
-        value: mypassword
-    disk:
-      name: pgdata
-      mountPath: /var/lib/postgresql/data
-      sizeGB: 1
+  # PostgreSQL Database
+  - type: postgres
+    name: postgres-db
+    ipAllowList:
+      - source: 0.0.0.0/0
+        description: everywhere
+    plan: free # Adjust based on your needs
+    database: mydb
+    user: myuser
