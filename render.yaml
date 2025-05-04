@@ -6,21 +6,20 @@ services:
     repo: https://github.com/gargujjwal/hackforher-health
     branch: main # Assuming the main branch, adjust if needed
     dockerfilePath: ./src/main-server/Dockerfile
-    healthCheckPath: /actuator/health # Adjust if your endpoint differs
     envVars:
       - key: SPRING_DATASOURCE_URL
         fromService:
-          type: postgres
+          type: pserv
           name: postgres-db
           property: connectionString
       - key: SPRING_DATASOURCE_USERNAME
         fromService:
-          type: postgres
+          type: pserv
           name: postgres-db
           property: user
       - key: SPRING_DATASOURCE_PASSWORD
         fromService:
-          type: postgres
+          type: pserv
           name: postgres-db
           property: password
       - key: MY_JWT_SECRET_KEY
@@ -45,7 +44,7 @@ services:
     healthCheckPath: /health # Adjust if you have a different health check endpoint
 
   # PostgreSQL Database
-  - type: postgres
+  - type: pserv
     name: postgres-db
     ipAllowList:
       - source: 0.0.0.0/0
