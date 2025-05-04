@@ -1,0 +1,42 @@
+services:
+  - type: web
+    name: springboot-app
+    env: docker
+    region: oregon
+    dockerContext: ./src/main-server
+    plan: free
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:postgresql://postgres:5432/mydb
+      - key: SPRING_DATASOURCE_USERNAME
+        value: myuser
+      - key: SPRING_DATASOURCE_PASSWORD
+        value: mypassword
+      - key: MY_JWT_SECRET_KEY
+        value: 7IIG2SJu8YGiDNPnZ4WQgfhCvI1xh1Kmwy6BVyJ7wd8=
+      - key: MY_QUESTIONNAIRE_MODELPREDICTION_URL
+        value: http://model-service:5000/predict
+
+  - type: private-service
+    name: model-service
+    env: docker
+    region: oregon
+    dockerContext: ./src/model-microservice
+    plan: free
+
+  - type: pserv
+    name: postgres
+    env: docker
+    image: postgres:13
+    plan: free
+    envVars:
+      - key: POSTGRES_DB
+        value: mydb
+      - key: POSTGRES_USER
+        value: myuser
+      - key: POSTGRES_PASSWORD
+        value: mypassword
+    disk:
+      name: pgdata
+      mountPath: /var/lib/postgresql/data
+      sizeGB: 1
